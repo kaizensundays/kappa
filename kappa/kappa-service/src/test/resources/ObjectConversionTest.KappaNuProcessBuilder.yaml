@@ -1,0 +1,10 @@
+---
+command:
+  - "A"
+  - "B"
+  - "C"
+workingDir: "file:///C:/super/projects/fusion-kappa/kappa/kappa-service/./target/"
+environment:
+  "1": "A"
+  "2": "B"
+  "3": "C"

@@ -1,0 +1,17 @@
+services:
+  - name: kapplet
+    command:
+      - "cmd"
+      - "/C"
+      - "java"
+      - "-cp"
+      - ".kappa/lib/*"
+      - "${com.kaizensundays.kappa.service.id}"
+      - "-Dserver.port=7777"
+      - "-Dlog4j.configurationFile=kapplet-log4j2.xml"
+      - "-Dlog4j2.shutdownHookEnabled=false"
+      - "com.kaizensundays.fusion.kappa.KappletMain"
+    env:
+      IGNITE_UPDATE_NOTIFIER: false
+    workingDir: "."
+    hasConsole: "true"

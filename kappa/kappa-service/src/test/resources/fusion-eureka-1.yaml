@@ -1,0 +1,12 @@
+services:
+  - name: fusion-eureka
+    command:
+      - "java"
+      - "-jar"
+      - "-Dserver.port=7777"
+      - "-Dspring.profiles.active=dev"
+      - "-Dlog4j.shutdownHookEnabled=false"
+    env:
+      IGNITE_UPDATE_NOTIFIER: false
+    workingDir: "/super/projects/g-alpha/fusion/fusion-eureka/bin"
+

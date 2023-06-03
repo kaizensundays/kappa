@@ -1,0 +1,16 @@
+services:
+  - name: easybox
+    command:
+      - "cmd"
+      - "/C"
+      - "java"
+      - "-cp"
+      - ".kappa/lib/*"
+      - "-Dcom.kaizensundays.kappa.service.id.1234567"
+      - "-Dlog4j.configurationFile=easybox-log4j2.xml"
+      - "-Dlog4j.debug=false"
+      - "-Dlog4j.shutdownHookEnabled=false"
+      - "com.kaizensundays.fusion.kappa.EasyBoxMain"
+    env:
+      IGNITE_UPDATE_NOTIFIER: false
+    workingDir: "."
