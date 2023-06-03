@@ -1,0 +1,13 @@
+.idea
+.kappa
+
+target
+ignite
+h2
+
+*.iml
+*.jar
+*.zip
+*.tar
+*.tar.gz
+*.log*

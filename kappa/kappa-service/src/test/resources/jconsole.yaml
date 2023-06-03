@@ -1,0 +1,7 @@
+services:
+  - name: jconsole
+    command:
+      - "cmd"
+      - "/C"
+      - "jconsole"
+    workingDir: "."

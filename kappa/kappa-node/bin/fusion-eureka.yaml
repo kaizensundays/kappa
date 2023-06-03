@@ -1,0 +1,15 @@
+services:
+  - name: fusion-eureka
+    command:
+      - "java"
+      - "-Dcom.kaizensundays.kappa.service.id.1234567"
+      - "-Dserver.port=7777"
+      - "-Dspring.profiles.active=dev"
+      - "-Dlogging.config=fusion-eureka-log4j2.xml"
+      - "-Dlog4j.shutdownHookEnabled=false"
+      - "-jar"
+      - "service.jar"
+    env:
+      IGNITE_UPDATE_NOTIFIER: false
+    workingDir: "/super/projects/g-alpha-backup-2022-10-01/fusion/fusion-eureka/bin"
+

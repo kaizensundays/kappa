@@ -1,0 +1,12 @@
+---
+services:
+  - name: easybox
+    artifact: "com.kaizensundays.fusion:kappa-node:%%version%%:jar"
+    env:
+      EASYBOX_PORT: "7701"
+    jvmOptions:
+      - "-Dlog4j.configurationFile=easybox-log4j2.xml"
+      - "-Dlog4j2.debug=true"
+      - "-Dlog4j.shutdownHookEnabled=false"
+    mainClass: "com.kaizensundays.fusion.kappa.EasyBoxMain"
+    hasConsole: "true"
