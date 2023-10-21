@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa
 
+import com.kaizensundays.fusion.kappa.event.Event
+import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.os.Os
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
@@ -36,6 +38,8 @@ class KappletKtorServer(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
+    private val converter = JacksonObjectConverter<Event>()
 
     private var engine: ApplicationEngine? = null
 
@@ -103,6 +107,11 @@ class KappletKtorServer(
                     val apply = call.receive<Apply>()
                     val result = service.apply(apply)
                     println(result)
+                    call.respondText(result)
+                }
+                post("/handle") {
+                    val wire = call.receive<String>()
+                    val result = service.handle(wire)
                     call.respondText(result)
                 }
             }

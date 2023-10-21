@@ -6,8 +6,7 @@ import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager
 import org.apache.maven.artifact.repository.ArtifactRepository
 import org.apache.maven.execution.MavenSession
 import org.apache.maven.plugin.MojoFailureException
-import org.apache.maven.plugins.annotations.Component
-import org.apache.maven.plugins.annotations.Parameter
+import org.apache.maven.plugin.descriptor.PluginDescriptor
 import org.apache.maven.project.DefaultProjectBuildingRequest
 import org.apache.maven.project.ProjectBuildingRequest
 import org.apache.maven.repository.RepositorySystem
@@ -27,23 +26,41 @@ import java.lang.reflect.Field
  *
  * @author Sergey Chuykov
  */
-@SuppressWarnings("kotlin:S6518")
-abstract class AbstractKappaArtifactResolvingMojo : AbstractKappaMojo() {
+@SuppressWarnings("kotlin:S6518") // Element access should use indexed access operators
+class DefaultArtifactManager(
+    private val pluginContext: MutableMap<Any?, Any?>,
+    private val session: MavenSession,
+    private val artifactResolver: ArtifactResolver,
+    private val artifactHandlerManager: ArtifactHandlerManager,
+    private val repositorySystem: RepositorySystem,
+    private val pomRemoteRepositories: List<ArtifactRepository>
+) : ArtifactManager {
 
-    @Parameter(defaultValue = "\${session}", required = true, readonly = true)
-    lateinit var session: MavenSession
+    override fun getProjectVersion(): Version {
 
-    @Component
-    lateinit var artifactResolver: ArtifactResolver
+        val descriptor = this.pluginContext["pluginDescriptor"]
+                as? PluginDescriptor ?: throw IllegalStateException()
 
-    @Component
-    lateinit var artifactHandlerManager: ArtifactHandlerManager
+        return Version(descriptor.version)
+    }
 
-    @Component
-    lateinit var repositorySystem: RepositorySystem
+    private fun toArtifactCoordinate(dependableCoordinate: DependableCoordinate): ArtifactCoordinate {
+        val handler: ArtifactHandler = artifactHandlerManager.getArtifactHandler(dependableCoordinate.type)
+        val coordinate = DefaultArtifactCoordinate()
+        coordinate.groupId = dependableCoordinate.groupId
+        coordinate.artifactId = dependableCoordinate.artifactId
+        coordinate.version = dependableCoordinate.version
+        coordinate.classifier = dependableCoordinate.classifier
+        coordinate.extension = handler.extension
+        return coordinate
+    }
 
-    @Parameter(defaultValue = "\${project.remoteArtifactRepositories}", readonly = true, required = true)
-    var pomRemoteRepositories: List<ArtifactRepository> = emptyList()
+    fun setPrivateField(name: String, value: Any, obj: Any): Field {
+        val field = obj.javaClass.getDeclaredField(name)
+        field.isAccessible = true
+        field.set(obj, value)
+        return field
+    }
 
     private fun parseCoordinates(artifact: String): DependableCoordinate {
 
@@ -69,25 +86,7 @@ abstract class AbstractKappaArtifactResolvingMojo : AbstractKappaMojo() {
         return coordinate
     }
 
-    private fun toArtifactCoordinate(dependableCoordinate: DependableCoordinate): ArtifactCoordinate {
-        val handler: ArtifactHandler = artifactHandlerManager.getArtifactHandler(dependableCoordinate.type)
-        val coordinate = DefaultArtifactCoordinate()
-        coordinate.groupId = dependableCoordinate.groupId
-        coordinate.artifactId = dependableCoordinate.artifactId
-        coordinate.version = dependableCoordinate.version
-        coordinate.classifier = dependableCoordinate.classifier
-        coordinate.extension = handler.extension
-        return coordinate
-    }
-
-    fun setPrivateField(name: String, value: Any, obj: Any): Field {
-        val field = obj.javaClass.getDeclaredField(name)
-        field.isAccessible = true
-        field.set(obj, value)
-        return field
-    }
-
-    fun resolveArtifact(artifact: String): ArtifactResult {
+    override fun resolveArtifact(artifact: String): ArtifactResult {
 
         val repositorySession = session.repositorySession
         if (repositorySession is DefaultRepositorySystemSession) {
@@ -112,7 +111,7 @@ abstract class AbstractKappaArtifactResolvingMojo : AbstractKappaMojo() {
         return artifactResolver.resolveArtifact(buildingRequest, toArtifactCoordinate(coordinate));
     }
 
-    fun resolveArtifacts(serviceMap: Map<String, Service>, artifactResolver: (String) -> String): Map<String, String> {
+    override fun resolveArtifacts(serviceMap: Map<String, Service>, artifactResolver: (String) -> String): Map<String, String> {
 
         return serviceMap.values
             .mapNotNull { service -> service.artifact }

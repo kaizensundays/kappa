@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
+import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
@@ -10,18 +12,39 @@ import org.apache.maven.plugins.annotations.Parameter
  * @author Sergey Chuykov
  */
 @Mojo(name = "get-artifact", defaultPhase = LifecyclePhase.NONE, requiresProject = false)
-class GetArtifactMojo : AbstractKappaArtifactResolvingMojo() {
+class GetArtifactMojo : AbstractKappaMojo() {
 
     @Parameter(property = "artifact")
     private var artifact = ""
 
+    private fun respond(resolution: ArtifactResolution) {
+        val response = runBlocking { nodeClient.post(httpClient(), "http://localhost:7701/handle", resolution) }
+        println("*response=$response")
+    }
+
     override fun doExecute() {
 
-        artifact = "com.kaizensundays.particles:fusion-mu:0.0.0-SNAPSHOT:jar"
+        val requestId = System.getProperty("requestId")
+        println("*requestId=$requestId")
+        println("*artifact=$artifact")
 
-        val result = resolveArtifact(artifact)
+        if (artifact.isBlank()) {
+            val resolution = ArtifactResolution(requestId, emptyMap())
 
-        println("file=${result.artifact.file} exist=${result.artifact.file.exists()}")
+            respond(resolution)
+        } else {
+
+            val result = artifactManager.resolveArtifact(artifact)
+
+            println("file=${result.artifact.file} exist=${result.artifact.file.exists()}")
+
+            val file = result.artifact.file.canonicalPath
+
+            val resolution = ArtifactResolution(requestId, mapOf(artifact to file))
+
+            respond(resolution)
+        }
+
     }
 
 }

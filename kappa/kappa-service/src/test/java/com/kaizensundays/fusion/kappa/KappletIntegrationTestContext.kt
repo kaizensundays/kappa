@@ -27,7 +27,7 @@ open class KappletIntegrationTestContext {
 
     @Bean
     open fun kapplet(os: MockOs, serviceCache: Cache<String, String>): Kapplet {
-        return Kapplet(os, MockOsProcessBuilder(os), serviceCache)
+        return Kapplet(os, MockOsProcessBuilder(os), serviceCache, emptyMap())
     }
 
 }

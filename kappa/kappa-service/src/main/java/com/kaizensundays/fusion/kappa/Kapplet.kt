@@ -3,6 +3,13 @@ package com.kaizensundays.fusion.kappa
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.event.Event
+import com.kaizensundays.fusion.kappa.event.Handler
+import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
+import com.kaizensundays.fusion.kappa.event.Request
+import com.kaizensundays.fusion.kappa.event.Response
+import com.kaizensundays.fusion.kappa.event.ResponseCode
+import com.kaizensundays.fusion.kappa.os.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
@@ -11,17 +18,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.FileSystemResource
-import org.springframework.core.io.Resource
 import java.io.File
-import java.io.InputStream
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.cache.Cache
@@ -36,11 +36,14 @@ class Kapplet(
     private val os: Os,
     private val processBuilder: OSProcessBuilder,
     private val serviceCache: Cache<String, String>,
+    private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     val jackson = ObjectMapper(YAMLFactory()).registerKotlinModule()
+
+    val jsonConverter = JacksonObjectConverter<Event>()
 
     val deployments = Deployments()
 
@@ -160,34 +163,6 @@ class Kapplet(
         }
     }
 
-    @Deprecated("Use getResourceAsInputStream")
-    fun findResource(location: String): Resource {
-        try {
-            var resource: Resource = FileSystemResource(location)
-            if (!resource.file.exists()) {
-                resource = ClassPathResource(location)
-            }
-            if (!resource.exists() || !resource.isReadable) {
-                throw IllegalArgumentException()
-            }
-            return resource
-        } catch (e: Exception) {
-            throw IllegalArgumentException(e)
-        }
-    }
-
-    private fun getResourceAsInputStream(location: String): InputStream {
-
-        val file = File(location)
-
-        return if (file.exists()) {
-            file.inputStream()
-        } else {
-            val name = if (location.startsWith('/')) location else "/$location"
-            this.javaClass.getResourceAsStream(name) ?: throw IllegalArgumentException("File not found: $location")
-        }
-    }
-
     fun generateServiceId(service: Service): String {
         val serviceId = UUID.randomUUID().toString()
 
@@ -200,27 +175,20 @@ class Kapplet(
         return serviceId
     }
 
-    fun buildCommand(serviceId: String, service: Service, artifacts: Map<String, String>, detached: Boolean) {
+    fun buildCommand(serviceId: String, service: Service, artifacts: Map<String, String>, env: Map<String, String>) {
 
-        val command = mutableListOf<String>()
-
-        if (detached) {
-            command.add("cmd")
-            command.add("/C")
+        val command = CommandBuilder.command(service, env) {
+            this.artifactMap = artifacts
+            this.serviceTagPrefix = Kappa.serviceTagPrefix
+            this.serviceId = serviceId
         }
 
-        command.add("java")
-        command.add("-cp")
-        val jar = artifacts[service.artifact] ?: ""
-        command.add(jar)
+        service.command.addAll(command)
+    }
 
-        command.add("-D${Kappa.serviceTagPrefix}${serviceId}")
-        command.addAll(service.jvmOptions)
+    fun buildCommand(serviceId: String, service: Service, artifacts: Map<String, String>) {
 
-        command.add("-Dloader.main=${service.mainClass}")
-        command.add("org.springframework.boot.loader.PropertiesLauncher")
-
-        service.command = command
+        buildCommand(serviceId, service, artifacts, System.getenv())
     }
 
     fun startService(serviceId: String, service: Service) {
@@ -239,14 +207,6 @@ class Kapplet(
         serviceIdToServiceMap[serviceId] = service
 
         logger.info("startService() <")
-    }
-
-    @Deprecated("")
-    fun readDeployment1(resource: Resource): Flow<Map<String, Service>> {
-
-        return flowOf(resource.inputStream)
-            .map { inputStream -> deployments.readValue(inputStream, Deployment::class.java) }
-            .map { deployment -> deployment.services.map { service -> service.name to service }.toMap() }
     }
 
     fun getArtifactType(artifact: String): String {
@@ -273,14 +233,14 @@ class Kapplet(
         }
     }
 
-    fun deployArtifact(serviceId: String, service: Service, artifacts: Map<String, String>, detached: Boolean): String {
+    fun deployArtifact(serviceId: String, service: Service, artifacts: Map<String, String>): String {
 
         println("$serviceId::$service")
 
         val type = getArtifactType(service.artifact ?: "")
 
         if (type == "jar") {
-            buildCommand(serviceId, service, artifacts, detached)
+            buildCommand(serviceId, service, artifacts)
         }
         if (type == "tar.bz2") {
             unpackBundle(service, artifacts)
@@ -302,13 +262,13 @@ class Kapplet(
         return serviceId
     }
 
-    fun deploy(service: Service, artifacts: Map<String, String>, detached: Boolean): String {
+    fun deploy(service: Service, artifacts: Map<String, String>): String {
 
         return try {
             val serviceId = generateServiceId(service)
 
             if (service.artifact != null) {
-                deployArtifact(serviceId, service, artifacts, detached)
+                deployArtifact(serviceId, service, artifacts)
             } else {
                 defaultDeploy(serviceId, service)
             }
@@ -329,7 +289,7 @@ class Kapplet(
 
         println(serviceMap)
 
-        serviceMap.values.forEach { service -> deploy(service, apply.artifacts, detached) }
+        serviceMap.values.forEach { service -> deploy(service, apply.artifacts) }
 
         return serviceMap
     }
@@ -384,6 +344,41 @@ class Kapplet(
 
         return serviceMap.filter { (serviceId, _) -> os.findPID(serviceId) == 0 }
             .filter { (_, service) -> "kapplet" != service.name }
+    }
+
+    private fun systemError(text: String?): Response {
+        val response = Response()
+        response.code = ResponseCode.SystemError.code
+        response.text = text ?: ResponseCode.SystemError.text
+        return response
+    }
+
+    fun doHandle(wire: String): String {
+        logger.info("< $wire")
+
+        val request = jsonConverter.toObject(wire)
+
+        require(request is Request<Response>)
+
+        logger.info("< $request")
+
+        val handler = handlers[request.javaClass]
+        val response = if (handler != null) {
+            handler.handle(request)
+        } else {
+            logger.info("Unexpected request type: ${request.javaClass}")
+            request.response(ResponseCode.UnexpectedRequestType)
+        }
+        return jsonConverter.fromObject(response)
+    }
+
+    fun handle(wire: String): String {
+        return try {
+            doHandle(wire)
+        } catch (e: Exception) {
+            logger.error(e.message, e)
+            jsonConverter.fromObject(systemError(e.message))
+        }
     }
 
     fun loop() {

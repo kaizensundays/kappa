@@ -22,22 +22,13 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
         return false
     }
 
-    override fun setCommand(command: List<String>): OSProcessBuilder {
-        this.command = command
-        return this
-    }
+    override fun setCommand(command: List<String>) = apply { this.command = command }
 
-    override fun setWorkingDir(workingDir: Path): OSProcessBuilder {
-        return this
-    }
+    override fun setWorkingDir(workingDir: Path) = this
 
-    override fun setEnvironment(environment: Map<String, String>): OSProcessBuilder {
-        return this
-    }
+    override fun setEnvironment(environment: Map<String, String>) = this
 
-    override fun setProcessListener(listener: NuProcessHandler): OSProcessBuilder {
-        return this
-    }
+    override fun setProcessListener(listener: NuProcessHandler) = this
 
     override fun start(): KappaProcess {
 

@@ -3,17 +3,12 @@ package com.kaizensundays.fusion.kappa.plugin
 import com.kaizensundays.fusion.kappa.Apply
 import com.kaizensundays.fusion.kappa.Deployments
 import com.kaizensundays.fusion.kappa.Service
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
+import com.kaizensundays.fusion.ktor.KtorProducer
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Sunday 12/11/2022, 12:14 PM Eastern Time
@@ -21,59 +16,51 @@ import org.apache.maven.plugins.annotations.Mojo
  * @author Sergey Chuykov
  */
 @Mojo(name = "apply", defaultPhase = LifecyclePhase.NONE)
-class ApplyMojo : AbstractKappaArtifactResolvingMojo() {
+class ApplyMojo : AbstractKappaMojo() {
 
     private val deployments = Deployments()
 
-
-    private suspend fun apply(client: HttpClient, url: String, fileName: String, artifactMap: Map<String, String>): String {
-
-        val request = Apply(fileName, artifactMap)
-
-        val response: HttpResponse = client.post("$url/apply") {
-            setBody(request)
-            contentType(ContentType.Application.Json)
+    fun renderVersion(version: Version, serviceMap: Map<String, Service>) {
+        serviceMap.forEach { (_, service) ->
+            service.artifact = service.artifact?.replace("""%%version%%""", version.value)
         }
-        if (response.status == HttpStatusCode.OK) {
-            return response.body()
-        }
-        throw RuntimeException(response.status.toString())
     }
 
     override fun doExecute() {
+
+        if (!log.isInfoEnabled) {
+            System.setProperty("maven.mojo.quiet.mode.enabled", "true")
+        }
 
         val fileName = System.getProperty("file", "")
 
         val serviceMap = runBlocking { deployments.readAndValidateDeployment(fileName) }
 
-        println(serviceMap)
+        println("serviceMap=$serviceMap")
 
-        val artifactMap = resolveArtifacts(serviceMap) { artifact ->
-            resolveArtifact(artifact).artifact.file.canonicalPath
-        }
+        val version = artifactManager.getProjectVersion()
+        println("version=$version")
 
-        println(artifactMap)
+        renderVersion(version, serviceMap)
+        println("serviceMap=$serviceMap")
 
-        val props = loadProperties("application.properties")
-        val port = props.getPropertyAsInt("kapplet.server.port")
+        val request = Apply(fileName, emptyMap(), serviceMap)
 
-        val httpClient = httpClient()
+        println(request)
 
-        val res = runBlocking { apply(httpClient, "http://localhost:$port", fileName, artifactMap) }
+        val conf = getConfiguration()
+        println("$conf\n")
 
-        println(res)
+        val instance = conf.hosts.first()
+
+        val producer = KtorProducer(DefaultLoadBalancer(instance))
+
+        val body = jsonConverter.fromObject(request)
+
+        val response = producer.request(URI("post:/handle"), body.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        println(if (response != null) String(response) else "?")
     }
-
-
-/*
-    override fun execute() {
-        try {
-            doExecute()
-        } catch (e: Exception) {
-            println(e.message)
-            e.printStackTrace()
-        }
-    }
-*/
 
 }

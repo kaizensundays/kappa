@@ -1,6 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.Apply
+import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.Kapplet
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugin.descriptor.PluginDescriptor
@@ -71,9 +72,12 @@ class StartKappletMojo : AbstractKappaMojo() {
     override fun doExecute() {
         super.init()
 
-        val port = context.getPropertyAsInt("kapplet.server.port");
+        val conf = getConfiguration()
+        println("$conf\n")
 
-        if (kappletIsNotRunning(port)) {
+        val hostPort = conf.hosts.first()
+
+        if (kappletIsNotRunning(hostPort)) {
             println("Kapplet is not running")
 
             populateLib()
@@ -81,7 +85,7 @@ class StartKappletMojo : AbstractKappaMojo() {
             deployKapplet()
         }
 
-        checkKapplet(port)
+        checkKapplet(hostPort)
     }
 
 }

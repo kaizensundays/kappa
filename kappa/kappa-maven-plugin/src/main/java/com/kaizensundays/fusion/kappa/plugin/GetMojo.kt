@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.Service
 import com.kaizensundays.fusion.kappa.TypeRef
 import kotlinx.coroutines.runBlocking
@@ -19,14 +20,16 @@ class GetMojo : AbstractKappaMojo() {
 
     override fun doExecute() {
 
-        val props = loadProperties("application.properties")
-        val port = props.getPropertyAsInt("kapplet.server.port")
+        val conf = getConfiguration()
+        println("$conf\n")
+
+        val hostPort = conf.hosts.first()
 
         val httpClient = httpClient()
 
         val converter = Json { prettyPrint = true }
 
-        val result = runBlocking { get(httpClient, "http://localhost:$port/get", TypeRef<Map<String, Service>>()) }
+        val result = runBlocking { nodeClient.get(httpClient, "http://${hostPort.host}:${hostPort.port}/get", TypeRef<Map<String, Service>>()) }
 
         val json = converter.encodeToString(MapSerializer(String.serializer(), Service.serializer()), result)
 

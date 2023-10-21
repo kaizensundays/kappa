@@ -28,6 +28,18 @@ class AbstractKappaMojoTest {
     }
 
     @Test
+    fun getConfiguration() {
+
+        val mojoConf = "mojo-test.properties"
+
+        var conf = mojo.getConfiguration(mojoConf, mutableMapOf())
+        assertEquals("[Instance(host=hostA, port=7701), Instance(host=hostB, port=7703), Instance(host=hostC, port=7707)]", conf.hosts.toString())
+
+        conf = mojo.getConfiguration(mojoConf, mutableMapOf("KAPPA_HOSTS" to "hostD:7701,hostE:7703"))
+        assertEquals("[Instance(host=hostD, port=7701), Instance(host=hostE, port=7703)]", conf.hosts.toString())
+    }
+
+    @Test
     fun getKappletReturnsOk() {
 
         testApplication {
@@ -46,7 +58,7 @@ class AbstractKappaMojoTest {
                 }
             }
 
-            val kapplet = mojo.getKapplet(client)
+            val kapplet = mojo.getKapplet(client, retries = 1)
             assertEquals(1, kapplet.pid)
         }
     }
@@ -57,7 +69,7 @@ class AbstractKappaMojoTest {
         testApplication {
             routing { }
 
-            assertThrows<RuntimeException> { mojo.getKapplet(client) }
+            assertThrows<RuntimeException> { mojo.getKapplet(client, retries = 1) }
         }
     }
 

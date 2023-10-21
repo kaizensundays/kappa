@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * @author Sergey Chuykov
  */
 @SuppressWarnings("kotlin:S6518")
-class Windows : Os {
+class Windows : Os() {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -57,7 +57,8 @@ class Windows : Os {
 
         val serviceTagRegex = serviceTagRegex(Kappa.serviceTagPrefix + serviceId, "%%", "%%")
 
-        val command = """cmd /C wmic process where (commandline like '${serviceTagRegex}') get processid | more +1""".split(" ")
+        val command =
+            """cmd /C wmic process where (commandline like '${serviceTagRegex}') get processid | more +1""".split(" ")
 
         logger.info("command={}", command)
 

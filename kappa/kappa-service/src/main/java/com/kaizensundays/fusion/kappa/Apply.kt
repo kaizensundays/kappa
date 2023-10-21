@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa
 
+import com.kaizensundays.fusion.kappa.event.Request
+import com.kaizensundays.fusion.kappa.messages.ApplyResponse
 import kotlinx.serialization.Serializable
 
 /**
@@ -8,4 +10,12 @@ import kotlinx.serialization.Serializable
  * @author Sergey Chuykov
  */
 @Serializable
-data class Apply(val fileName: String, val artifacts: Map<String, String>)
+data class Apply(
+    val fileName: String,
+    val artifacts: Map<String, String>,
+    val serviceMap: Map<String, Service> = emptyMap()
+) : Request<ApplyResponse>() {
+
+    override fun response() = ApplyResponse()
+
+}

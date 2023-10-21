@@ -1,0 +1,12 @@
+[Unit]
+Description=EasyBox
+After=network.target
+
+[Service]
+ExecStart=easybox.sh
+WorkingDirectory=.kappa
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

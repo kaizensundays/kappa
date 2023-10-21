@@ -21,12 +21,8 @@ import javax.cache.CacheManager
  * @author Sergey Chuykov
  */
 @Configuration
-@PropertySource("classpath:/kappa-plugin.properties")
+@PropertySource("classpath:/mojo.properties")
 open class KappaPluginContext {
-
-    @Suppress("unused")
-    @Value("\${kapplet.server.port}")
-    var port = 0
 
     @Value("\${kapplet.cacheLocation}")
     var cacheLocation = ""
@@ -49,7 +45,7 @@ open class KappaPluginContext {
 
     @Bean
     open fun service(os: Os, serviceCache: Cache<String, String>): Kapplet {
-        val kapplet = Kapplet(os, KappaNuProcessBuilder(), serviceCache)
+        val kapplet = Kapplet(os, KappaNuProcessBuilder(), serviceCache, emptyMap())
         kapplet.enabled = false
         return kapplet
     }
