@@ -8,7 +8,7 @@ import kotlin.math.max
  *
  * @author Sergey Chuykov
  */
-class MockOs : Os {
+class MockOs : Os() {
 
     private val initialPid = 30_000
 

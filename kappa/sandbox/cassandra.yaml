@@ -1,0 +1,17 @@
+---
+services:
+  - name: "cassandra"
+    artifact: "com.kaizensundays.fusion.kappa.bundles:cassandra:3.11.15-SNAPSHOT:tar.bz2:bundle"
+    command:
+      - "cmd"
+      - "/C"
+      - "entrypoint.cmd"
+    env:
+      CASSANDRA_OPTS: "-Dcom.kaizensundays.kappa.service.id.cassandra"
+    stopCommand:
+      - "cmd"
+      - "/C"
+      - "bin\\nodetool stopdaemon"
+    mainClass: "Main"
+    workingDir: "."
+    hasConsole: "true"

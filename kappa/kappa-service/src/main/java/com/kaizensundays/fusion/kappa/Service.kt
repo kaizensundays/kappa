@@ -26,6 +26,8 @@ data class Service(
     var mainClass: String = "",
     var workingDir: String? = null,
     var hasConsole: String = "false",
+    @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+    var detached: Boolean = false,
     var pid: Int = 0
 ) {
     @JsonIgnore

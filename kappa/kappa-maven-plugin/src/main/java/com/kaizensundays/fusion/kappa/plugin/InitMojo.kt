@@ -1,10 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import org.apache.maven.plugin.descriptor.PluginDescriptor
-import org.apache.maven.plugins.annotations.Component
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
-import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResolver
 import java.io.File
 
 /**
@@ -17,14 +14,12 @@ class InitMojo : AbstractKappaMojo() {
 
     override fun doExecute() {
 
-        val pluginDescriptor = pluginContext["pluginDescriptor"] as PluginDescriptor
-
-        val version = pluginDescriptor.version
+        val version = artifactManager.getProjectVersion()
         println("version=$version")
 
         var pom = readText("/init-pom.xml")
 
-        pom = pom.replace("""%%version%%""", version)
+        pom = pom.replace("""%%version%%""", version.value)
 
         val file = File("pom.xml")
 

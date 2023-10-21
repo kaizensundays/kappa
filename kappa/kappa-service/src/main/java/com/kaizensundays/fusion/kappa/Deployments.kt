@@ -5,8 +5,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.io.InputStream
 
 /**
@@ -17,18 +17,6 @@ import java.io.InputStream
 class Deployments(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) {
 
     private val jackson = ObjectMapper(YAMLFactory()).registerKotlinModule()
-
-    fun getResourceAsInputStream(location: String): InputStream {
-
-        val file = File(location)
-
-        return if (file.exists()) {
-            file.inputStream()
-        } else {
-            val name = if (location.startsWith('/')) location else "/$location"
-            this.javaClass.getResourceAsStream(name) ?: throw IllegalArgumentException("File not found: $location")
-        }
-    }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun <T> readValue(inputStream: InputStream, type: Class<T>): T {
@@ -52,11 +40,11 @@ class Deployments(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
         val artifact = service.artifact
 
-        if (artifact != null && artifact.isNotBlank()) {
-            if (service.command.isNotEmpty() && !artifact.endsWith("bundle")) {
-                val yaml = writeValueAsString(service)
-                throw IllegalArgumentException("'command' should not be assigned:\n$yaml")
-            }
+        if (!artifact.isNullOrBlank()
+            && service.command.isNotEmpty() && !artifact.endsWith("bundle")
+        ) {
+            val yaml = writeValueAsString(service)
+            throw IllegalArgumentException("'command' should not be assigned:\n$yaml")
         }
 
     }
@@ -77,5 +65,7 @@ class Deployments(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
         return serviceMap
     }
+
+    fun readBlocking(location: String) = runBlocking { readAndValidateDeployment(location) }
 
 }

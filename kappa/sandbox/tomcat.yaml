@@ -1,0 +1,18 @@
+---
+services:
+  - name: "tomcat"
+    nameSuffix: "8088"
+    artifact: "com.kaizensundays.fusion.kappa.bundles:tomcat:9.0.73-SNAPSHOT:tar.bz2:bundle"
+    command:
+      - "cmd"
+      - "/C"
+      - "entrypoint.cmd"
+    env:
+      CATALINA_OPTS: "-Dtomcat.http.port=8088 -Dcom.kaizensundays.kappa.service.id.tomcat8088"
+    stopCommand:
+      - "cmd"
+      - "/C"
+      - "bin\\shutdown.bat"
+    mainClass: "com.kaizensundays.particles.fusion.mu.Main"
+    workingDir: "."
+    hasConsole: "true"

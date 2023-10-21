@@ -18,18 +18,22 @@ class GetNodesMojo : AbstractKappaMojo() {
 
     override fun doExecute() {
 
-        val props = loadProperties("application.properties")
-        val port = props.getPropertyAsInt("kapplet.server.port")
+        val conf = getConfiguration()
+        println("$conf\n")
+
+        val hostPort = conf.hosts.first()
 
         val httpClient = httpClient()
 
         val converter = Json { prettyPrint = true }
 
-        val result = runBlocking { get(httpClient, "http://localhost:$port/get-nodes", TypeRef<List<Node>>()) }
+        val result = runBlocking { nodeClient.get(httpClient, "http://${hostPort.host}:${hostPort.port}/get-nodes", TypeRef<List<Node>>()) }
 
         val json = converter.encodeToString(ListSerializer(Node.serializer()), result)
 
         println(json)
+
+        sleep()
     }
 
 }

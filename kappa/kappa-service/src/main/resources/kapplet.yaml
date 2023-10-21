@@ -8,6 +8,7 @@ services:
       - "-Dlog4j.configurationFile=kapplet-log4j2.xml"
       - "-Dlog4j2.debug=true"
       - "-Dlog4j.shutdownHookEnabled=false"
-    mainClass: "Unassigned"
+    mainClass: "com.kaizensundays.kappa.KappletMain"
     workingDir: "."
     hasConsole: "true"
+    detached: true

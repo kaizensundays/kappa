@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.Kappa
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
@@ -15,15 +16,19 @@ class GetKappletMojo : AbstractKappaMojo() {
 
     override fun doExecute() {
 
-        val props = loadProperties("application.properties")
-        val port = props.getPropertyAsInt("kapplet.server.port")
+        val conf = getConfiguration()
+        println("$conf\n")
+
+        val hostPort = conf.hosts.first()
+        val host = hostPort.host
+        val port = hostPort.port
 
         val httpClient = httpClient()
 
         runBlocking {
             try {
-                val kapplet = getKapplet(httpClient, "http://localhost:$port")
-                println("kapplet=$kapplet")
+                val kapplet = getKapplet(httpClient, "http://$host:$port", 3)
+                println("$kapplet\n")
             } catch (e: ConnectException) {
                 println(e.message)
                 println()

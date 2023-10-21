@@ -1,17 +1,20 @@
 package com.kaizensundays.fusion.kappa
 
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.event.Handler
+import com.kaizensundays.fusion.kappa.event.Request
+import com.kaizensundays.fusion.kappa.event.Response
+import com.kaizensundays.fusion.kappa.messages.Ping
+import com.kaizensundays.fusion.kappa.messages.PingResponse
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
-import kotlinx.coroutines.flow.toCollection
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
@@ -35,7 +38,10 @@ class KappletTest {
 
     private val pb: OSProcessBuilder = mock()
 
-    private val kapplet = Kapplet(os, pb, cache)
+    private val handlers: MutableMap<Class<out Request<*>>, Handler<*, *>> = mutableMapOf()
+
+    @Suppress("UNCHECKED_CAST")
+    private val kapplet = Kapplet(os, pb, cache, handlers as Map<Class<Request<Response>>, Handler<Request<Response>, Response>>)
 
     private val deployments = Deployments()
 
@@ -60,21 +66,6 @@ class KappletTest {
         val json = Json.encodeToString(Service.serializer(), kapplet)
 
         assertEquals("""{"name":"kapplet","pid":1}""", json)
-    }
-
-    @Test
-    fun findResource() {
-
-        val locations = listOf("deployment.yaml", "jconsole.yaml", "pom.xml")
-
-        locations.forEach { location ->
-
-            val resource = kapplet.findResource(location)
-
-            assert(resource.file.exists())
-        }
-
-        assertThrows<IllegalArgumentException> { kapplet.findResource("no-such.yaml") }
     }
 
     @Test
@@ -110,42 +101,43 @@ class KappletTest {
     @Test
     fun buildCommand() {
 
-        val inputStream = deployments.getResourceAsInputStream("deployment.yaml")
-
-        val serviceMap = runBlocking { deployments.readDeployment(inputStream) }
+        val serviceMap = deployments.readBlocking("deployment.yaml")
 
         val service = serviceMap["fusion-mu"]
 
         assertNotNull(service)
 
+        val env = mapOf("JAVA_HOME" to "/opt/java/jdk11")
 
-        kapplet.buildCommand("1234567", service, artifacts, false)
+        kapplet.buildCommand("1234567", service, artifacts, env)
 
-        assertEquals(11, service.command.size)
-        assertEquals("java", service.command[0])
-        assertEquals("-cp", service.command[1])
-        assertEquals("-Dcom.kaizensundays.kappa.service.id.1234567", service.command[3])
-        assertEquals("-Dloader.main=com.kaizensundays.particles.fusion.mu.Main", service.command[9])
-        assertEquals("org.springframework.boot.loader.PropertiesLauncher", service.command[10])
+        if (isWindows()) {
+            assertEquals(11, service.command.size)
+            assertTrue(service.command[0].matches("""/opt/java/jdk11[/|\\]bin[/|\\]java""".toRegex()))
+            assertEquals("-cp", service.command[1])
+            assertEquals("-Dcom.kaizensundays.kappa.service.id.1234567", service.command[3])
+            assertEquals("-Dloader.main=com.kaizensundays.particles.fusion.mu.Main", service.command[9])
+            assertEquals("org.springframework.boot.loader.PropertiesLauncher", service.command[10])
+        } else {
+            assertEquals(3, service.command.size)
+            assertTrue(service.command[2].matches("""/opt/java/jdk11[/|\\]bin[/|\\]java.*""".toRegex()))
+        }
     }
 
     @Test
     fun generateServiceId() {
 
-        val serviceMap = runBlocking {
-            val inputStream = deployments.getResourceAsInputStream("deployment.yaml")
-            deployments.readDeployment(inputStream)
-        }
+        val serviceMap = deployments.readBlocking("deployment.yaml")
 
         serviceMap.values.forEach { service ->
 
             val serviceId = kapplet.generateServiceId(service)
 
             if (service.artifact != null) {
-                kapplet.buildCommand(serviceId, service, artifacts, false)
+                kapplet.buildCommand(serviceId, service, artifacts)
             }
 
-            val prop = service.command.find { c -> c == "-D${Kappa.serviceTagPrefix}${serviceId}" }
+            val prop = service.command.find { c -> c.contains("-D${Kappa.serviceTagPrefix}${serviceId}") }
             val env = service.env.values.find { v -> v.contains("-D${Kappa.serviceTagPrefix}") }
 
             assertTrue(prop != null || env != null, "Not found in $service")
@@ -163,11 +155,9 @@ class KappletTest {
     @Test
     fun deployArtifact() {
 
-        val flow = kapplet.readDeployment1(ClassPathResource("/deployment.yaml"))
+        val serviceMap = deployments.readBlocking("deployment.yaml")
 
-        val result = runBlocking { withTimeout(1000L) { flow.toCollection(mutableListOf()) } }
-
-        val service = result.first()["fusion-mu"]
+        val service = serviceMap["fusion-mu"]
 
         assertNotNull(service)
 
@@ -177,7 +167,7 @@ class KappletTest {
 
         whenever(pb.start()).thenReturn(process)
 
-        kapplet.deployArtifact(serviceId, service, emptyMap(), false)
+        kapplet.deployArtifact(serviceId, service, emptyMap())
     }
 
     @Test
@@ -244,6 +234,30 @@ class KappletTest {
         val notRunning = kapplet.findNotRunning(serviceMap)
 
         assertEquals(1, notRunning.size)
+    }
+
+    @Test
+    fun handle() {
+
+        val pingHandler: PingHandler = mock()
+
+        handlers[Ping::class.java] = pingHandler
+
+        val ping = Ping()
+
+        @Suppress("UNCHECKED_CAST")
+        val wire = kapplet.jsonConverter.fromObject(ping as Request<Response>)
+
+        whenever(pingHandler.handle(any())).thenReturn(PingResponse())
+
+        val result = kapplet.handle(wire)
+            .replace("\r", "")
+            .replace("\n", "")
+
+        assertTrue(result.matches(""".*""".toRegex()))
+
+        verify(pingHandler).handle(any())
+        verifyNoMoreInteractions(pingHandler)
     }
 
     @Test

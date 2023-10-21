@@ -7,7 +7,7 @@ import com.kaizensundays.fusion.kappa.unsupportedOperation
  *
  * @author Sergey Chuykov
  */
-class Linux : Os {
+open class Linux : Os() {
 
     override fun getPID(): Int {
         return LinuxCLibrary.INSTANCE.getpid()

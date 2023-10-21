@@ -26,30 +26,17 @@ class KappaNuProcessBuilder : OSProcessBuilder {
     @JsonIgnore
     override fun isWindows() = isWindows(System.getProperties())
 
-    override fun setCommand(command: List<String>): OSProcessBuilder {
-        this.command = command
-        return this
-    }
+    override fun setCommand(command: List<String>) = apply { this.command = command }
 
-    override fun setWorkingDir(workingDir: Path): OSProcessBuilder {
-        this.workingDir = workingDir
-        return this
-    }
+    override fun setWorkingDir(workingDir: Path) = apply { this.workingDir = workingDir }
 
-    override fun setEnvironment(environment: Map<String, String>): OSProcessBuilder {
-        this.environment = environment
-        return this
-    }
+    override fun setEnvironment(environment: Map<String, String>) = apply { this.environment = environment }
 
-    override fun setProcessListener(listener: NuProcessHandler): OSProcessBuilder {
-        this.processHandler = listener
-        return this
-    }
+    override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
 
     override fun start(): KappaProcess {
-        if (command.isEmpty()) {
-            throw IllegalArgumentException()
-        }
+        require(command.isNotEmpty())
+
         val builder = NuProcessBuilder(command)
         builder.setCwd(workingDir)
         builder.setProcessListener(processHandler)

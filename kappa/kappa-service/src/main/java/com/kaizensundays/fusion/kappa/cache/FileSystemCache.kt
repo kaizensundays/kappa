@@ -30,9 +30,7 @@ class FileSystemCache<K, V>(private val cacheName: String, private val location:
 
         val r = FileSystemResource("$location/$cacheName")
 
-        if (!r.exists() || r.file.isFile) {
-            throw IllegalArgumentException()
-        }
+        require(r.exists() && r.file.isDirectory)
 
         val dir = r.file.listFiles() ?: emptyArray()
 
