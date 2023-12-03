@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Sergey Chuykov
  */
-class KappaNuProcess(private val process: NuProcess, private val builder: KappaNuProcessBuilder) : KappaProcess {
+class KappaNuProcess(private val process: NuProcess, private val builder: OSProcessBuilder) : KappaProcess {
 
     override fun pid() = process.pid
 
