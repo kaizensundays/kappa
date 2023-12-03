@@ -4,7 +4,7 @@ import com.kaizensundays.fusion.kappa.Deployments
 import com.kaizensundays.fusion.kappa.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
-import com.kaizensundays.fusion.messsaging.Instance
+import com.kaizensundays.fusion.messaging.Instance
 import kotlinx.coroutines.runBlocking
 import java.net.ConnectException
 

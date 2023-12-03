@@ -7,7 +7,7 @@ import com.kaizensundays.fusion.kappa.Service
 import com.kaizensundays.fusion.kappa.event.Event
 import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.getPropertyAsLong
-import com.kaizensundays.fusion.messsaging.Instance
+import com.kaizensundays.fusion.messaging.Instance
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
