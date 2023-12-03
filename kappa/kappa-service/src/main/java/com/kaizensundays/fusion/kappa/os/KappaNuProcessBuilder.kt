@@ -41,7 +41,7 @@ class KappaNuProcessBuilder : OSProcessBuilder {
         builder.setCwd(workingDir)
         builder.setProcessListener(processHandler)
         builder.environment().putAll(this.environment)
-        return KappaNuProcess(builder.start(), this)
+        return KappaNuProcess(NuProcessWrapper(builder.start()))
     }
 
 }
