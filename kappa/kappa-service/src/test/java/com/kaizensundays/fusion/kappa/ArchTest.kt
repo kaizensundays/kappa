@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
  *
  * @author Sergey Chuykov
  */
-@Disabled
 class ArchTest {
 
     private fun classes() = ClassFileImporter().importPackages("com.kaizensundays.fusion.kappa")
@@ -49,6 +48,15 @@ class ArchTest {
             .that().resideInAPackage("..kappa.service")
             .should()
             .accessClassesThat().haveNameMatching(".*KtorServer")
+            .check(classes)
+
+        noClasses().that().resideInAPackage("..kappa.service")
+            .should().accessClassesThat().resideOutsideOfPackages(
+                "java..",
+                "kotlin..",
+                "org.slf4j..",
+                "com.kaizensundays.fusion..",
+            )
             .check(classes)
 
         noClasses()
