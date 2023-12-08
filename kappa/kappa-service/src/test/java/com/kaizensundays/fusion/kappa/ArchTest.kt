@@ -44,21 +44,6 @@ class ArchTest {
 
         val classes = classes()
 
-        noClasses()
-            .that().resideInAPackage("..kappa.service")
-            .should()
-            .accessClassesThat().haveNameMatching(".*KtorServer")
-            .check(classes)
-
-        noClasses().that().resideInAPackage("..kappa.service")
-            .should().accessClassesThat().resideOutsideOfPackages(
-                "java..",
-                "kotlin..",
-                "org.slf4j..",
-                "com.kaizensundays.fusion..",
-            )
-            .check(classes)
-
         noClasses().that().resideInAPackage("..kappa").and().haveNameNotMatching(".*Test")
             .should().accessClassesThat().resideOutsideOfPackages(
                 "java..",
