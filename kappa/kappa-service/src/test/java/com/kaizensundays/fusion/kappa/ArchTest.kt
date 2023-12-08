@@ -59,6 +59,22 @@ class ArchTest {
             )
             .check(classes)
 
+        noClasses().that().resideInAPackage("..kappa").and().haveNameNotMatching(".*Test")
+            .should().accessClassesThat().resideOutsideOfPackages(
+                "java..",
+                "kotlin..",
+                "kotlinx..",
+                "org.slf4j..",
+                "org.apache.commons..",
+                "org.apache.maven..",
+                "com.fasterxml..",
+                "javax.cache..",
+                "io.ktor..",
+                "org.springframework..",
+                "com.kaizensundays.fusion..",
+            )
+            .check(classes)
+
         noClasses()
             .that()
             .resideInAPackage("..kappa.cache")
