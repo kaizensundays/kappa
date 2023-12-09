@@ -38,7 +38,7 @@ class KappaNuProcessBuilderTest {
         return if (builder.isWindows(System.getProperties()))
             listOf("cmd", "/c", "dir", "*.xml")
         else
-            listOf("ls", "*.xml")
+            listOf("/bin/bash", "-c", "ls *.xml")
     }
 
     @Test
@@ -61,6 +61,7 @@ class KappaNuProcessBuilderTest {
         //val exitCode: Int = process.waitFor()
         val started = process.waitFor(30, TimeUnit.SECONDS)
         assertTrue(started)
+        assertEquals(0, process.exitValue())
 
         sleep(3_000)
     }
