@@ -57,7 +57,7 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
                 return 0
             }
 
-            override fun destroy() {
+            override fun destroy(force: Boolean) {
                 //
             }
         }

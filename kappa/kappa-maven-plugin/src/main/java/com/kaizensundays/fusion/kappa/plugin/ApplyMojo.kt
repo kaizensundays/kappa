@@ -4,6 +4,7 @@ import com.kaizensundays.fusion.kappa.Apply
 import com.kaizensundays.fusion.kappa.Deployments
 import com.kaizensundays.fusion.kappa.Service
 import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
@@ -53,7 +54,7 @@ class ApplyMojo : AbstractKappaMojo() {
 
         val instance = conf.hosts.first()
 
-        val producer = KtorProducer(DefaultLoadBalancer(instance))
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
         val body = jsonConverter.fromObject(request)
 
