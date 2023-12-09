@@ -20,6 +20,7 @@ class KappaNuProcessBuilder : OSProcessBuilder {
     var workingDir = File(".").toPath()
     var environment: Map<String, String> = emptyMap()
     private var processHandler: NuProcessHandler = NoConsoleProcessHandler()
+    private var jdk = true
 
     override fun isWindows(props: Properties) = props.getProperty("os.name").startsWith("Windows")
 
@@ -34,14 +35,26 @@ class KappaNuProcessBuilder : OSProcessBuilder {
 
     override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
 
+    override fun setJdk(jdk: Boolean): OSProcessBuilder {
+        this.jdk = jdk
+        return this
+    }
+
     override fun start(): KappaProcess {
         require(command.isNotEmpty())
 
-        val builder = NuProcessBuilder(command)
-        builder.setCwd(workingDir)
-        builder.setProcessListener(processHandler)
-        builder.environment().putAll(this.environment)
-        return KappaNuProcess(NuProcessWrapper(builder.start()))
+        return if (jdk) {
+            val builder = ProcessBuilder(command)
+            builder.directory(workingDir.toFile())
+            builder.environment().putAll(this.environment)
+            KappaNuProcess(JDKProcessWrapper(builder.start()))
+        } else {
+            val builder = NuProcessBuilder(command)
+            builder.setCwd(workingDir)
+            builder.setProcessListener(processHandler)
+            builder.environment().putAll(this.environment)
+            KappaNuProcess(NuProcessWrapper(builder.start()))
+        }
     }
 
 }

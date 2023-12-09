@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
+import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.zaxxer.nuprocess.NuProcessHandler
 import java.nio.file.Path
 import java.util.*
@@ -29,6 +30,10 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
     override fun setEnvironment(environment: Map<String, String>) = this
 
     override fun setProcessListener(listener: NuProcessHandler) = this
+
+    override fun setJdk(jdk: Boolean): OSProcessBuilder {
+        unsupportedOperation()
+    }
 
     override fun start(): KappaProcess {
 

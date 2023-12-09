@@ -7,6 +7,7 @@ import java.io.InputStreamReader
 import java.lang.Thread.sleep
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -33,13 +34,17 @@ class KappaNuProcessBuilderTest {
         assertFalse(builder.isWindows(props))
     }
 
-    @Test
-    fun startProcessWithJDK() {
-
-        val command = if (builder.isWindows(System.getProperties()))
+    fun command(): List<String> {
+        return if (builder.isWindows(System.getProperties()))
             listOf("cmd", "/c", "dir", "*.xml")
         else
             listOf("ls", "*.xml")
+    }
+
+    @Test
+    fun startProcessWithJDK() {
+
+        val command = command()
 
         val process = ProcessBuilder()
             .command(command)
@@ -56,6 +61,38 @@ class KappaNuProcessBuilderTest {
         //val exitCode: Int = process.waitFor()
         val started = process.waitFor(30, TimeUnit.SECONDS)
         assertTrue(started)
+
+        sleep(3_000)
+    }
+
+    @Test
+    fun startWithJdk() {
+
+        val command = command()
+
+        val process = builder.setCommand(command)
+            .setJdk(true)
+            .start()
+
+        val exitCode = process.waitFor(10, TimeUnit.SECONDS)
+
+        assertEquals(0, exitCode)
+
+        sleep(3_000)
+    }
+
+    @Test
+    fun startWithNu() {
+
+        val command = command()
+
+        val process = builder.setCommand(command)
+            .setJdk(false)
+            .start()
+
+        val exitCode = process.waitFor(10, TimeUnit.SECONDS)
+
+        assertEquals(0, exitCode)
 
         sleep(3_000)
     }
