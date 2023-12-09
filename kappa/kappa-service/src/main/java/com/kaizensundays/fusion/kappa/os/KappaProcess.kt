@@ -17,6 +17,6 @@ interface KappaProcess {
 
     fun waitFor(timeout: Long, timeUnit: TimeUnit): Int
 
-    fun destroy()
+    fun destroy(force: Boolean)
 
 }

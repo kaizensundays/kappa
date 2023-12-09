@@ -2,7 +2,7 @@ package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.Apply
 import com.kaizensundays.fusion.kappa.Kapplet
-import com.kaizensundays.fusion.messsaging.Instance
+import com.kaizensundays.fusion.messaging.Instance
 import kotlinx.coroutines.runBlocking
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 

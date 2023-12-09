@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.zaxxer.nuprocess.NuProcess
+import com.kaizensundays.fusion.kappa.isWindows
 import org.jvnet.winp.WinProcess
 import java.util.concurrent.TimeUnit
 
@@ -9,20 +9,20 @@ import java.util.concurrent.TimeUnit
  *
  * @author Sergey Chuykov
  */
-class KappaNuProcess(private val process: NuProcess, private val builder: KappaNuProcessBuilder) : KappaProcess {
+class KappaNuProcess(private val process: KappaProcess) : KappaProcess {
 
-    override fun pid() = process.pid
+    override fun pid() = process.pid()
 
-    override fun isRunning() = process.isRunning
+    override fun isRunning() = process.isRunning()
 
     override fun toString(): String {
         return "KappaProcess(${pid()}:${isRunning()})"
     }
 
     override fun shutdown(timeout: Long, timeUnit: TimeUnit) {
-        if (builder.isWindows()) {
+        if (isWindows()) {
             println("Stopping WinProcess...")
-            val stopped = WinProcess(process.pid).sendCtrlC()
+            val stopped = WinProcess(process.pid()).sendCtrlC()
             println("stopped=$stopped")
             if (!stopped) {
                 process.destroy(false)
@@ -37,11 +37,11 @@ class KappaNuProcess(private val process: NuProcess, private val builder: KappaN
     override fun waitFor(timeout: Long, timeUnit: TimeUnit): Int {
         val code = process.waitFor(timeout, timeUnit)
         if (code != 0) {
-            destroy()
+            destroy(true)
         }
         return code
     }
 
-    override fun destroy() = process.destroy(true)
+    override fun destroy(force: Boolean) = process.destroy(force)
 
 }
