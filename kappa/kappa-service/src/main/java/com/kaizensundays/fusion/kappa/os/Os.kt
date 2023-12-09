@@ -38,7 +38,7 @@ abstract class Os {
 
         val ph = Windows.ProcessHandler()
 
-        val process = KappaNuProcessBuilder()
+        val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
             .start()

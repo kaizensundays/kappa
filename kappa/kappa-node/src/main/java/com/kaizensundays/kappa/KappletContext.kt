@@ -1,14 +1,6 @@
 package com.kaizensundays.kappa
 
-import com.kaizensundays.fusion.kappa.service.Apply
-import com.kaizensundays.fusion.kappa.service.ApplyHandler
-import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
-import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
-import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.KappletKtorServer
-import com.kaizensundays.fusion.kappa.service.KappletProperties
-import com.kaizensundays.fusion.kappa.service.PendingResults
-import com.kaizensundays.fusion.kappa.service.PingHandler
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast
@@ -17,10 +9,18 @@ import com.kaizensundays.fusion.kappa.event.Request
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.messages.Ping
-import com.kaizensundays.fusion.kappa.os.KappaNuProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Linux
+import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.Windows
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.ApplyHandler
+import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
+import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
+import com.kaizensundays.fusion.kappa.service.Kapplet
+import com.kaizensundays.fusion.kappa.service.KappletProperties
+import com.kaizensundays.fusion.kappa.service.PendingResults
+import com.kaizensundays.fusion.kappa.service.PingHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -91,7 +91,7 @@ open class KappletContext {
     @Bean
     open fun service(os: Os, serviceCache: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
         @Suppress("UNCHECKED_CAST")
-        val kapplet = Kapplet(os, KappaNuProcessBuilder(), serviceCache, handlers.cast())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, handlers.cast())
         kapplet.enabled = false
         return kapplet
     }

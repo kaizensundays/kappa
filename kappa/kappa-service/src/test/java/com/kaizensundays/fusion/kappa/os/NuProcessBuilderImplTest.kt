@@ -14,9 +14,9 @@ import kotlin.test.assertTrue
  *
  * @author Sergey Chuykov
  */
-class KappaNuProcessBuilderTest : OsTestSupport() {
+class NuProcessBuilderImplTest : OsTestSupport() {
 
-    private val builder = KappaNuProcessBuilder()
+    private val builder = NuProcessBuilderImpl()
 
     @Test
     fun isWindows() {
@@ -37,7 +37,6 @@ class KappaNuProcessBuilderTest : OsTestSupport() {
         val command = command()
 
         val process = builder.setCommand(command)
-            .setJdk(false)
             .start()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)

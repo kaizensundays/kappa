@@ -72,7 +72,7 @@ class ObjectConversionTest {
     @EnabledOnOs(OS.WINDOWS)
     fun convertKappaNuProcessBuilder() {
 
-        val builder = KappaNuProcessBuilder()
+        val builder = NuProcessBuilderImpl()
 
         builder.setCommand(listOf("A", "B", "C"))
         builder.setWorkingDir(File("./target").toPath())
