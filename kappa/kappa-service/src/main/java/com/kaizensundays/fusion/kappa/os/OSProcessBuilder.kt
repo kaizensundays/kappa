@@ -23,7 +23,5 @@ interface OSProcessBuilder {
 
     fun setProcessListener(listener: NuProcessHandler): OSProcessBuilder
 
-    fun setJdk(jdk: Boolean): OSProcessBuilder
-
     fun start(): KappaProcess
 }

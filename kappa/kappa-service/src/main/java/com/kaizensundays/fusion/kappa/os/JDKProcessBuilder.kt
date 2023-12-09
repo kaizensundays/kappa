@@ -32,10 +32,6 @@ class JDKProcessBuilder : OSProcessBuilder {
 
     override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
 
-    override fun setJdk(jdk: Boolean): OSProcessBuilder {
-        unsupportedOperation()
-    }
-
     override fun start(): KappaProcess {
         require(command.isNotEmpty())
 
