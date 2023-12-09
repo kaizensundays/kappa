@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Result
+import com.kaizensundays.fusion.kappa.service.Result
 import com.kaizensundays.fusion.kappa.os.Linux
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any

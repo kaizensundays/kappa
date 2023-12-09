@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.messages
 
-import com.kaizensundays.fusion.kappa.Apply
-import com.kaizensundays.fusion.kappa.Deployments
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.Deployments
 import com.kaizensundays.fusion.kappa.event.Event
 import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
 import kotlinx.coroutines.runBlocking

@@ -1,5 +1,8 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
+import com.kaizensundays.fusion.kappa.createTarBz2
+import com.kaizensundays.fusion.kappa.extractTarBz2
+import com.kaizensundays.fusion.kappa.findFile
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.File

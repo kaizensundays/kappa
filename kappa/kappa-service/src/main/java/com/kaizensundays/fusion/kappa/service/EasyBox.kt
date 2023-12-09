@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

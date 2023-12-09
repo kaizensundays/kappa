@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.TypeRef
+import com.kaizensundays.fusion.kappa.service.TypeRef
 import com.kaizensundays.fusion.kappa.event.Request
 import com.kaizensundays.fusion.kappa.event.Response
 import io.ktor.client.HttpClient

@@ -1,6 +1,5 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.messaging.Instance
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get

@@ -1,14 +1,14 @@
 package com.kaizensundays.kappa
 
-import com.kaizensundays.fusion.kappa.Apply
-import com.kaizensundays.fusion.kappa.ApplyHandler
-import com.kaizensundays.fusion.kappa.ArtifactResolutionHandler
-import com.kaizensundays.fusion.kappa.DefaultPendingResults
-import com.kaizensundays.fusion.kappa.Kapplet
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.ApplyHandler
+import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
+import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
+import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.KappletKtorServer
-import com.kaizensundays.fusion.kappa.KappletProperties
-import com.kaizensundays.fusion.kappa.PendingResults
-import com.kaizensundays.fusion.kappa.PingHandler
+import com.kaizensundays.fusion.kappa.service.KappletProperties
+import com.kaizensundays.fusion.kappa.service.PendingResults
+import com.kaizensundays.fusion.kappa.service.PingHandler
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast

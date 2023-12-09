@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

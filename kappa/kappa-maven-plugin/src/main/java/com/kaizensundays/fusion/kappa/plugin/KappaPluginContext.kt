@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Kapplet
+import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.isWindows

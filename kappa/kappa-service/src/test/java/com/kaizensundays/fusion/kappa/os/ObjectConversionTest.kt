@@ -3,7 +3,7 @@ package com.kaizensundays.fusion.kappa.os
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.kaizensundays.fusion.kappa.Deployment
+import com.kaizensundays.fusion.kappa.service.Deployment
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.EnabledOnOs
 import org.junit.jupiter.api.condition.OS

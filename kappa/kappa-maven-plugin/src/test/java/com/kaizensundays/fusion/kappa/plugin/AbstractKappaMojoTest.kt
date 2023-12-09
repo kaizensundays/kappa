@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.call

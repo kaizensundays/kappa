@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Node
-import com.kaizensundays.fusion.kappa.TypeRef
+import com.kaizensundays.fusion.kappa.service.Node
+import com.kaizensundays.fusion.kappa.service.TypeRef
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json

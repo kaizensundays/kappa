@@ -44,7 +44,8 @@ class ArchTest {
 
         val classes = classes()
 
-        noClasses().that().resideInAPackage("..kappa").and().haveNameNotMatching(".*Test")
+        noClasses().that().resideInAPackage("..kappa.service")
+            .and().haveNameNotMatching(".*Test.*")
             .should().accessClassesThat().resideOutsideOfPackages(
                 "java..",
                 "kotlin..",
@@ -54,9 +55,18 @@ class ArchTest {
                 "org.apache.maven..",
                 "com.fasterxml..",
                 "javax.cache..",
-                "io.ktor..",
-                "org.springframework..",
                 "com.kaizensundays.fusion..",
+            )
+            .check(classes)
+
+        noClasses().that().resideInAPackage("..kappa.messages")
+            .and().haveNameNotMatching(".*Test.*")
+            .should().accessClassesThat().resideOutsideOfPackages(
+                "java..",
+                "kotlin..",
+                "kotlinx..",
+                "com.kaizensundays.fusion.kappa.event..",
+                "com.kaizensundays.fusion.kappa.messages..",
             )
             .check(classes)
 
@@ -70,14 +80,7 @@ class ArchTest {
         noClasses()
             .that()
             .resideInAPackage("..kappa.os")
-            .should()
-            .accessClassesThat().resideInAPackage("..kappa.service")
-            .check(classes)
-
-        noClasses()
-            .that()
-            .resideInAPackage("com.kaizensundays.fusion.kappa")
-            .and().haveNameNotMatching(".*(KtorServer|Context|IntegrationTest).*")
+            .and().haveNameNotMatching(".*(Test|CommandBuilder|Os)")
             .should()
             .accessClassesThat().resideInAPackage("..kappa.service")
             .check(classes)
