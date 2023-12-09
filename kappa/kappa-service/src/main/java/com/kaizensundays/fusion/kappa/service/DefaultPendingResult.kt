@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.TimeUnit

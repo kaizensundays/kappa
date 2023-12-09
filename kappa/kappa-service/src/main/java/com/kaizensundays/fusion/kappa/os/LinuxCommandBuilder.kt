@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Service
 
 /**
  * Created: Sunday 6/4/2023, 1:08 PM Eastern Time

@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 

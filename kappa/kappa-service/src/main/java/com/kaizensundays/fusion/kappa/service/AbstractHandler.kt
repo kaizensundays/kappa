@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.event.Handler
 import com.kaizensundays.fusion.kappa.event.Request

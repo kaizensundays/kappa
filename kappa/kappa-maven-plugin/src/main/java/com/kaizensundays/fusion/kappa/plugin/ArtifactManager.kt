@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Service
 import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResult
 
 /**

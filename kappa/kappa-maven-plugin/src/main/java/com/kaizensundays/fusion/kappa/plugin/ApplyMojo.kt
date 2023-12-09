@@ -1,8 +1,8 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Apply
-import com.kaizensundays.fusion.kappa.Deployments
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.Deployments
+import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import kotlinx.coroutines.runBlocking

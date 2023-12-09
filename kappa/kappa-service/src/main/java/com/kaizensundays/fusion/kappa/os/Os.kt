@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.Result
+import com.kaizensundays.fusion.kappa.service.Result
 import com.zaxxer.nuprocess.NuAbstractProcessHandler
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit

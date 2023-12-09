@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Deployments
-import com.kaizensundays.fusion.kappa.Service
+import com.kaizensundays.fusion.kappa.service.Deployments
+import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
 import com.kaizensundays.fusion.messaging.Instance

@@ -1,8 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Apply
-import com.kaizensundays.fusion.kappa.Kappa
-import com.kaizensundays.fusion.kappa.Kapplet
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.Kapplet
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugin.descriptor.PluginDescriptor
 import org.apache.maven.plugins.annotations.LifecyclePhase

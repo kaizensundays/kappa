@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa
 
+import com.kaizensundays.fusion.kappa.service.EasyBox
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

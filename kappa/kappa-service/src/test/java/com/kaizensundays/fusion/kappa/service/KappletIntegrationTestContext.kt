@@ -1,8 +1,9 @@
-package com.kaizensundays.fusion.kappa
+package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.os.MockOs
 import com.kaizensundays.fusion.kappa.os.MockOsProcessBuilder
+import com.kaizensundays.fusion.kappa.service.Kapplet
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.cache.Cache

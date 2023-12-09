@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.Kappa
-import com.kaizensundays.fusion.kappa.Result
+import com.kaizensundays.fusion.kappa.service.Result
 import com.kaizensundays.fusion.kappa.os.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.CommandTarget
 import com.kaizensundays.fusion.kappa.os.Linux

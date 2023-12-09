@@ -2,6 +2,7 @@ package com.kaizensundays.fusion.kappa
 
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
+import com.kaizensundays.fusion.kappa.service.KappletProperties
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
