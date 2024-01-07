@@ -1,5 +1,6 @@
-package com.kaizensundays.fusion.kappa.plugin
+package com.kaizensundays.fusion.kappa.plugin.core
 
+import com.kaizensundays.fusion.kappa.plugin.AbstractKappaMojo
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import org.apache.maven.plugins.annotations.LifecyclePhase

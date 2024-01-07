@@ -25,6 +25,7 @@ class MavenPluginArchTest {
                 "java..",
                 "kotlin..",
                 "kotlinx..",
+                "reactor..",
                 "com.kaizensundays.fusion..",
             )
             .check(classes)
