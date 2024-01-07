@@ -45,7 +45,7 @@ open class KappaPluginContext {
 
     @Bean
     open fun service(os: Os, serviceCache: Cache<String, String>): Kapplet {
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, emptyMap())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, mutableMapOf(), emptyMap())
         kapplet.enabled = false
         return kapplet
     }

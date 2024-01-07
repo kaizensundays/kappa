@@ -43,7 +43,7 @@ class KappletTest {
     private val handlers: MutableMap<Class<out Request<*>>, Handler<*, *>> = mutableMapOf()
 
     @Suppress("UNCHECKED_CAST")
-    private val kapplet = Kapplet(os, pb, cache, handlers as Map<Class<Request<Response>>, Handler<Request<Response>, Response>>)
+    private val kapplet = Kapplet(os, pb, cache, mutableMapOf(), handlers as Map<Class<Request<Response>>, Handler<Request<Response>, Response>>)
 
     private val deployments = Deployments()
 
@@ -221,7 +221,7 @@ class KappletTest {
     @Test
     fun findNotRunning() {
 
-        val service = kapplet.jackson.readValue(easyboxYaml, Service::class.java)
+        val service = kapplet.yamlConverter.readValue(easyboxYaml, Service::class.java)
 
         val serviceMap = mapOf(
             "1" to service,

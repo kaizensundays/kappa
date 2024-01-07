@@ -39,18 +39,17 @@ class Kapplet(
     private val os: Os,
     private val processBuilder: OSProcessBuilder,
     private val serviceCache: Cache<String, String>,
+    val serviceIdToServiceMap: MutableMap<String, Service>,
     private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val jackson = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    val yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     val jsonConverter = JacksonObjectConverter<Event>()
 
     val deployments = Deployments()
-
-    val serviceIdToServiceMap = mutableMapOf<String, Service>()
 
     var enabled = false
 
@@ -81,7 +80,7 @@ class Kapplet(
 
     private fun writeYaml(pb: OSProcessBuilder): String {
         return try {
-            jackson.writeValueAsString(pb)
+            yamlConverter.writeValueAsString(pb)
         } catch (e: Exception) {
             logger.error("", e)
             "?"
@@ -206,7 +205,7 @@ class Kapplet(
         println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
-        serviceCache.put(serviceId, jackson.writeValueAsString(service))
+        serviceCache.put(serviceId, yamlConverter.writeValueAsString(service))
         serviceIdToServiceMap[serviceId] = service
 
         logger.info("startService() <")
@@ -402,7 +401,7 @@ class Kapplet(
 
         map.forEach { entry ->
             val serviceId = entry.key
-            val service = jackson.readValue(entry.value, Service::class.java)
+            val service = yamlConverter.readValue(entry.value, Service::class.java)
             serviceIdToServiceMap[serviceId] = service
             logger.info("serviceId={}\n {}", serviceId, service)
         }

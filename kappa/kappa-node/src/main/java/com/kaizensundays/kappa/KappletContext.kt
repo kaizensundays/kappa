@@ -21,6 +21,7 @@ import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.service.KappletProperties
 import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
+import com.kaizensundays.fusion.kappa.service.Service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -66,9 +67,13 @@ open class KappletContext {
         return DefaultPendingResults()
     }
 
+    private val serviceIdToServiceMap = mutableMapOf<String, Service>()
+
     @Bean
-    open fun applyHandler(artifactResolutionPendingResults: PendingResults<ArtifactResolution>): ApplyHandler {
-        return ApplyHandler(artifactResolutionPendingResults)
+    open fun applyHandler(
+        artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceCache: Cache<String, String>
+    ): ApplyHandler {
+        return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceCache, serviceIdToServiceMap)
     }
 
     @Bean
@@ -89,14 +94,14 @@ open class KappletContext {
     }
 
     @Bean
-    open fun service(os: Os, serviceCache: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
+    open fun kapplet(os: Os, serviceCache: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
         @Suppress("UNCHECKED_CAST")
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, handlers.cast())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, serviceIdToServiceMap, handlers.cast())
         kapplet.enabled = false
         return kapplet
     }
 
     @Bean
-    open fun ktorServer(os: Os, service: Kapplet) = KappletKtorServer(serverPort, os, service)
+    open fun ktorServer(os: Os, kapplet: Kapplet) = KappletKtorServer(serverPort, os, kapplet)
 
 }
