@@ -1,9 +1,11 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import kotlinx.coroutines.runBlocking
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
-import java.net.ConnectException
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Sunday 11/27/2022, 11:36 AM Eastern Time
@@ -18,25 +20,16 @@ class GetKappletMojo : AbstractKappaMojo() {
         val conf = getConfiguration()
         println("$conf\n")
 
-        val hostPort = conf.hosts.first()
-        val host = hostPort.host
-        val port = hostPort.port
+        val instance = conf.hosts.first()
 
-        val httpClient = httpClient()
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        runBlocking {
-            try {
-                val kapplet = getKapplet(httpClient, "http://$host:$port", 3)
-                println("$kapplet\n")
-            } catch (e: ConnectException) {
-                println(e.message)
-                println()
-                println("Kapplet is not running")
-            } catch (e: Exception) {
-                println(e.message)
-                e.printStackTrace()
-            }
-        }
+        val response = producer.request(URI("get:/get-kapplet"))
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (response != null) String(response) else "?"
+
+        println(json)
     }
 
 }
