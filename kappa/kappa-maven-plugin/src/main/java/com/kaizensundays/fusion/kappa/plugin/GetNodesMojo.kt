@@ -1,12 +1,11 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Node
-import com.kaizensundays.fusion.kappa.service.TypeRef
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.Json
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Saturday 5/20/2023, 1:47 PM Eastern Time
@@ -21,15 +20,14 @@ class GetNodesMojo : AbstractKappaMojo() {
         val conf = getConfiguration()
         println("$conf\n")
 
-        val hostPort = conf.hosts.first()
+        val instance = conf.hosts.first()
 
-        val httpClient = httpClient()
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        val converter = Json { prettyPrint = true }
+        val response = producer.request(URI("get:/get-nodes"))
+            .blockLast(Duration.ofSeconds(30))
 
-        val result = runBlocking { nodeClient.get(httpClient, "http://${hostPort.host}:${hostPort.port}/get-nodes", TypeRef<List<Node>>()) }
-
-        val json = converter.encodeToString(ListSerializer(Node.serializer()), result)
+        val json = if (response != null) String(response) else "?"
 
         println(json)
 
