@@ -1,22 +1,19 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Configuration
 import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.Kappa.MOJO_CONFIGURATION
-import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.event.Event
 import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.getPropertyAsLong
+import com.kaizensundays.fusion.kappa.service.Configuration
+import com.kaizensundays.fusion.kappa.service.Service
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.retry
-import io.ktor.client.request.get
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -32,8 +29,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import java.net.URI
+import java.time.Duration
 import java.util.*
-
 
 /**
  * Created: Friday 11/11/2022, 12:21 PM Eastern Time
@@ -123,29 +121,23 @@ abstract class AbstractKappaMojo : AbstractMojo() {
         }
     }
 
-    suspend fun getKapplet(client: HttpClient, url: String = "", retries: Int): Service {
-        val response: HttpResponse = client.get("$url/get-kapplet") {
-            retry {
-                maxRetries = retries
-                delayMillis { retry ->
-                    println("Connecting $url ($retry)")
-                    1000
-                }
-            }
-        }
-        if (response.status == HttpStatusCode.OK) {
-            return response.body()
-        }
-        throw RuntimeException(response.status.toString())
+    fun getKapplet(instance: Instance, retries: Int): Service {
+
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
+
+        val response = producer.request(URI("get:/get-kapplet"))
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (response != null) String(response) else throw RuntimeException()
+
+        return jsonConverter.toObject(json, Service::class.java)
     }
 
     fun checkKapplet(instance: Instance, retries: Int = 3): Boolean {
 
-        val httpClient = httpClient()
-
         return runBlocking {
             try {
-                val kapplet = getKapplet(httpClient, "http://${instance.host}:${instance.port}", retries)
+                val kapplet = getKapplet(instance, retries)
                 println("kapplet=$kapplet")
                 true
             } catch (e: Exception) {
