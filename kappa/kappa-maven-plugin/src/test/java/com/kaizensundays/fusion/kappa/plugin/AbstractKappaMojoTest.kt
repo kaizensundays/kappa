@@ -3,24 +3,12 @@ package com.kaizensundays.fusion.kappa.plugin
 import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.kaizensundays.fusion.messaging.Instance
-import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.call
-import io.ktor.server.application.install
-import io.ktor.server.cio.CIO
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
-import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.util.SocketUtils
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -56,38 +44,18 @@ class AbstractKappaMojoTest {
     @Test
     fun getKappletReturnsOk() {
 
-        val latch = CountDownLatch(1)
-
         val port = SocketUtils.findAvailableTcpPort(50_000, 59_000)
 
-        val server = embeddedServer(CIO, port, configure = {
-        }) {
-            install(Routing)
-            install(StatusPages) {
-                exception<Throwable> { call, e ->
-                    call.respondText(text = "500: $e", status = HttpStatusCode.InternalServerError)
+        val server = EmbeddedKtorServer(port)
+            .set {
+                routing {
+                    get("/get-kapplet") {
+                        call.respond(Service("kapplet", pid = 1))
+                    }
                 }
             }
-            install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                })
-            }
-            routing {
-                get("/get-kapplet") {
-                    call.respond(Service("kapplet", pid = 1))
-                }
-            }
-        }
 
-        server.environment.monitor.subscribe(ApplicationStarted) {
-            latch.countDown()
-        }
-
-        server.start(false)
-
-        assertTrue(latch.await(30, TimeUnit.SECONDS))
+        assertTrue(server.start(30, TimeUnit.SECONDS))
 
         val instance = Instance("localhost", port)
         val kapplet = mojo.getKapplet(instance, retries = 1)
