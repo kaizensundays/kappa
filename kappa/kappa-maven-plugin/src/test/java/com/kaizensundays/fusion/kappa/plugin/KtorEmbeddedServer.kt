@@ -26,10 +26,10 @@ class KtorEmbeddedServer(private val port: Int) {
 
     private lateinit var server: CIOApplicationEngine
 
-    private var module: Application.() -> Unit = {}
+    private val modules: MutableList<Application.() -> Unit> = mutableListOf()
 
     fun set(module: Application.() -> Unit): KtorEmbeddedServer {
-        this.module = module
+        this.modules.add(module)
         return this
     }
 
@@ -51,7 +51,7 @@ class KtorEmbeddedServer(private val port: Int) {
                     isLenient = true
                 })
             }
-            this.module()
+            modules.forEach { module -> module.invoke(this) }
         }
 
         server.environment.monitor.subscribe(ApplicationStarted) {
