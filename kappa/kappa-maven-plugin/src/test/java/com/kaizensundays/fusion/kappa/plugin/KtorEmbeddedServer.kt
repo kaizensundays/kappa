@@ -22,13 +22,13 @@ import java.util.concurrent.TimeUnit
  * @author Sergey Chuykov
  */
 @Suppress("ExtractKtorModule")
-class EmbeddedKtorServer(private val port: Int) {
+class KtorEmbeddedServer(private val port: Int) {
 
     private lateinit var server: CIOApplicationEngine
 
     private var module: Application.() -> Unit = {}
 
-    fun set(module: Application.() -> Unit): EmbeddedKtorServer {
+    fun set(module: Application.() -> Unit): KtorEmbeddedServer {
         this.module = module
         return this
     }

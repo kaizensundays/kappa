@@ -46,7 +46,7 @@ class AbstractKappaMojoTest {
 
         val port = SocketUtils.findAvailableTcpPort(50_000, 59_000)
 
-        val server = EmbeddedKtorServer(port)
+        val server = KtorEmbeddedServer(port)
             .set {
                 routing {
                     get("/get-kapplet") {
