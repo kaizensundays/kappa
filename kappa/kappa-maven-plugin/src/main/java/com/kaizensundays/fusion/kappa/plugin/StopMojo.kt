@@ -1,12 +1,11 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.messaging.Instance
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.statement.HttpResponse
-import kotlinx.coroutines.runBlocking
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Sunday 1/29/2023, 11:23 AM Eastern Time
@@ -16,18 +15,9 @@ import org.apache.maven.plugins.annotations.Mojo
 @Mojo(name = "stop", defaultPhase = LifecyclePhase.NONE)
 open class StopMojo : AbstractKappaMojo() {
 
-    suspend fun get(client: HttpClient, url: String = ""): String {
-        val response: HttpResponse = client.get(url)
-        return response.status.toString()
-    }
-
     open fun urlPath(serviceId: String): String {
         require(serviceId.isNotBlank())
         return "/stop/$serviceId"
-    }
-
-    private fun url(instance: Instance, serviceId: String = ""): String {
-        return "http://${instance.host}:${instance.port}/" + urlPath(serviceId)
     }
 
     override fun doExecute() {
@@ -35,28 +25,26 @@ open class StopMojo : AbstractKappaMojo() {
         val conf = getConfiguration()
         println("$conf\n")
 
-        val hostPort = conf.hosts.first()
+        val instance = conf.hosts.first()
 
-        if (kappletIsNotRunning(hostPort)) {
+        if (kappletIsNotRunning(instance)) {
             println("Kapplet is not running")
             return
         }
 
         val serviceId = System.getProperty("id", "")
+        require(serviceId.isNotBlank())
 
-        val httpClient = httpClient()
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        runBlocking {
-            try {
-                val url = url(hostPort, serviceId)
-                val status = get(httpClient, url)
-                println(status)
-                println("Service $serviceId stopped")
-            } catch (e: Exception) {
-                println(e.message)
-            }
-        }
+        val url = "get:" + urlPath(serviceId)
 
+        val response = producer.request(URI(url))
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (response != null) String(response) else "?"
+
+        println(json)
     }
 
 }
