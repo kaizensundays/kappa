@@ -1,18 +1,15 @@
 package com.kaizensundays.fusion.kappa.plugin
 
 import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Routing
-import kotlinx.serialization.json.Json
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -44,12 +41,6 @@ class KtorEmbeddedServer(private val port: Int) {
                 exception<Throwable> { call, e ->
                     call.respondText(text = "500: $e", status = HttpStatusCode.InternalServerError)
                 }
-            }
-            install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                })
             }
             modules.forEach { module -> module.invoke(this) }
         }

@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
+import com.kaizensundays.fusion.kappa.event.JacksonSerializable
 import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.kaizensundays.fusion.messaging.Instance
@@ -22,6 +24,8 @@ typealias ClientContentNegotiation = io.ktor.client.plugins.contentnegotiation.C
 
 @Suppress("ExtractKtorModule")
 class AbstractKappaMojoTest {
+
+    private val jsonConverter = JacksonObjectConverter<JacksonSerializable>()
 
     private val mojo = object : AbstractKappaMojo() {
         override fun doExecute() {
@@ -46,11 +50,14 @@ class AbstractKappaMojoTest {
 
         val port = SocketUtils.findAvailableTcpPort(50_000, 59_000)
 
+        val service = Service("kapplet", pid = 1)
+        val json = jsonConverter.fromObjects(service)
+
         val server = KtorEmbeddedServer(port)
             .set {
                 routing {
                     get("/get-kapplet") {
-                        call.respond(Service("kapplet", pid = 1))
+                        call.respond(json)
                     }
                 }
             }
