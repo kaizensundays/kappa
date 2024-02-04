@@ -10,13 +10,7 @@ import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.HttpRequestRetry
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager
 import org.apache.maven.artifact.repository.ArtifactRepository
 import org.apache.maven.execution.MavenSession
@@ -107,19 +101,21 @@ abstract class AbstractKappaMojo : AbstractMojo() {
         return getConfiguration(MOJO_CONFIGURATION, System.getenv())
     }
 
-    fun httpClient(): HttpClient {
-        return HttpClient(CIO) {
-            install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                })
-            }
-            install(HttpRequestRetry) {
-                retryOnServerErrors(maxRetries = 3)
+    /*
+        fun httpClient(): HttpClient {
+            return HttpClient(CIO) {
+                install(ContentNegotiation) {
+                    json(Json {
+                        prettyPrint = true
+                        isLenient = true
+                    })
+                }
+                install(HttpRequestRetry) {
+                    retryOnServerErrors(maxRetries = 3)
+                }
             }
         }
-    }
+    */
 
     fun getKapplet(instance: Instance, retries: Int): Service {
 
