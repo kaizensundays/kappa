@@ -94,9 +94,9 @@ class KappletTest {
             "7" to Service("one", pid = 7),
         )
 
-        services.forEach { service -> kapplet.serviceIdToServiceMap.put(service.key, service.value) }
-
-        //kapplet.serviceIdToServiceMap.putAll(services)
+        services.forEach { service ->
+            kapplet.serviceCache.put(service.key, service.value)
+        }
 
         serviceMap = kapplet.getServices()
 
@@ -201,8 +201,8 @@ class KappletTest {
         cache.put(id1, "{}")
         cache.put(id3, "{}")
 
-        kapplet.serviceIdToServiceMap.put(id1,  Service("service1"))
-        kapplet.serviceIdToServiceMap.put(id3, Service("service3"))
+        kapplet.serviceCache.put(id1, Service("service1"))
+        kapplet.serviceCache.put(id3, Service("service3"))
 
         whenever(os.findPID(id1)).thenReturn(10001)
         whenever(os.findPID(id2)).thenReturn(0)
@@ -277,7 +277,7 @@ class KappletTest {
 
         map = kapplet.load()
         assertEquals(1, map.size)
-        assertEquals(1, kapplet.serviceIdToServiceMap.toMap().size)
+        assertEquals(1, kapplet.serviceCache.toMap().size)
     }
 
 }

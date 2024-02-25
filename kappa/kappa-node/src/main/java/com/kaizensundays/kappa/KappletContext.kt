@@ -68,13 +68,13 @@ open class KappletContext {
         return DefaultPendingResults()
     }
 
-    private val serviceIdToServiceMap = InMemoryCache<String, Service>()
+    private val serviceCache = InMemoryCache<String, Service>()
 
     @Bean
     open fun applyHandler(
         artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>
     ): ApplyHandler {
-        return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceStore, serviceIdToServiceMap)
+        return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceStore, serviceCache)
     }
 
     @Bean
@@ -97,7 +97,7 @@ open class KappletContext {
     @Bean
     open fun kapplet(os: Os, serviceStore: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
         @Suppress("UNCHECKED_CAST")
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, serviceIdToServiceMap, handlers.cast())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, serviceCache, handlers.cast())
         kapplet.enabled = false
         return kapplet
     }
