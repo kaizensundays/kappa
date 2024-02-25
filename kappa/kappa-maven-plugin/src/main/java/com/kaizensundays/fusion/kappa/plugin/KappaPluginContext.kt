@@ -2,6 +2,7 @@ package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
+import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
 import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
@@ -45,7 +46,7 @@ open class KappaPluginContext {
 
     @Bean
     open fun service(os: Os, serviceCache: Cache<String, String>): Kapplet {
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, mutableMapOf(), emptyMap())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, InMemoryCache(), emptyMap())
         kapplet.enabled = false
         return kapplet
     }

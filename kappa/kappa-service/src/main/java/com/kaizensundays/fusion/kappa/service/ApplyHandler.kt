@@ -28,7 +28,7 @@ class ApplyHandler(
     private val artifactResolutionPendingResults: PendingResults<ArtifactResolution>,
     private val processBuilder: OSProcessBuilder,
     private val serviceCache: Cache<String, String>,
-    private val serviceIdToServiceMap: MutableMap<String, Service>
+    private val serviceIdToServiceMap: Cache<String, Service>
 ) : AbstractHandler<Apply, ApplyResponse>() {
 
     private val yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -108,7 +108,7 @@ class ApplyHandler(
         println("PID=${process.pid()}:${process.isRunning()}")
 
         serviceCache.put(serviceId, yamlConverter.writeValueAsString(service))
-        serviceIdToServiceMap[serviceId] = service
+        serviceIdToServiceMap.put(serviceId, service)
 
         logger.info("startService() <")
     }

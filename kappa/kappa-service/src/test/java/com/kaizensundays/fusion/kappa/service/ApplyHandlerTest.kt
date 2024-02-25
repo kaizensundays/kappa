@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.service
 
+import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import kotlin.test.assertEquals
@@ -12,7 +13,7 @@ import kotlin.test.assertTrue
  */
 class ApplyHandlerTest {
 
-    private val handler = ApplyHandler(DefaultPendingResults(), mock(), mock(), mutableMapOf())
+    private val handler = ApplyHandler(DefaultPendingResults(), mock(), mock(), InMemoryCache())
 
     private val deployments = Deployments()
 

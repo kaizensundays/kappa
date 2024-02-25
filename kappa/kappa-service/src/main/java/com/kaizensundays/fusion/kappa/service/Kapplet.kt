@@ -17,6 +17,7 @@ import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.ServiceConsole
+import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +40,7 @@ class Kapplet(
     private val os: Os,
     private val processBuilder: OSProcessBuilder,
     private val serviceCache: Cache<String, String>,
-    val serviceIdToServiceMap: MutableMap<String, Service>,
+    val serviceIdToServiceMap: Cache<String, Service>,
     private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 ) {
@@ -53,11 +54,17 @@ class Kapplet(
 
     var enabled = false
 
+/*
+    fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+        return this.associate { e -> e.key to e.value }
+    }
+*/
+
     fun getServices(): Map<String, Service> {
 
         logger.info("serviceIdToServiceMap=$serviceIdToServiceMap")
 
-        return HashMap(serviceIdToServiceMap)
+        return serviceIdToServiceMap.toMap()
     }
 
     fun getKapplet(): Service {
@@ -73,8 +80,8 @@ class Kapplet(
 
     fun findServiceId(id: String): String? {
 
-        return if (serviceIdToServiceMap.containsKey(id)) id
-        else serviceIdToServiceMap.entries
+        return if (serviceIdToServiceMap.toMap().containsKey(id)) id
+        else serviceIdToServiceMap.toMap().entries
             .find { (_, service) -> service.name == id }?.key
     }
 
@@ -146,7 +153,7 @@ class Kapplet(
 
     fun getKappletService(): Map<String, Service> {
 
-        return serviceIdToServiceMap
+        return serviceIdToServiceMap.toMap()
             .filter { (_, service) -> service.name == "kapplet" }
     }
 
@@ -206,7 +213,7 @@ class Kapplet(
         println("PID=${process.pid()}:${process.isRunning()}")
 
         serviceCache.put(serviceId, yamlConverter.writeValueAsString(service))
-        serviceIdToServiceMap[serviceId] = service
+        serviceIdToServiceMap.put(serviceId, service)
 
         logger.info("startService() <")
     }
@@ -385,7 +392,7 @@ class Kapplet(
 
     fun loop() {
 
-        val notRunning = findNotRunning(serviceIdToServiceMap)
+        val notRunning = findNotRunning(serviceIdToServiceMap.toMap())
 
         logger.info("*** {}", notRunning)
 
@@ -402,7 +409,7 @@ class Kapplet(
         map.forEach { entry ->
             val serviceId = entry.key
             val service = yamlConverter.readValue(entry.value, Service::class.java)
-            serviceIdToServiceMap[serviceId] = service
+            serviceIdToServiceMap.put(serviceId, service)
             logger.info("serviceId={}\n {}", serviceId, service)
         }
 

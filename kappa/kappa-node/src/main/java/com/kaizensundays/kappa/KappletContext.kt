@@ -3,6 +3,7 @@ package com.kaizensundays.kappa
 import com.kaizensundays.fusion.kappa.KappletKtorServer
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
+import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.cast
 import com.kaizensundays.fusion.kappa.event.Handler
 import com.kaizensundays.fusion.kappa.event.Request
@@ -67,7 +68,7 @@ open class KappletContext {
         return DefaultPendingResults()
     }
 
-    private val serviceIdToServiceMap = mutableMapOf<String, Service>()
+    private val serviceIdToServiceMap = InMemoryCache<String, Service>()
 
     @Bean
     open fun applyHandler(
