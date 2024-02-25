@@ -27,7 +27,7 @@ import javax.cache.Cache
 class ApplyHandler(
     private val artifactResolutionPendingResults: PendingResults<ArtifactResolution>,
     private val processBuilder: OSProcessBuilder,
-    private val serviceCache: Cache<String, String>,
+    private val serviceStore: Cache<String, String>,
     private val serviceIdToServiceMap: Cache<String, Service>
 ) : AbstractHandler<Apply, ApplyResponse>() {
 
@@ -107,7 +107,7 @@ class ApplyHandler(
         println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
-        serviceCache.put(serviceId, yamlConverter.writeValueAsString(service))
+        serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))
         serviceIdToServiceMap.put(serviceId, service)
 
         logger.info("startService() <")

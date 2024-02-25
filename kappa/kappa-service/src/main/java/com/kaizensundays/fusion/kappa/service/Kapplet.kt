@@ -39,7 +39,7 @@ import kotlin.coroutines.coroutineContext
 class Kapplet(
     private val os: Os,
     private val processBuilder: OSProcessBuilder,
-    private val serviceCache: Cache<String, String>,
+    private val serviceStore: Cache<String, String>,
     val serviceIdToServiceMap: Cache<String, Service>,
     private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
@@ -147,7 +147,7 @@ class Kapplet(
         }
 
         serviceIdToServiceMap.remove(serviceId)
-        serviceCache.remove(serviceId)
+        serviceStore.remove(serviceId)
 
     }
 
@@ -212,7 +212,7 @@ class Kapplet(
         println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
-        serviceCache.put(serviceId, yamlConverter.writeValueAsString(service))
+        serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))
         serviceIdToServiceMap.put(serviceId, service)
 
         logger.info("startService() <")
@@ -404,7 +404,7 @@ class Kapplet(
 
     fun load(): Map<String, String> {
 
-        val map = serviceCache.map { entry -> entry.key to entry.value }.toMap()
+        val map = serviceStore.map { entry -> entry.key to entry.value }.toMap()
 
         map.forEach { entry ->
             val serviceId = entry.key

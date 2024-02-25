@@ -39,14 +39,14 @@ open class KappaPluginContext {
     }
 
     @Bean
-    open fun serviceCache(cacheManager: CacheManager): Cache<String, String> {
+    open fun serviceStore(cacheManager: CacheManager): Cache<String, String> {
         val configuration = FileSystemCacheConfiguration<String, String>(cacheLocation)
         return cacheManager.createCache("services", configuration)
     }
 
     @Bean
-    open fun service(os: Os, serviceCache: Cache<String, String>): Kapplet {
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceCache, InMemoryCache(), emptyMap())
+    open fun service(os: Os, serviceStore: Cache<String, String>): Kapplet {
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, InMemoryCache(), emptyMap())
         kapplet.enabled = false
         return kapplet
     }
