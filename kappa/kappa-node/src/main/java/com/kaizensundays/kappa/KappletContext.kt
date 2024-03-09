@@ -1,26 +1,28 @@
 package com.kaizensundays.kappa
 
-import com.kaizensundays.fusion.kappa.service.Apply
-import com.kaizensundays.fusion.kappa.service.ApplyHandler
-import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
-import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
-import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.KappletKtorServer
-import com.kaizensundays.fusion.kappa.service.KappletProperties
-import com.kaizensundays.fusion.kappa.service.PendingResults
-import com.kaizensundays.fusion.kappa.service.PingHandler
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
+import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.cast
 import com.kaizensundays.fusion.kappa.event.Handler
 import com.kaizensundays.fusion.kappa.event.Request
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.messages.Ping
-import com.kaizensundays.fusion.kappa.os.KappaNuProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Linux
+import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.Windows
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.ApplyHandler
+import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
+import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
+import com.kaizensundays.fusion.kappa.service.Kapplet
+import com.kaizensundays.fusion.kappa.service.KappletProperties
+import com.kaizensundays.fusion.kappa.service.PendingResults
+import com.kaizensundays.fusion.kappa.service.PingHandler
+import com.kaizensundays.fusion.kappa.service.Service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -56,7 +58,7 @@ open class KappletContext {
     }
 
     @Bean
-    open fun serviceCache(cacheManager: CacheManager, props: KappletProperties): Cache<String, String> {
+    open fun serviceStore(cacheManager: CacheManager, props: KappletProperties): Cache<String, String> {
         val configuration = FileSystemCacheConfiguration<String, String>(props.cacheLocation)
         return cacheManager.createCache("services", configuration)
     }
@@ -66,9 +68,13 @@ open class KappletContext {
         return DefaultPendingResults()
     }
 
+    private val serviceCache = InMemoryCache<String, Service>()
+
     @Bean
-    open fun applyHandler(artifactResolutionPendingResults: PendingResults<ArtifactResolution>): ApplyHandler {
-        return ApplyHandler(artifactResolutionPendingResults)
+    open fun applyHandler(
+        artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>
+    ): ApplyHandler {
+        return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceStore, serviceCache)
     }
 
     @Bean
@@ -89,14 +95,14 @@ open class KappletContext {
     }
 
     @Bean
-    open fun service(os: Os, serviceCache: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
+    open fun kapplet(os: Os, serviceStore: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
         @Suppress("UNCHECKED_CAST")
-        val kapplet = Kapplet(os, KappaNuProcessBuilder(), serviceCache, handlers.cast())
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, serviceCache, handlers.cast())
         kapplet.enabled = false
         return kapplet
     }
 
     @Bean
-    open fun ktorServer(os: Os, service: Kapplet) = KappletKtorServer(serverPort, os, service)
+    open fun ktorServer(os: Os, kapplet: Kapplet) = KappletKtorServer(serverPort, os, kapplet)
 
 }

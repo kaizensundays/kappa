@@ -1,13 +1,14 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
+import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.isWindows
-import com.kaizensundays.fusion.kappa.os.KappaNuProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Linux
+import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.Windows
+import com.kaizensundays.fusion.kappa.service.Kapplet
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -38,14 +39,14 @@ open class KappaPluginContext {
     }
 
     @Bean
-    open fun serviceCache(cacheManager: CacheManager): Cache<String, String> {
+    open fun serviceStore(cacheManager: CacheManager): Cache<String, String> {
         val configuration = FileSystemCacheConfiguration<String, String>(cacheLocation)
         return cacheManager.createCache("services", configuration)
     }
 
     @Bean
-    open fun service(os: Os, serviceCache: Cache<String, String>): Kapplet {
-        val kapplet = Kapplet(os, KappaNuProcessBuilder(), serviceCache, emptyMap())
+    open fun service(os: Os, serviceStore: Cache<String, String>): Kapplet {
+        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, InMemoryCache(), emptyMap())
         kapplet.enabled = false
         return kapplet
     }

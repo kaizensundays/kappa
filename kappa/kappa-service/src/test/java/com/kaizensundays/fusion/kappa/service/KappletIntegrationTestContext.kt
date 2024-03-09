@@ -22,13 +22,13 @@ open class KappletIntegrationTestContext {
     }
 
     @Bean
-    open fun serviceCache(): Cache<String, String> {
+    open fun serviceStore(): Cache<String, String> {
         return InMemoryCache()
     }
 
     @Bean
-    open fun kapplet(os: MockOs, serviceCache: Cache<String, String>): Kapplet {
-        return Kapplet(os, MockOsProcessBuilder(os), serviceCache, emptyMap())
+    open fun kapplet(os: MockOs, serviceStore: Cache<String, String>): Kapplet {
+        return Kapplet(os, MockOsProcessBuilder(os), serviceStore, InMemoryCache(), emptyMap())
     }
 
 }

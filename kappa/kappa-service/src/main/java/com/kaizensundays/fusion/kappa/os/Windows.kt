@@ -64,7 +64,7 @@ class Windows : Os() {
 
         val ph = ProcessHandler()
 
-        val process = KappaNuProcessBuilder()
+        val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
             .start()
@@ -90,7 +90,7 @@ class Windows : Os() {
 
         val ph = ProcessHandler()
 
-        val process = KappaNuProcessBuilder()
+        val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
             .start()

@@ -1,9 +1,9 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Deployments
-import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
+import com.kaizensundays.fusion.kappa.service.Deployments
+import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.messaging.Instance
 import kotlinx.coroutines.runBlocking
 import java.net.ConnectException
@@ -42,11 +42,9 @@ abstract class NodeInstaller(
 
     fun waitForNodeToStart(instance: Instance) {
 
-        val httpClient = mojo.httpClient()
-
         runBlocking {
             try {
-                val kapplet = mojo.getKapplet(httpClient, "http://${instance.host}:${instance.port}", 3)
+                val kapplet = mojo.getKapplet(instance, 3)
                 println("kapplet=$kapplet")
             } catch (e: ConnectException) {
                 println(e.message)

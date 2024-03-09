@@ -1,10 +1,14 @@
 package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
-import kotlinx.coroutines.runBlocking
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
+import com.kaizensundays.fusion.messaging.Instance
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Saturday 12/31/2022, 11:32 AM Eastern Time
@@ -18,8 +22,18 @@ class GetArtifactMojo : AbstractKappaMojo() {
     private var artifact = ""
 
     private fun respond(resolution: ArtifactResolution) {
-        val response = runBlocking { nodeClient.post(httpClient(), "http://localhost:7701/handle", resolution) }
-        println("*response=$response")
+
+        val instance = Instance("localhost", 7701)
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
+
+        val request = jsonConverter.fromObject(resolution)
+
+        val response = producer.request(URI("post:/handle"), request.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (response != null) String(response) else "?"
+
+        println("*** response=$json")
     }
 
     override fun doExecute() {
@@ -41,6 +55,8 @@ class GetArtifactMojo : AbstractKappaMojo() {
             val file = result.artifact.file.canonicalPath
 
             val resolution = ArtifactResolution(requestId, mapOf(artifact to file))
+
+            println("*** resolution=$resolution")
 
             respond(resolution)
         }
