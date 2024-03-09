@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
  * Created: Sunday 8/28/2022, 1:19 PM Eastern Time
@@ -32,5 +31,6 @@ data class Service(
 ) {
     @JsonIgnore
     @Transient
+    @kotlinx.serialization.Transient
     var process: KappaProcess? = null
 }

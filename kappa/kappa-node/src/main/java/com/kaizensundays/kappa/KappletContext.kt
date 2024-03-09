@@ -3,7 +3,6 @@ package com.kaizensundays.kappa
 import com.kaizensundays.fusion.kappa.KappletKtorServer
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
-import com.kaizensundays.fusion.kappa.cache.InMemoryCache
 import com.kaizensundays.fusion.kappa.cast
 import com.kaizensundays.fusion.kappa.event.Handler
 import com.kaizensundays.fusion.kappa.event.Request
@@ -23,13 +22,18 @@ import com.kaizensundays.fusion.kappa.service.KappletProperties
 import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
 import com.kaizensundays.fusion.kappa.service.Service
+import io.atomix.jcache.AtomicCacheConfiguration
+import io.atomix.jcache.AtomicCacheExpiryPolicyFactory
+import io.atomix.jcache.AtomicCacheManager
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportResource
 import org.springframework.context.annotation.PropertySource
+import java.util.concurrent.TimeUnit
 import javax.cache.Cache
 import javax.cache.CacheManager
+import javax.cache.expiry.Duration
 
 /**
  * Created: Saturday 9/10/2022, 1:17 PM Eastern Time
@@ -70,11 +74,19 @@ open class KappletContext {
         return DefaultPendingResults()
     }
 
-    private val serviceCache = InMemoryCache<String, Service>()
+    @Bean
+    open fun serviceCache(atomicCacheManager: AtomicCacheManager): Cache<String, Service> {
+        val conf = AtomicCacheConfiguration<String, Service>()
+        conf.setExpiryPolicyFactory(
+            AtomicCacheExpiryPolicyFactory(Duration(TimeUnit.DAYS, 365))
+        )
+        return atomicCacheManager.createCache("serviceCache", conf)
+    }
 
     @Bean
     open fun applyHandler(
-        artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>
+        artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>,
+        serviceCache: Cache<String, Service>
     ): ApplyHandler {
         return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceStore, serviceCache)
     }
@@ -97,7 +109,7 @@ open class KappletContext {
     }
 
     @Bean
-    open fun kapplet(os: Os, serviceStore: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>): Kapplet {
+    open fun kapplet(os: Os, serviceStore: Cache<String, String>, handlers: Map<Class<out Request<*>>, Handler<*, *>>, serviceCache: Cache<String, Service>): Kapplet {
         @Suppress("UNCHECKED_CAST")
         val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, serviceCache, handlers.cast())
         kapplet.enabled = false
