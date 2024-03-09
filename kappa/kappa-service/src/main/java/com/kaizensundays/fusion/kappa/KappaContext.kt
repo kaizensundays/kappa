@@ -31,7 +31,7 @@ open class KappaContext {
     }
 
     @Bean
-    open fun serviceCache(cacheManager: CacheManager, props: KappletProperties): Cache<String, String> {
+    open fun serviceStore(cacheManager: CacheManager, props: KappletProperties): Cache<String, String> {
         val configuration = FileSystemCacheConfiguration<String, String>(props.cacheLocation)
         return cacheManager.createCache("services", configuration)
     }

@@ -31,7 +31,7 @@ class KappletIntegrationTest {
     lateinit var os: MockOs
 
     @Autowired
-    lateinit var serviceCache: Cache<String, String>
+    lateinit var serviceStore: Cache<String, String>
 
     @Autowired
     lateinit var kapplet: Kapplet
@@ -49,7 +49,7 @@ class KappletIntegrationTest {
 
         assertEquals(1, os.getProcesses().size)
 
-        val entry = serviceCache.toList().first()
+        val entry = serviceStore.toList().first()
 
         val serviceId = entry.key
         assertTrue(serviceId.matches(uuidRegex))

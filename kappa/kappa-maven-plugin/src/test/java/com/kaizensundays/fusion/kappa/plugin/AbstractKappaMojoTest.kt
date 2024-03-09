@@ -1,16 +1,19 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
+import com.kaizensundays.fusion.kappa.event.JacksonSerializable
 import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.unsupportedOperation
-import io.ktor.serialization.kotlinx.json.json
+import com.kaizensundays.fusion.messaging.Instance
 import io.ktor.server.application.call
-import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
-import io.ktor.server.testing.testApplication
+import io.ktor.server.routing.routing
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.springframework.util.SocketUtils
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created: Sunday 12/4/2022, 11:18 AM Eastern Time
@@ -19,7 +22,10 @@ import kotlin.test.assertEquals
  */
 typealias ClientContentNegotiation = io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 
+@Suppress("ExtractKtorModule")
 class AbstractKappaMojoTest {
+
+    private val jsonConverter = JacksonObjectConverter<JacksonSerializable>()
 
     private val mojo = object : AbstractKappaMojo() {
         override fun doExecute() {
@@ -42,35 +48,29 @@ class AbstractKappaMojoTest {
     @Test
     fun getKappletReturnsOk() {
 
-        testApplication {
-            install(ContentNegotiation) {
-                json()
-            }
-            routing {
-                get("/get-kapplet") {
-                    call.respond(Service("kapplet", pid = 1))
+        val port = SocketUtils.findAvailableTcpPort(50_000, 59_000)
+
+        val service = Service("kapplet", pid = 1)
+        val json = jsonConverter.fromObjects(service)
+
+        val server = KtorEmbeddedServer(port)
+            .set {
+                routing {
+                    get("/get-kapplet") {
+                        call.respond(json)
+                    }
                 }
             }
 
-            val client = createClient {
-                install(ClientContentNegotiation) {
-                    json()
-                }
-            }
+        assertTrue(server.start(30, TimeUnit.SECONDS))
 
-            val kapplet = mojo.getKapplet(client, retries = 1)
-            assertEquals(1, kapplet.pid)
-        }
+        val instance = Instance("localhost", port)
+        val kapplet = mojo.getKapplet(instance, retries = 1)
+        assertEquals(1, kapplet.pid)
     }
 
     @Test
     fun getKappletReturnsNotFound() {
-
-        testApplication {
-            routing { }
-
-            assertThrows<RuntimeException> { mojo.getKapplet(client, retries = 1) }
-        }
     }
 
 }

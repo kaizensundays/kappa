@@ -11,6 +11,7 @@ import com.kaizensundays.fusion.kappa.messages.PingResponse
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
+import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
@@ -43,7 +44,7 @@ class KappletTest {
     private val handlers: MutableMap<Class<out Request<*>>, Handler<*, *>> = mutableMapOf()
 
     @Suppress("UNCHECKED_CAST")
-    private val kapplet = Kapplet(os, pb, cache, handlers as Map<Class<Request<Response>>, Handler<Request<Response>, Response>>)
+    private val kapplet = Kapplet(os, pb, cache, InMemoryCache(), handlers as Map<Class<Request<Response>>, Handler<Request<Response>, Response>>)
 
     private val deployments = Deployments()
 
@@ -93,7 +94,9 @@ class KappletTest {
             "7" to Service("one", pid = 7),
         )
 
-        kapplet.serviceIdToServiceMap.putAll(services)
+        services.forEach { service ->
+            kapplet.serviceCache.put(service.key, service.value)
+        }
 
         serviceMap = kapplet.getServices()
 
@@ -198,8 +201,8 @@ class KappletTest {
         cache.put(id1, "{}")
         cache.put(id3, "{}")
 
-        kapplet.serviceIdToServiceMap[id1] = Service("service1")
-        kapplet.serviceIdToServiceMap[id3] = Service("service3")
+        kapplet.serviceCache.put(id1, Service("service1"))
+        kapplet.serviceCache.put(id3, Service("service3"))
 
         whenever(os.findPID(id1)).thenReturn(10001)
         whenever(os.findPID(id2)).thenReturn(0)
@@ -221,7 +224,7 @@ class KappletTest {
     @Test
     fun findNotRunning() {
 
-        val service = kapplet.jackson.readValue(easyboxYaml, Service::class.java)
+        val service = kapplet.yamlConverter.readValue(easyboxYaml, Service::class.java)
 
         val serviceMap = mapOf(
             "1" to service,
@@ -274,7 +277,7 @@ class KappletTest {
 
         map = kapplet.load()
         assertEquals(1, map.size)
-        assertEquals(1, kapplet.serviceIdToServiceMap.size)
+        assertEquals(1, kapplet.serviceCache.toMap().size)
     }
 
 }

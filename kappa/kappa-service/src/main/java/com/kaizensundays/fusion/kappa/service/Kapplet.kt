@@ -17,6 +17,7 @@ import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.ServiceConsole
+import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -38,27 +39,26 @@ import kotlin.coroutines.coroutineContext
 class Kapplet(
     private val os: Os,
     private val processBuilder: OSProcessBuilder,
-    private val serviceCache: Cache<String, String>,
+    private val serviceStore: Cache<String, String>,
+    val serviceCache: Cache<String, Service>,
     private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val jackson = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    val yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     val jsonConverter = JacksonObjectConverter<Event>()
 
     val deployments = Deployments()
 
-    val serviceIdToServiceMap = mutableMapOf<String, Service>()
-
     var enabled = false
 
     fun getServices(): Map<String, Service> {
 
-        logger.info("serviceIdToServiceMap=$serviceIdToServiceMap")
+        logger.info("serviceCache=$serviceCache")
 
-        return HashMap(serviceIdToServiceMap)
+        return serviceCache.toMap()
     }
 
     fun getKapplet(): Service {
@@ -74,14 +74,14 @@ class Kapplet(
 
     fun findServiceId(id: String): String? {
 
-        return if (serviceIdToServiceMap.containsKey(id)) id
-        else serviceIdToServiceMap.entries
+        return if (serviceCache.toMap().containsKey(id)) id
+        else serviceCache.toMap().entries
             .find { (_, service) -> service.name == id }?.key
     }
 
     private fun writeYaml(pb: OSProcessBuilder): String {
         return try {
-            jackson.writeValueAsString(pb)
+            yamlConverter.writeValueAsString(pb)
         } catch (e: Exception) {
             logger.error("", e)
             "?"
@@ -115,7 +115,7 @@ class Kapplet(
             return
         }
 
-        val service = serviceIdToServiceMap[serviceId]
+        val service = serviceCache[serviceId]
         if (!force && service?.name == "kapplet") {
             logger.warn("Kapplet won't stop itself")
             return
@@ -140,14 +140,14 @@ class Kapplet(
             }
         }
 
-        serviceIdToServiceMap.remove(serviceId)
         serviceCache.remove(serviceId)
+        serviceStore.remove(serviceId)
 
     }
 
     fun getKappletService(): Map<String, Service> {
 
-        return serviceIdToServiceMap
+        return serviceCache.toMap()
             .filter { (_, service) -> service.name == "kapplet" }
     }
 
@@ -206,8 +206,8 @@ class Kapplet(
         println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
-        serviceCache.put(serviceId, jackson.writeValueAsString(service))
-        serviceIdToServiceMap[serviceId] = service
+        serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))
+        serviceCache.put(serviceId, service)
 
         logger.info("startService() <")
     }
@@ -260,7 +260,7 @@ class Kapplet(
 
         startService(serviceId, service)
 
-        logger.info("serviceIdToServiceMap=${serviceIdToServiceMap}")
+        logger.info("serviceCache=${serviceCache}")
 
         return serviceId
     }
@@ -386,7 +386,7 @@ class Kapplet(
 
     fun loop() {
 
-        val notRunning = findNotRunning(serviceIdToServiceMap)
+        val notRunning = findNotRunning(serviceCache.toMap())
 
         logger.info("*** {}", notRunning)
 
@@ -398,12 +398,12 @@ class Kapplet(
 
     fun load(): Map<String, String> {
 
-        val map = serviceCache.map { entry -> entry.key to entry.value }.toMap()
+        val map = serviceStore.map { entry -> entry.key to entry.value }.toMap()
 
         map.forEach { entry ->
             val serviceId = entry.key
-            val service = jackson.readValue(entry.value, Service::class.java)
-            serviceIdToServiceMap[serviceId] = service
+            val service = yamlConverter.readValue(entry.value, Service::class.java)
+            serviceCache.put(serviceId, service)
             logger.info("serviceId={}\n {}", serviceId, service)
         }
 

@@ -12,6 +12,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.*
+import javax.cache.Cache
 
 /**
  * Created: Sunday 11/20/2022, 12:05 PM Eastern Time
@@ -156,3 +157,7 @@ fun getPropertyAsInt(name: String, defaultValue: Int) = System.getProperties().g
 fun Properties.getLong(name: String, defaultValue: Long) = this.getProperty(name)?.toLong() ?: defaultValue
 
 fun getPropertyAsLong(name: String, defaultValue: Long) = System.getProperties().getLong(name, defaultValue)
+
+fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+    return this.associate { e -> e.key to e.value }
+}

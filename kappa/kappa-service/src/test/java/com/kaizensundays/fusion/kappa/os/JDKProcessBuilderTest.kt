@@ -4,42 +4,23 @@ import org.junit.jupiter.api.Test
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.lang.Thread.sleep
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.test.assertFalse
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
 /**
- * Created: Sunday 8/28/2022, 12:15 PM Eastern Time
+ * Created: Saturday 12/9/2023, 6:17 PM Eastern Time
  *
  * @author Sergey Chuykov
  */
-class KappaNuProcessBuilderTest {
+class JDKProcessBuilderTest : OsTestSupport() {
 
-    private val builder = KappaNuProcessBuilder()
-
-    @Test
-    fun isWindows() {
-
-        val props = Properties()
-        props["os.name"] = "Windows"
-
-        assertTrue(builder.isWindows(props))
-
-        props["os.name"] = "Linux"
-
-        assertFalse(builder.isWindows(props))
-    }
+    private val builder = JDKProcessBuilder()
 
     @Test
     fun startProcessWithJDK() {
 
-        val command = if (builder.isWindows(System.getProperties()))
-            listOf("cmd", "/c", "dir", "*.xml")
-        else
-            listOf("ls", "*.xml")
+        val command = command()
 
         val process = ProcessBuilder()
             .command(command)
@@ -56,8 +37,24 @@ class KappaNuProcessBuilderTest {
         //val exitCode: Int = process.waitFor()
         val started = process.waitFor(30, TimeUnit.SECONDS)
         assertTrue(started)
+        assertEquals(0, process.exitValue())
 
-        sleep(3_000)
+        Thread.sleep(3_000)
+    }
+
+    @Test
+    fun startProcess() {
+
+        val command = command()
+
+        val process = builder.setCommand(command)
+            .start()
+
+        val exitCode = process.waitFor(10, TimeUnit.SECONDS)
+
+        assertEquals(0, exitCode)
+
+        Thread.sleep(3_000)
     }
 
 }
