@@ -26,6 +26,7 @@ import com.kaizensundays.fusion.kappa.service.Service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.ImportResource
 import org.springframework.context.annotation.PropertySource
 import javax.cache.Cache
 import javax.cache.CacheManager
@@ -37,6 +38,7 @@ import javax.cache.CacheManager
  */
 @Configuration
 @PropertySource("classpath:/application.properties")
+@ImportResource("classpath:KappletContextConfig.xml", "classpath:KappletContext.xml")
 open class KappletContext {
 
     @Value("\${kapplet.server.port}")
