@@ -4,7 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-lazy-init="false">
 
-    <bean id="atomicCacheManager" class="io.atomix.jcache.AtomicCacheManager"
+    <bean id="atomixCacheConfiguration" class="io.atomix.jcache.AtomicCacheConfiguration">
+        <property name="expiryPolicyFactory">
+            <bean class="io.atomix.jcache.AtomicCacheExpiryPolicyFactory">
+                <constructor-arg index="0" value="DAYS"/>
+                <constructor-arg index="1" value="365"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="atomixCacheManager" class="io.atomix.jcache.AtomicCacheManager"
           p:bootstrap="${atomix.bootstrap}"
           p:nodeId="${atomix.node.id}"
           p:host="${atomix.node.host}"

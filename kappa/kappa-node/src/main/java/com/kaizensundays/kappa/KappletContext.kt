@@ -23,17 +23,14 @@ import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
 import com.kaizensundays.fusion.kappa.service.Service
 import io.atomix.jcache.AtomicCacheConfiguration
-import io.atomix.jcache.AtomicCacheExpiryPolicyFactory
 import io.atomix.jcache.AtomicCacheManager
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportResource
 import org.springframework.context.annotation.PropertySource
-import java.util.concurrent.TimeUnit
 import javax.cache.Cache
 import javax.cache.CacheManager
-import javax.cache.expiry.Duration
 
 /**
  * Created: Saturday 9/10/2022, 1:17 PM Eastern Time
@@ -75,12 +72,9 @@ open class KappletContext {
     }
 
     @Bean
-    open fun serviceCache(atomicCacheManager: AtomicCacheManager): Cache<String, Service> {
-        val conf = AtomicCacheConfiguration<String, Service>()
-        conf.setExpiryPolicyFactory(
-            AtomicCacheExpiryPolicyFactory(Duration(TimeUnit.DAYS, 365))
-        )
-        return atomicCacheManager.createCache("serviceCache", conf)
+    open fun serviceCache(atomixCacheManager: AtomicCacheManager, atomixCacheConfiguration: AtomicCacheConfiguration<String, String>): Cache<String, Service> {
+        @Suppress("UNCHECKED_CAST")
+        return atomixCacheManager.getOrCreateCache("serviceCache", atomixCacheConfiguration) as Cache<String, Service>
     }
 
     @Bean
