@@ -10,7 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
-        <kotlin.version>1.7.22</kotlin.version>
+        <kotlin.version>1.8.22</kotlin.version>
 
         <sonar.organization>kaizensundays</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
