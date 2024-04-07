@@ -1,8 +1,6 @@
 package com.kaizensundays.fusion.kappa.service
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import kotlinx.serialization.Serializable
 
@@ -12,8 +10,10 @@ import kotlinx.serialization.Serializable
  * @author Sergey Chuykov
  */
 @Serializable
-@JsonIgnoreProperties(ignoreUnknown = true)
+/*
+@JsonIgnoreProperties(ignoreUnknown = false)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+*/
 data class Service(
     var name: String,
     var nameSuffix: String? = null,
@@ -25,7 +25,9 @@ data class Service(
     var mainClass: String = "",
     var workingDir: String? = null,
     var hasConsole: String = "false",
-    @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+    /*
+        @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+    */
     var detached: Boolean = false,
     var pid: Int = 0
 ) {

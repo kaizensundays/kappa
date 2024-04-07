@@ -1,9 +1,12 @@
 package com.kaizensundays.fusion.kappa.messages
 
-import com.kaizensundays.fusion.kappa.service.Apply
-import com.kaizensundays.fusion.kappa.service.Deployments
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.kaizensundays.fusion.kappa.event.Event
 import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
+import com.kaizensundays.fusion.kappa.event.JacksonSerializable
+import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.service.Deployments
+import com.kaizensundays.fusion.kappa.service.Service
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -30,6 +33,32 @@ class ObjectSerializationTest {
         val obj = converter.toObject(json, Event::class.java)
 
         assertTrue(obj is Ping)
+    }
+
+    private fun String.insertAfter(index: Int, s: String): String {
+        val sb = StringBuilder(this)
+        sb.insert(index + 1, s)
+        return sb.toString()
+    }
+
+    @Test
+    fun service() {
+
+        converter.jackson
+            .addMixIn(Service::class.java, JacksonSerializable::class.java)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+        val service = Service("easy-box")
+
+        var json = converter.fromAnyObject(service)
+
+        json = json.insertAfter(json.length - 2, ""","extraProp": "value" """)
+
+        assertTrue(json.matches(".*@class.*".toRegex()))
+
+        val obj = converter.toObject(json, Service::class.java)
+
+        assertEquals("easy-box", obj.name)
     }
 
     @Test

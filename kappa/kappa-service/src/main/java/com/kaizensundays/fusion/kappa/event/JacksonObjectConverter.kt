@@ -33,6 +33,10 @@ class JacksonObjectConverter<T : JacksonSerializable>(
         return jackson.writeValueAsString(obj)
     }
 
+    fun fromAnyObject(obj: Any): String {
+        return jackson.writeValueAsString(obj)
+    }
+
     fun fromObjects(objs: Any): String {
         return jackson.writerWithDefaultPrettyPrinter().writeValueAsString(objs)
     }
