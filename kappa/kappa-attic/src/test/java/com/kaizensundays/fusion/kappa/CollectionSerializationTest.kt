@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.plugin
+package com.kaizensundays.fusion.kappa
 
 import com.kaizensundays.fusion.kappa.service.Node
 import kotlinx.serialization.builtins.ListSerializer
