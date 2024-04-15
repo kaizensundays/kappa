@@ -26,13 +26,7 @@ class JDKProcessBuilderTest : OsTestSupport() {
             .command(command)
             .start()
 
-        val inputStream: InputStream = process.inputStream
-        val reader = BufferedReader(InputStreamReader(inputStream))
-
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            println(line)
-        }
+        JDKProcessConsole().onStart(process)
 
         //val exitCode: Int = process.waitFor()
         val started = process.waitFor(30, TimeUnit.SECONDS)

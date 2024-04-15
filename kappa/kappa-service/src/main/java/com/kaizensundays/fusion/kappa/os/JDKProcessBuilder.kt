@@ -1,7 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.zaxxer.nuprocess.NuProcessHandler
 import java.io.File
 import java.nio.file.Path
@@ -18,6 +17,7 @@ class JDKProcessBuilder : OSProcessBuilder {
     var workingDir = File(".").toPath()
     var environment: Map<String, String> = emptyMap()
     private var processHandler: NuProcessHandler = NoConsoleProcessHandler()
+    private val console = JDKProcessConsole()
 
     override fun isWindows(props: Properties) = props.getProperty("os.name").startsWith("Windows")
 
@@ -38,6 +38,8 @@ class JDKProcessBuilder : OSProcessBuilder {
         val builder = ProcessBuilder(command)
         builder.directory(workingDir.toFile())
         builder.environment().putAll(this.environment)
-        return KappaNuProcess(JDKProcessWrapper(builder.start()))
+        val process = builder.start()
+        console.onStart(process)
+        return KappaNuProcess(JDKProcessWrapper(process))
     }
 }
