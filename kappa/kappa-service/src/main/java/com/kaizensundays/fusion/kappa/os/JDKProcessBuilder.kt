@@ -18,6 +18,8 @@ class JDKProcessBuilder : OSProcessBuilder {
     var environment: Map<String, String> = emptyMap()
     private var processHandler: NuProcessHandler = NoConsoleProcessHandler()
     private val console = JDKProcessConsole()
+    private var consoleFileName = ""
+    private var consoleLoggingPattern = ""
 
     override fun isWindows(props: Properties) = props.getProperty("os.name").startsWith("Windows")
 
@@ -31,6 +33,12 @@ class JDKProcessBuilder : OSProcessBuilder {
     override fun setEnvironment(environment: Map<String, String>) = apply { this.environment = environment }
 
     override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
+
+    override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
+        this.consoleFileName = fileName
+        this.consoleLoggingPattern = pattern
+        return this
+    }
 
     override fun start(): KappaProcess {
         require(command.isNotEmpty())

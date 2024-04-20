@@ -21,6 +21,8 @@ interface OSProcessBuilder {
 
     fun setEnvironment(environment: Map<String, String>): OSProcessBuilder
 
+    fun setConsole(fileName: String, pattern: String): OSProcessBuilder
+
     fun setProcessListener(listener: NuProcessHandler): OSProcessBuilder
 
     fun start(): KappaProcess

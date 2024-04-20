@@ -88,7 +88,7 @@ class ApplyHandler(
         processBuilder.setEnvironment(service.env)
 
         val consoleFile = workingDir + File.separator + "console.log"
-        processBuilder.setProcessListener(ServiceConsole(consoleFile, "%m"))
+        processBuilder.setConsole(consoleFile, "%m")
 
         logger.info("Starting process: {}", writeYaml(processBuilder))
 

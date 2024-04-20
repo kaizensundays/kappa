@@ -31,6 +31,10 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
 
     override fun setProcessListener(listener: NuProcessHandler) = this
 
+    override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
+        return this
+    }
+
     override fun start(): KappaProcess {
 
         val pid = os.nextPID()
