@@ -2,7 +2,6 @@ package com.kaizensundays.fusion.kappa.os
 
 import com.kaizensundays.fusion.kappa.Kappa
 import com.sun.jna.platform.win32.Kernel32
-import com.zaxxer.nuprocess.NuAbstractProcessHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
@@ -22,7 +21,7 @@ class Windows : Os() {
         return Kernel32.INSTANCE.GetCurrentProcessId()
     }
 
-    class LocalProcessHandler : NuAbstractProcessHandler() {
+    class LocalProcessHandler : ProcessHandler() {
         var result = ""
         var error = ""
 

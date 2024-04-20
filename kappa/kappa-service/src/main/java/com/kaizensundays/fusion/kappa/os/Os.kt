@@ -1,7 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
 import com.kaizensundays.fusion.kappa.service.Result
-import com.zaxxer.nuprocess.NuAbstractProcessHandler
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
 
@@ -15,7 +14,7 @@ abstract class Os {
 
     abstract fun getPID(): Int
 
-    class LocalProcessHandler : NuAbstractProcessHandler() {
+    class LocalProcessHandler : ProcessHandler() {
         var result = ""
         var error = ""
 
