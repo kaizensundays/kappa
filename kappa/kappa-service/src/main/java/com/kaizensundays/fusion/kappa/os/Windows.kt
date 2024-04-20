@@ -22,7 +22,7 @@ class Windows : Os() {
         return Kernel32.INSTANCE.GetCurrentProcessId()
     }
 
-    class ProcessHandler : NuAbstractProcessHandler() {
+    class LocalProcessHandler : NuAbstractProcessHandler() {
         var result = ""
         var error = ""
 
@@ -62,7 +62,7 @@ class Windows : Os() {
 
         logger.info("command={}", command)
 
-        val ph = ProcessHandler()
+        val ph = LocalProcessHandler()
 
         val process = NuProcessBuilderImpl()
             .setCommand(command)
@@ -88,7 +88,7 @@ class Windows : Os() {
 
         val command = """cmd /C taskkill /T /F /PID $pid""".split(" ")
 
-        val ph = ProcessHandler()
+        val ph = LocalProcessHandler()
 
         val process = NuProcessBuilderImpl()
             .setCommand(command)

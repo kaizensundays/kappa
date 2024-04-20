@@ -15,7 +15,7 @@ abstract class Os {
 
     abstract fun getPID(): Int
 
-    class ProcessHandler : NuAbstractProcessHandler() {
+    class LocalProcessHandler : NuAbstractProcessHandler() {
         var result = ""
         var error = ""
 
@@ -36,7 +36,7 @@ abstract class Os {
 
     open fun execute(command: List<String>, timeoutSec: Long): Result {
 
-        val ph = Windows.ProcessHandler()
+        val ph = Windows.LocalProcessHandler()
 
         val process = NuProcessBuilderImpl()
             .setCommand(command)
