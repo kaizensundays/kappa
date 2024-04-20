@@ -11,11 +11,11 @@ import java.io.InputStreamReader
  *
  * @author Sergey Chuykov
  */
-class JDKProcessConsole {
+class JDKProcessConsole : ProcessHandler() {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    fun onStart(process: Process) {
+    override fun onStart(process: Process) {
         Thread({
             val inputStream: InputStream = process.inputStream
             val reader = BufferedReader(InputStreamReader(inputStream))
