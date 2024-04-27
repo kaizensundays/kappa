@@ -2,6 +2,7 @@ package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.core.api.Message
 import com.kaizensundays.fusion.kappa.event.Handler
 import com.kaizensundays.fusion.kappa.event.Request
 import com.kaizensundays.fusion.kappa.event.Response
@@ -278,6 +279,12 @@ class KappletTest {
         map = kapplet.load()
         assertEquals(1, map.size)
         assertEquals(1, kapplet.serviceCache.toMap().size)
+    }
+
+    @Test
+    fun test() {
+        val msg = Message()
+        println("=$msg")
     }
 
 }
