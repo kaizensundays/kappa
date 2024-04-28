@@ -46,7 +46,7 @@ class Kapplet(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    var yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     val jsonConverter = JacksonObjectConverter<Event>()
 

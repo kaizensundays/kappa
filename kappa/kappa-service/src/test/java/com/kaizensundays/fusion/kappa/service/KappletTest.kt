@@ -161,6 +161,9 @@ class KappletTest {
     @Test
     fun deployArtifact() {
 
+        kapplet.yamlConverter = mock()
+        val process: KappaProcess = mock()
+
         val serviceMap = deployments.readBlocking("deployment.yaml")
 
         val service = serviceMap["fusion-mu"]
@@ -169,8 +172,7 @@ class KappletTest {
 
         val serviceId = "fusion-mu-uuid"
 
-        val process: KappaProcess = mock()
-
+        whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
         whenever(pb.start()).thenReturn(process)
 
         kapplet.deployArtifact(serviceId, service, emptyMap())
@@ -179,8 +181,10 @@ class KappletTest {
     @Test
     fun apply() {
 
+        kapplet.yamlConverter = mock()
         val process: KappaProcess = mock()
 
+        whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
         whenever(pb.start()).thenReturn(process)
 
         val apply = Apply("/deployment.yaml", emptyMap())
