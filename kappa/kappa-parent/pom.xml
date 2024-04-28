@@ -15,8 +15,7 @@
         <log4j.version>2.17.2</log4j.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring.version>5.3.34</spring.version>
-        <jackson.version>2.13.4</jackson.version>
-        <jackson-databind.version>2.13.4.2</jackson-databind.version>
+        <jackson.version>2.15.4</jackson.version>
         <ktor.version>2.2.4</ktor.version>
         <maven.version>3.8.1</maven.version>
     </properties>
@@ -159,7 +158,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
