@@ -16,4 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "kappax"
 
+include(":kappa-core")
 include(":kappa-core-api")
