@@ -4,7 +4,7 @@ kotlin-version = "1.8.22"
 
 kotlinx-serialization-version = "1.4.1"
 
-jackson-version = "2.13.5"
+jackson-version = "2.15.4"
 
 [libraries]
 
