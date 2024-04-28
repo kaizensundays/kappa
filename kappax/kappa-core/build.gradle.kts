@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("com.jfrog.artifactory")
+    id("dependency-management")
     `maven-publish`
 }
 

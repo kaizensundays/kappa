@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("com.jfrog.artifactory")
+    id("dependency-management")
     `maven-publish`
 }
 
@@ -32,6 +33,12 @@ tasks.withType<Test> {
 java {
     withSourcesJar()
 }
+
+/*
+tasks.build {
+    finalizedBy("publishToMavenLocal")
+}
+*/
 
 tasks.publish {
     dependsOn("assemble")
