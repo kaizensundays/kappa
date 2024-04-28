@@ -3,6 +3,7 @@ package com.kaizensundays.fusion.kappa.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.os.MockOs
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test

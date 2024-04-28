@@ -65,8 +65,9 @@ class ArchTest {
                 "java..",
                 "kotlin..",
                 "kotlinx..",
-                "com.kaizensundays.fusion.kappa.event..",
+                "com.kaizensundays.fusion.kappa.core.api..",
                 "com.kaizensundays.fusion.kappa.messages..",
+                "com.fasterxml.jackson..",
             )
             .check(classes)
 

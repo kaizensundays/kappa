@@ -1,6 +1,7 @@
 package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.messages.ApplyResponse
 import kotlinx.serialization.Serializable
 

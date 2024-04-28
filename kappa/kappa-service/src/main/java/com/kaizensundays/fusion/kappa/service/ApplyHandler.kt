@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.extractTarBz2
 import com.kaizensundays.fusion.kappa.messages.ApplyResponse
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
@@ -102,8 +103,7 @@ class ApplyHandler(
 
         service.process = process
         service.pid = process.pid()
-
-        println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
+        println("PID=${process.pid()}:${process.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
         serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))

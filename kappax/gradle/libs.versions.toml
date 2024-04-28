@@ -2,11 +2,15 @@
 
 kotlin-version = "1.8.22"
 
+kotlinx-serialization-version = "1.4.1"
+
 jackson-version = "2.13.5"
 
 [libraries]
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
+
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-version" }
 
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref="jackson-version" }
 

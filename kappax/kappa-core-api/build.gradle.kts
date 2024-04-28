@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("com.jfrog.artifactory")
     `maven-publish`
 }
@@ -10,6 +11,7 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
+    implementation(libs.kotlinx.serialization)
     implementation(libs.jackson.databind)
 
     testImplementation(kotlin("test"))

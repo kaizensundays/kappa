@@ -9,6 +9,7 @@ import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.extractTarBz2
 import com.kaizensundays.fusion.kappa.getResourceAsInputStream
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
@@ -202,7 +203,7 @@ class Kapplet(
         service.process = process
         service.pid = process.pid()
 
-        println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
+        println("PID=${process.pid()}:${process.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
         serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))

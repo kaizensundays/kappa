@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.os
 
 import com.kaizensundays.fusion.kappa.EasyBoxMain
-import com.kaizensundays.fusion.kappa.service.Service
+import com.kaizensundays.fusion.kappa.core.api.Service
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

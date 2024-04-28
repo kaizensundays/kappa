@@ -21,7 +21,7 @@ import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.service.KappletProperties
 import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
-import com.kaizensundays.fusion.kappa.service.Service
+import com.kaizensundays.fusion.kappa.core.api.Service
 import io.atomix.jcache.AtomicCacheConfiguration
 import io.atomix.jcache.AtomicCacheManager
 import org.springframework.beans.factory.annotation.Value

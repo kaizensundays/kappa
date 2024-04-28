@@ -1,7 +1,6 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core.api
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.kaizensundays.fusion.kappa.os.KappaProcess
 import kotlinx.serialization.Serializable
 
 /**
@@ -34,5 +33,14 @@ data class Service(
     @JsonIgnore
     @Transient
     @kotlinx.serialization.Transient
-    var process: KappaProcess? = null
+    var process: Any? = null
+
+    inline fun <reified T : Any> process(): T? {
+        return process as T?
+    }
+
+    fun process(process: Any) {
+        this.process = process
+    }
+
 }
