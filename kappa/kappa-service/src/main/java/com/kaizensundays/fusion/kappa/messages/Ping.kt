@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.messages
 
-import com.kaizensundays.fusion.kappa.event.Request
+import com.kaizensundays.fusion.kappa.core.api.Request
 
 /**
  * Created: Sunday 7/2/2023, 1:11 PM Eastern Time

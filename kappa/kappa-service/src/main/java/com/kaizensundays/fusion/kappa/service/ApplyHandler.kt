@@ -4,14 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kaizensundays.fusion.kappa.Kappa
-import com.kaizensundays.fusion.kappa.event.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.extractTarBz2
 import com.kaizensundays.fusion.kappa.messages.ApplyResponse
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.os.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
-import com.kaizensundays.fusion.kappa.os.ServiceConsole
 import org.apache.maven.shared.invoker.DefaultInvocationRequest
 import org.apache.maven.shared.invoker.DefaultInvoker
 import java.io.File

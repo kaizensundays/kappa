@@ -4,8 +4,8 @@ import com.kaizensundays.fusion.kappa.KappletKtorServer
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast
-import com.kaizensundays.fusion.kappa.event.Handler
-import com.kaizensundays.fusion.kappa.event.Request
+import com.kaizensundays.fusion.kappa.core.api.Handler
+import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.messages.Ping

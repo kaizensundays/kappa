@@ -1,9 +1,8 @@
 package com.kaizensundays.fusion.kappa.messages
 
 import com.fasterxml.jackson.databind.DeserializationFeature
-import com.kaizensundays.fusion.kappa.event.Event
-import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
-import com.kaizensundays.fusion.kappa.event.JacksonSerializable
+import com.kaizensundays.fusion.kappa.core.api.Event
+import com.kaizensundays.fusion.kappa.core.api.JacksonSerializable
 import com.kaizensundays.fusion.kappa.service.Apply
 import com.kaizensundays.fusion.kappa.service.Deployments
 import com.kaizensundays.fusion.kappa.service.Service

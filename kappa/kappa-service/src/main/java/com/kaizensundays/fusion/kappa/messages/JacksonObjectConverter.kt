@@ -1,10 +1,12 @@
-package com.kaizensundays.fusion.kappa.event
+package com.kaizensundays.fusion.kappa.messages
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.util.StdDateFormat
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.core.api.JacksonSerializable
+import com.kaizensundays.fusion.kappa.core.api.ObjectConverter
 import java.util.*
 
 /**

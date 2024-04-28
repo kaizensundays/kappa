@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.event
+package com.kaizensundays.fusion.kappa.core.api
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonTypeInfo

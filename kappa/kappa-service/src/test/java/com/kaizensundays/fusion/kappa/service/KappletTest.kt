@@ -2,10 +2,10 @@ package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Message
-import com.kaizensundays.fusion.kappa.event.Handler
-import com.kaizensundays.fusion.kappa.event.Request
-import com.kaizensundays.fusion.kappa.event.Response
+import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.messages.Ping
 import com.kaizensundays.fusion.kappa.messages.PingResponse

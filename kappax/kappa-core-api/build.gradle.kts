@@ -10,6 +10,8 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
+    implementation(libs.jackson.databind)
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
 }

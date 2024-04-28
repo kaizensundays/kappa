@@ -2,6 +2,11 @@
 
 kotlin-version = "1.8.22"
 
+jackson-version = "2.13.5"
+
 [libraries]
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
+
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref="jackson-version" }
+

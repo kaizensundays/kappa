@@ -1,9 +1,9 @@
 package com.kaizensundays.fusion.kappa.service
 
-import com.kaizensundays.fusion.kappa.event.Handler
-import com.kaizensundays.fusion.kappa.event.Request
-import com.kaizensundays.fusion.kappa.event.Response
-import com.kaizensundays.fusion.kappa.event.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.Handler
+import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Response
+import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

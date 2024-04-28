@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.event
+package com.kaizensundays.fusion.kappa.core.api
 
 /**
  * Created: Friday 12/25/2020, 3:37 PM Eastern Time

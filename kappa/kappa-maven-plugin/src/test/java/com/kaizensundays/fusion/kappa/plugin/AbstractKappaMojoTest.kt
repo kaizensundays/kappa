@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
-import com.kaizensundays.fusion.kappa.event.JacksonSerializable
+import com.kaizensundays.fusion.kappa.core.api.JacksonSerializable
+import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.service.Service
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.kaizensundays.fusion.messaging.Instance

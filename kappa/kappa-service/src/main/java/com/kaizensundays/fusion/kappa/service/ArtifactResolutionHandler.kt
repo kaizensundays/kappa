@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.service
 
-import com.kaizensundays.fusion.kappa.event.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolutionAck
 
