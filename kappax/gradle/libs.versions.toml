@@ -1,16 +1,21 @@
 [versions]
 
 kotlin-version = "1.8.22"
-
 kotlinx-serialization-version = "1.4.1"
 
+mockito-kotlin-version = "3.2.0"
+
+logback-version = "1.2.13"
 jackson-version = "2.15.4"
+jcache-version = "1.1.1"
 
 [libraries]
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
-
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-version" }
 
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref="jackson-version" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin-version" }
 
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
+jcache = { module = "javax.cache:cache-api", version.ref = "jcache-version" }

@@ -15,10 +15,13 @@ dependencies {
     implementation(project(":kappa-core-api"))
 
     implementation(libs.kotlinx.serialization)
+    implementation(libs.logback.classic)
     implementation(libs.jackson.databind)
+    implementation(libs.jcache)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
+    testImplementation(libs.mockito.kotlin)
 }
 
 tasks.withType<KotlinCompile> {
