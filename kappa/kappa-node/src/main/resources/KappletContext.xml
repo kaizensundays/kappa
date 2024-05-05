@@ -21,4 +21,10 @@
           p:logDir="${atomix.node.data-dir}"
     />
 
+    <bean id="serviceCache" class="com.kaizensundays.kappa.ServiceCacheBean">
+        <constructor-arg index="0" value="serviceCache"/>
+        <constructor-arg index="1" ref="atomixCacheConfiguration"/>
+        <constructor-arg index="2" ref="atomixCacheManager"/>
+    </bean>
+
 </beans>

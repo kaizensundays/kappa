@@ -6,6 +6,7 @@ import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.messages.Ping
@@ -21,9 +22,6 @@ import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.service.KappletProperties
 import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
-import com.kaizensundays.fusion.kappa.core.api.Service
-import io.atomix.jcache.AtomicCacheConfiguration
-import io.atomix.jcache.AtomicCacheManager
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -69,12 +67,6 @@ open class KappletContext {
     @Bean
     open fun artifactResolutionPendingResults(): PendingResults<ArtifactResolution> {
         return DefaultPendingResults()
-    }
-
-    @Bean
-    open fun serviceCache(atomixCacheManager: AtomicCacheManager, atomixCacheConfiguration: AtomicCacheConfiguration<String, String>): Cache<String, Service> {
-        @Suppress("UNCHECKED_CAST")
-        return atomixCacheManager.getOrCreateCache("serviceCache", atomixCacheConfiguration) as Cache<String, Service>
     }
 
     @Bean

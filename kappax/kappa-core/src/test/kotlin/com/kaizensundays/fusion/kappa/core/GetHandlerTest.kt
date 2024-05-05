@@ -37,4 +37,16 @@ class GetHandlerTest {
         assertEquals(serviceMap.entries.size, res.services.size)
     }
 
+    @Test
+    fun returnsError() {
+
+        mockkStatic("com.kaizensundays.fusion.kappa.core.KappaCoreKt")
+        every { any<Cache<String, Service>>().toMap() } throws IllegalStateException("error message")
+
+        val res = handler.handle(GetRequest())
+
+        assertEquals(1, res.code)
+        assertEquals("error message", res.text)
+    }
+
 }
