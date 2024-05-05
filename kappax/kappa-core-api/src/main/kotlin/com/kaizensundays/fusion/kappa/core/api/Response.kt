@@ -8,7 +8,7 @@ package com.kaizensundays.fusion.kappa.core.api
 open class Response : Event {
 
     var code = 0
-    var text = "?"
+    var text = "Ok"
 
     override fun toString(): String {
         return javaClass.simpleName + "(code=$code, text='$text')"

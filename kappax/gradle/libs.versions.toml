@@ -4,6 +4,7 @@ kotlin-version = "1.8.22"
 kotlinx-serialization-version = "1.4.1"
 
 mockito-kotlin-version = "3.2.0"
+mockk-version = "1.12.8"
 
 logback-version = "1.2.13"
 jackson-version = "2.15.4"
@@ -15,6 +16,7 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-version" }
 
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin-version" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk-version"}
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }

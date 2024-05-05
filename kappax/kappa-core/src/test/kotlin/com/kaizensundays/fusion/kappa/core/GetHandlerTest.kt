@@ -2,6 +2,8 @@ package com.kaizensundays.fusion.kappa.core
 
 import com.kaizensundays.fusion.kappa.core.api.GetRequest
 import com.kaizensundays.fusion.kappa.core.api.Service
+import io.mockk.every
+import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import javax.cache.Cache
@@ -16,7 +18,7 @@ class GetHandlerTest {
 
     private val serviceCache: Cache<String, Service> = mock()
 
-    private lateinit var handler: GetHandler
+    private val handler: GetHandler = GetHandler(serviceCache)
 
     @Test
     fun returnsOk() {
@@ -26,14 +28,13 @@ class GetHandlerTest {
             "box3" to Service("box3"),
         )
 
-        handler = object : GetHandler(serviceCache) {
-            override fun toMap(serviceCache: Cache<String, Service>): Map<String, Service> {
-                return serviceMap
-            }
-        }
+        mockkStatic("com.kaizensundays.fusion.kappa.core.KappaCoreKt")
+        every { any<Cache<String, Service>>().toMap() } returns serviceMap
 
         val res = handler.handle(GetRequest())
         assertEquals(0, res.code)
+        assertEquals("Ok", res.text)
+        assertEquals(serviceMap.entries.size, res.services.size)
     }
 
 }
