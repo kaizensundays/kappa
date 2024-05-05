@@ -4,6 +4,8 @@ import com.kaizensundays.fusion.kappa.KappletKtorServer
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast
+import com.kaizensundays.fusion.kappa.core.GetHandler
+import com.kaizensundays.fusion.kappa.core.api.GetRequest
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Service
@@ -84,11 +86,13 @@ open class KappletContext {
 
     @Bean
     open fun handlers(
+        getHandler: GetHandler,
         applyHandler: ApplyHandler,
         artifactResolutionHandler: ArtifactResolutionHandler
     ): Map<Class<out Request<*>>, Handler<*, *>> {
         return mapOf<Class<out Request<*>>, Handler<*, *>>(
             Ping::class.java to PingHandler(),
+            GetRequest::class.java to getHandler,
             Apply::class.java to applyHandler,
             ArtifactResolution::class.java to artifactResolutionHandler,
         )

@@ -27,4 +27,8 @@
         <constructor-arg index="2" ref="atomixCacheManager"/>
     </bean>
 
+    <bean id="getHandler" class="com.kaizensundays.fusion.kappa.core.GetHandler">
+        <constructor-arg index="0" ref="serviceCache"/>
+    </bean>
+
 </beans>

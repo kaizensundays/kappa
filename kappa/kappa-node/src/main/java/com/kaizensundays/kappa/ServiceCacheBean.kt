@@ -22,7 +22,7 @@ class ServiceCacheBean(
     }
 
     override fun getObjectType(): Class<*> {
-        return ServiceCache::class.java
+        return Cache::class.java
     }
 
 }
