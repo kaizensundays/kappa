@@ -9,6 +9,11 @@
           p:cacheLocation="${kapplet.cacheLocation}"
     />
 
+    <bean id="serviceStore" class="com.kaizensundays.kappa.ServiceStoreBean">
+        <constructor-arg index="0" value="services"/>
+        <constructor-arg index="1" ref="props"/>
+    </bean>
+
     <bean id="atomixCacheConfiguration" class="io.atomix.jcache.AtomicCacheConfiguration">
         <property name="expiryPolicy">
             <bean class="javax.cache.expiry.Duration">

@@ -1,8 +1,6 @@
 package com.kaizensundays.kappa
 
 import com.kaizensundays.fusion.kappa.KappletKtorServer
-import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
-import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cast
 import com.kaizensundays.fusion.kappa.core.GetHandler
 import com.kaizensundays.fusion.kappa.core.api.GetRequest
@@ -21,7 +19,6 @@ import com.kaizensundays.fusion.kappa.service.ApplyHandler
 import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
 import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
 import com.kaizensundays.fusion.kappa.service.Kapplet
-import com.kaizensundays.fusion.kappa.service.KappletProperties
 import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
 import org.springframework.beans.factory.annotation.Value
@@ -30,7 +27,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportResource
 import org.springframework.context.annotation.PropertySource
 import javax.cache.Cache
-import javax.cache.CacheManager
 
 /**
  * Created: Saturday 9/10/2022, 1:17 PM Eastern Time
@@ -48,17 +44,6 @@ open class KappletContext {
     @Bean
     open fun os(): Os {
         return if (isWindows()) Windows() else Linux()
-    }
-
-    @Bean
-    open fun cacheManager(): CacheManager {
-        return FileSystemCacheManager()
-    }
-
-    @Bean
-    open fun serviceStore(cacheManager: CacheManager, props: KappletProperties): Cache<String, String> {
-        val configuration = FileSystemCacheConfiguration<String, String>(props.cacheLocation)
-        return cacheManager.createCache("services", configuration)
     }
 
     @Bean
