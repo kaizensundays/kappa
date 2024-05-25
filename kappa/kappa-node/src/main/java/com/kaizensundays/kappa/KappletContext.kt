@@ -46,11 +46,6 @@ open class KappletContext {
     var serverPort = 0
 
     @Bean
-    open fun props(): KappletProperties {
-        return KappletProperties()
-    }
-
-    @Bean
     open fun os(): Os {
         return if (isWindows()) Windows() else Linux()
     }

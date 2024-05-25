@@ -48,7 +48,7 @@ class Kapplet(
 
     var yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
-    val jsonConverter = JacksonObjectConverter<Event>()
+    val jsonConverter = JacksonObjectConverter<Event>(true)
 
     val deployments = Deployments()
 

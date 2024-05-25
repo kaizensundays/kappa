@@ -4,6 +4,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-lazy-init="false">
 
+    <bean id="props" class="com.kaizensundays.fusion.kappa.service.KappletProperties"
+          p:deployerEnabled="${kapplet.deployerEnabled}"
+          p:cacheLocation="${kapplet.cacheLocation}"
+    />
+
     <bean id="atomixCacheConfiguration" class="io.atomix.jcache.AtomicCacheConfiguration">
         <property name="expiryPolicy">
             <bean class="javax.cache.expiry.Duration">
