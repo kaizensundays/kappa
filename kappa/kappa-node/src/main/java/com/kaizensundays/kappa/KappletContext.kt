@@ -47,11 +47,6 @@ open class KappletContext {
     }
 
     @Bean
-    open fun artifactResolutionPendingResults(): PendingResults<ArtifactResolution> {
-        return DefaultPendingResults()
-    }
-
-    @Bean
     open fun applyHandler(
         artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>,
         serviceCache: Cache<String, Service>
