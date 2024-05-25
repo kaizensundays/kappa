@@ -17,9 +17,7 @@ import com.kaizensundays.fusion.kappa.os.Windows
 import com.kaizensundays.fusion.kappa.service.Apply
 import com.kaizensundays.fusion.kappa.service.ApplyHandler
 import com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler
-import com.kaizensundays.fusion.kappa.service.DefaultPendingResults
 import com.kaizensundays.fusion.kappa.service.Kapplet
-import com.kaizensundays.fusion.kappa.service.PendingResults
 import com.kaizensundays.fusion.kappa.service.PingHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -44,19 +42,6 @@ open class KappletContext {
     @Bean
     open fun os(): Os {
         return if (isWindows()) Windows() else Linux()
-    }
-
-    @Bean
-    open fun applyHandler(
-        artifactResolutionPendingResults: PendingResults<ArtifactResolution>, serviceStore: Cache<String, String>,
-        serviceCache: Cache<String, Service>
-    ): ApplyHandler {
-        return ApplyHandler(artifactResolutionPendingResults, NuProcessBuilderImpl(), serviceStore, serviceCache)
-    }
-
-    @Bean
-    open fun artifactResolutionHandler(artifactResolutionPendingResults: PendingResults<ArtifactResolution>): ArtifactResolutionHandler {
-        return ArtifactResolutionHandler(artifactResolutionPendingResults)
     }
 
     @Bean
