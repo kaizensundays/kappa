@@ -7,8 +7,8 @@ import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.isWindows
-import com.kaizensundays.fusion.kappa.messages.Ping
-import com.kaizensundays.fusion.kappa.messages.PingResponse
+import com.kaizensundays.fusion.kappa.core.api.Ping
+import com.kaizensundays.fusion.kappa.core.api.PingResponse
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os

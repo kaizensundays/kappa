@@ -57,7 +57,7 @@
     </bean>
 
     <util:map id="handlers" key-type="java.lang.Class">
-        <entry key="com.kaizensundays.fusion.kappa.messages.Ping">
+        <entry key="com.kaizensundays.fusion.kappa.core.api.Ping">
             <bean class="com.kaizensundays.fusion.kappa.service.PingHandler"/>
         </entry>
         <entry key="com.kaizensundays.fusion.kappa.core.api.GetRequest" value-ref="getHandler"/>
