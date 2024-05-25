@@ -2,6 +2,7 @@ package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.Kappa
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response

@@ -1,9 +1,9 @@
 package com.kaizensundays.fusion.kappa
 
+import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Event
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.os.Os
-import com.kaizensundays.fusion.kappa.service.Apply
 import com.kaizensundays.fusion.kappa.service.Kapplet
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json

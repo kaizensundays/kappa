@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Event
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request

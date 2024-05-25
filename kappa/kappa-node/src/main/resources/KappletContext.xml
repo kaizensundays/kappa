@@ -61,7 +61,7 @@
             <bean class="com.kaizensundays.fusion.kappa.service.PingHandler"/>
         </entry>
         <entry key="com.kaizensundays.fusion.kappa.core.api.GetRequest" value-ref="getHandler"/>
-        <entry key="com.kaizensundays.fusion.kappa.service.Apply" value-ref="applyHandler"/>
+        <entry key="com.kaizensundays.fusion.kappa.core.api.Apply" value-ref="applyHandler"/>
         <entry key="com.kaizensundays.fusion.kappa.messages.ArtifactResolution" value-ref="artifactResolutionHandler"/>
     </util:map>
 
