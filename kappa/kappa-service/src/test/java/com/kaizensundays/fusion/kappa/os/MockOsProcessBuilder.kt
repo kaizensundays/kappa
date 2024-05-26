@@ -29,7 +29,7 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
 
     override fun setEnvironment(environment: Map<String, String>) = this
 
-    override fun setProcessListener(listener: NuProcessHandler) = this
+    override fun setProcessListener(listener: Any) = this
 
     override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
         return this

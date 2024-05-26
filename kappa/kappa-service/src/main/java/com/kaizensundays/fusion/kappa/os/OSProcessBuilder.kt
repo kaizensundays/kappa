@@ -1,6 +1,5 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.zaxxer.nuprocess.NuProcessHandler
 import java.nio.file.Path
 import java.util.*
 
@@ -23,7 +22,7 @@ interface OSProcessBuilder {
 
     fun setConsole(fileName: String, pattern: String): OSProcessBuilder
 
-    fun setProcessListener(listener: NuProcessHandler): OSProcessBuilder
+    fun setProcessListener(listener: Any): OSProcessBuilder
 
     fun start(): KappaProcess
 }

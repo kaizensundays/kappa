@@ -32,7 +32,10 @@ class JDKProcessBuilder : OSProcessBuilder {
 
     override fun setEnvironment(environment: Map<String, String>) = apply { this.environment = environment }
 
-    override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
+    override fun setProcessListener(listener: Any) = apply {
+        require(listener is NuProcessHandler)
+        this.processHandler = listener
+    }
 
     override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
         this.consoleFileName = fileName
