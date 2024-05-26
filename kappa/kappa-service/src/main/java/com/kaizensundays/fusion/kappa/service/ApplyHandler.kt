@@ -9,12 +9,11 @@ import com.kaizensundays.fusion.kappa.core.api.ApplyResponse
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.extractTarBz2
+import com.kaizensundays.fusion.kappa.maven.api.GetArtifactInvoker
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.os.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.KappaProcess
 import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
-import org.apache.maven.shared.invoker.DefaultInvocationRequest
-import org.apache.maven.shared.invoker.DefaultInvoker
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -26,6 +25,7 @@ import javax.cache.Cache
  * @author Sergey Chuykov
  */
 class ApplyHandler(
+    private val getArtifactInvoker: GetArtifactInvoker,
     private val artifactResolutionPendingResults: PendingResults<ArtifactResolution>,
     private val processBuilder: OSProcessBuilder,
     private val serviceStore: Cache<String, String>,
@@ -36,24 +36,6 @@ class ApplyHandler(
 
     fun getArtifacts(serviceMap: Map<String, Service>): List<String> {
         return serviceMap.values.mapNotNull { service -> service.artifact }
-    }
-
-    private fun resolveArtifact(requestId: String, artifact: String) {
-        logger.info("resolveArtifact >")
-
-        val mavenHome = System.getenv()["M2_HOME"]
-        System.setProperty("maven.home", mavenHome ?: "")
-
-        val request = DefaultInvocationRequest()
-        request.goals = listOf("com.kaizensundays.fusion:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
-        request.properties = mapOf("requestId" to requestId, "artifact" to artifact).toProperties()
-        request.baseDirectory = File(".");
-        request.timeoutInSeconds = 10
-
-        val invoker = DefaultInvoker()
-        val result = invoker.execute(request)
-
-        logger.info("resolveArtifact < {}", result)
     }
 
     fun generateServiceId(service: Service): String {
@@ -233,7 +215,7 @@ class ApplyHandler(
 
         val artifact = artifacts.first()
 
-        resolveArtifact(requestId, artifact)
+        getArtifactInvoker.execute(requestId, artifact)
 
         val resolution = pendingResult.get(60, TimeUnit.SECONDS)
         logger.info("resolution=$resolution")

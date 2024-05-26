@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
  */
 class ApplyHandlerTest {
 
-    private val handler = ApplyHandler(DefaultPendingResults(), mock(), mock(), InMemoryCache())
+    private val handler = ApplyHandler(mock(), DefaultPendingResults(), mock(), mock(), InMemoryCache())
 
     private val deployments = Deployments()
 
