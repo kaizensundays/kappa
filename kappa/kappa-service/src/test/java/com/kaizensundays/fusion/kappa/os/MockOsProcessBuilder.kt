@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa.os
 
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import com.zaxxer.nuprocess.NuProcessHandler
 import java.nio.file.Path

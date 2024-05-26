@@ -1,6 +1,8 @@
 package com.kaizensundays.fusion.kappa.os
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.zaxxer.nuprocess.NuProcessHandler
 import java.io.File
 import java.nio.file.Path

@@ -15,8 +15,8 @@ import com.kaizensundays.fusion.kappa.extractTarBz2
 import com.kaizensundays.fusion.kappa.getResourceAsInputStream
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.os.CommandBuilder
-import com.kaizensundays.fusion.kappa.os.KappaProcess
-import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.CoroutineDispatcher

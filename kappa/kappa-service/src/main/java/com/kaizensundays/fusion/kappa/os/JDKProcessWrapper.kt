@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.unsupportedOperation
 import java.util.concurrent.TimeUnit
 

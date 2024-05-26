@@ -10,8 +10,8 @@ import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.isWindows
 import com.kaizensundays.fusion.kappa.core.api.Ping
 import com.kaizensundays.fusion.kappa.core.api.PingResponse
-import com.kaizensundays.fusion.kappa.os.KappaProcess
-import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.runBlocking

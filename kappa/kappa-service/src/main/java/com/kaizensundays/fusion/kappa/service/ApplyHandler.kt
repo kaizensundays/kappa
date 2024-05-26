@@ -12,8 +12,8 @@ import com.kaizensundays.fusion.kappa.extractTarBz2
 import com.kaizensundays.fusion.kappa.maven.api.GetArtifactInvoker
 import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
 import com.kaizensundays.fusion.kappa.os.CommandBuilder
-import com.kaizensundays.fusion.kappa.os.KappaProcess
-import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit

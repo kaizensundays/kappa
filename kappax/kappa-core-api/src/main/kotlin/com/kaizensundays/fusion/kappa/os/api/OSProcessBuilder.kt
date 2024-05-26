@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.os
+package com.kaizensundays.fusion.kappa.os.api
 
 import java.nio.file.Path
 import java.util.*

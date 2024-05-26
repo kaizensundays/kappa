@@ -2,6 +2,8 @@ package com.kaizensundays.fusion.kappa.os
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.zaxxer.nuprocess.NuProcessBuilder
 import com.zaxxer.nuprocess.NuProcessHandler
 import java.io.File
