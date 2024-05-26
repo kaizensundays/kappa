@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.service.Deployment
+import com.kaizensundays.fusion.kappa.core.api.Deployment
 import com.kaizensundays.fusion.kappa.service.ServiceMixIn
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.EnabledOnOs

@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core.api
 
 /**
  * Created: Saturday 7/8/2023, 12:20 PM Eastern Time

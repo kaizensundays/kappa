@@ -1,8 +1,9 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.core.api.Deployment
 import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import kotlinx.coroutines.CoroutineDispatcher

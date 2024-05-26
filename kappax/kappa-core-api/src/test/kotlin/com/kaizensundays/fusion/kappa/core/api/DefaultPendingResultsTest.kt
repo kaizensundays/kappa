@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core.api
 
 import org.junit.jupiter.api.Test
 import java.util.concurrent.CountDownLatch

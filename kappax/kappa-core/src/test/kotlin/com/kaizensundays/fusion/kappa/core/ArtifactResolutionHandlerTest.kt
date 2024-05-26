@@ -1,7 +1,7 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core
 
-import com.kaizensundays.fusion.kappa.core.ArtifactResolutionHandler
 import com.kaizensundays.fusion.kappa.core.api.ArtifactResolution
+import com.kaizensundays.fusion.kappa.core.api.DefaultPendingResults
 import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals

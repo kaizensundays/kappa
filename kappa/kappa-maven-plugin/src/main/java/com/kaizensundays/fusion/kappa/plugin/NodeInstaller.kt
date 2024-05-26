@@ -1,8 +1,8 @@
 package com.kaizensundays.fusion.kappa.plugin
 
+import com.kaizensundays.fusion.kappa.core.Deployments
 import com.kaizensundays.fusion.kappa.core.api.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
-import com.kaizensundays.fusion.kappa.service.Deployments
 import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.messaging.Instance
 import kotlinx.coroutines.runBlocking

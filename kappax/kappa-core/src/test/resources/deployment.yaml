@@ -1,0 +1,64 @@
+---
+services:
+  - name: "fusion-eureka"
+    command:
+      - "java"
+      - "-jar"
+      - "${com.kaizensundays.kappa.service.id}"
+      - "-Dserver.port=7777"
+      - "-Dspring.profiles.active=dev"
+      - "-Dlog4j.shutdownHookEnabled=false"
+    workingDir: "."
+    hasConsole: "false"
+    detached: false
+    pid: 0
+  - name: "fusion-pi"
+    command:
+      - "java"
+      - "-jar"
+      - "${com.kaizensundays.kappa.service.id}"
+      - "-Dserver.port=7701"
+      - "-Dspring.profiles.active=dev"
+      - "-Dlog4j.shutdownHookEnabled=false"
+    env:
+      IGNITE_UPDATE_NOTIFIER: "false"
+      POSTGRESQL_HOST: "PgSql"
+      POSTGRESQL_PORT: "30432"
+    workingDir: "."
+    hasConsole: "false"
+    detached: false
+    pid: 0
+  - name: "fusion-mu"
+    nameSuffix: "7703"
+    artifact: "com.kaizensundays.particles:fusion-mu:0.0.0-SNAPSHOT:jar"
+    env:
+      IGNITE_UPDATE_NOTIFIER: "false"
+      IGNITE_QUIET: "false"
+    jvmOptions:
+      - "-Dserver.port=7703"
+      - "-Dspring.profiles.active=dev"
+      - "-Dlogging.config=log4j2.xml"
+      - "-Dlog4j.shutdownHookEnabled=false"
+      - "-Djava.net.preferIPv4Stack=true"
+    mainClass: "com.kaizensundays.particles.fusion.mu.Main"
+    workingDir: "."
+    hasConsole: "false"
+    detached: false
+    pid: 0
+  - name: "tomcat"
+    nameSuffix: "8088"
+    command:
+      - "cmd"
+      - "/C"
+      - "bin\\startup.bat"
+    stopCommand:
+      - "cmd"
+      - "/C"
+      - "bin\\shutdown.bat"
+    env:
+      CATALINA_OPTS: "-Dtomcat.http.port=8088 -Dcom.kaizensundays.kappa.service.id.tomcat8088"
+    mainClass: "com.kaizensundays.particles.fusion.mu.Main"
+    workingDir: "."
+    hasConsole: "true"
+    detached: false
+    pid: 0

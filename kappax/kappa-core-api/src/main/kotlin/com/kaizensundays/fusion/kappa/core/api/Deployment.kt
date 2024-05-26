@@ -1,7 +1,6 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core.api
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.kaizensundays.fusion.kappa.core.api.Service
 import kotlinx.serialization.Serializable
 
 /**

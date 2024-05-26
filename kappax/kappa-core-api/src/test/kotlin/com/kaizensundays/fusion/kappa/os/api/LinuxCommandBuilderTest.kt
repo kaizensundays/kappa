@@ -1,9 +1,6 @@
-package com.kaizensundays.fusion.kappa.os
+package com.kaizensundays.fusion.kappa.os.api
 
-import com.kaizensundays.fusion.kappa.EasyBoxMain
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
-import com.kaizensundays.fusion.kappa.os.api.CommandTarget
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -21,7 +18,7 @@ class LinuxCommandBuilderTest {
             Service(
                 "s1", artifact = "easybox:0.0:jar",
                 jvmOptions = mutableListOf("-Da", "-Db", "-Dc"),
-                mainClass = EasyBoxMain::class.qualifiedName ?: ""
+                mainClass = "com.kaizensundays.fusion.kappa.EasyBoxMain"
             ),
             Service(
                 "s3", artifact = "kappa:0.0:jar",

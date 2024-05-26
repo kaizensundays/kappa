@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core
 
 import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import kotlinx.coroutines.runBlocking

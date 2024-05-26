@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":kappa-core-api"))
 
     implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.coroutines.core.jvm)
     implementation(libs.logback.classic)
     implementation(libs.jackson.databind)
     implementation(libs.jackson.dataformat.yaml)

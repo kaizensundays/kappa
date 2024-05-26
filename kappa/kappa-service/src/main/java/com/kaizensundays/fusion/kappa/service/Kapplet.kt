@@ -3,6 +3,7 @@ package com.kaizensundays.fusion.kappa.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.core.Deployments
 import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Event

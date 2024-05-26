@@ -2,8 +2,8 @@ package com.kaizensundays.fusion.kappa.core
 
 import com.kaizensundays.fusion.kappa.core.api.ArtifactResolution
 import com.kaizensundays.fusion.kappa.core.api.ArtifactResolutionAck
+import com.kaizensundays.fusion.kappa.core.api.PendingResults
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
-import com.kaizensundays.fusion.kappa.service.PendingResults
 
 /**
  * Created: Tuesday 7/4/2023, 1:17 PM Eastern Time
