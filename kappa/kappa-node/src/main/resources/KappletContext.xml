@@ -41,7 +41,7 @@
 
     <bean id="getArtifactInvoker" class="com.kaizensundays.fusion.kappa.service.GetArtifactInvokerImpl"/>
 
-    <bean id="applyHandler" class="com.kaizensundays.fusion.kappa.service.ApplyHandler">
+    <bean id="applyHandler" class="com.kaizensundays.fusion.kappa.core.ApplyHandler">
         <constructor-arg index="0" ref="getArtifactInvoker"/>
         <constructor-arg index="1" ref="artifactResolutionPendingResults"/>
         <constructor-arg index="2">
@@ -51,7 +51,7 @@
         <constructor-arg index="4" ref="serviceCache"/>
     </bean>
 
-    <bean id="artifactResolutionHandler" class="com.kaizensundays.fusion.kappa.service.ArtifactResolutionHandler">
+    <bean id="artifactResolutionHandler" class="com.kaizensundays.fusion.kappa.core.ArtifactResolutionHandler">
         <constructor-arg index="0" ref="artifactResolutionPendingResults"/>
     </bean>
 
@@ -61,11 +61,11 @@
 
     <util:map id="handlers" key-type="java.lang.Class">
         <entry key="com.kaizensundays.fusion.kappa.core.api.Ping">
-            <bean class="com.kaizensundays.fusion.kappa.service.PingHandler"/>
+            <bean class="com.kaizensundays.fusion.kappa.core.PingHandler"/>
         </entry>
         <entry key="com.kaizensundays.fusion.kappa.core.api.GetRequest" value-ref="getHandler"/>
         <entry key="com.kaizensundays.fusion.kappa.core.api.Apply" value-ref="applyHandler"/>
-        <entry key="com.kaizensundays.fusion.kappa.messages.ArtifactResolution" value-ref="artifactResolutionHandler"/>
+        <entry key="com.kaizensundays.fusion.kappa.core.api.ArtifactResolution" value-ref="artifactResolutionHandler"/>
     </util:map>
 
 </beans>

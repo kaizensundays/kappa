@@ -19,5 +19,8 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version"}
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
+commons-compress = { module = "org.apache.commons:commons-compress", version="1.21" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 jcache = { module = "javax.cache:cache-api", version.ref = "jcache-version" }

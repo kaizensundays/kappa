@@ -1,4 +1,4 @@
-package com.kaizensundays.fusion.kappa.os
+package com.kaizensundays.fusion.kappa.os.api
 
 import com.kaizensundays.fusion.kappa.core.api.Service
 

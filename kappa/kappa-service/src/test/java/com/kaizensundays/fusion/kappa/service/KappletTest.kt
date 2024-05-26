@@ -1,19 +1,19 @@
 package com.kaizensundays.fusion.kappa.service
 
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.core.PingHandler
 import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.isWindows
+import com.kaizensundays.fusion.kappa.core.api.isWindows
 import com.kaizensundays.fusion.kappa.core.api.Ping
 import com.kaizensundays.fusion.kappa.core.api.PingResponse
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
-import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
@@ -26,6 +26,7 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import org.springframework.core.io.ClassPathResource
 import java.util.*
+import javax.cache.Cache
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -56,6 +57,10 @@ class KappletTest {
         "com.kaizensundays.particles:fusion-mu:0.0.0-SNAPSHOT:jar"
                 to """C:\super\m2n\com\kaizensundays\particles\fusion-mu\0.0.0-SNAPSHOT\fusion-mu-0.0.0-SNAPSHOT.jar"""
     )
+
+    fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+        return this.associate { e -> e.key to e.value }
+    }
 
     @BeforeEach
     fun before() {

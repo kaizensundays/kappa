@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.isWindows
+import com.kaizensundays.fusion.kappa.core.api.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
 import com.kaizensundays.fusion.kappa.service.Deployments
 import com.kaizensundays.fusion.kappa.core.api.Service

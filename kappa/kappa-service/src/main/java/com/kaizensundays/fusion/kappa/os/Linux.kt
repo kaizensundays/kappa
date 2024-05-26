@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 
 /**
  * Created: Saturday 11/26/2022, 11:33 AM Eastern Time

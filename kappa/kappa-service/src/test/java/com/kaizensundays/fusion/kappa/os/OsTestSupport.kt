@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.isWindows
+import com.kaizensundays.fusion.kappa.core.api.isWindows
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

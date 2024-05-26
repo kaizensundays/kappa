@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation(libs.logback.classic)
     implementation(libs.jackson.databind)
+    implementation(libs.jackson.dataformat.yaml)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.jcache)
 
     testImplementation(kotlin("test"))

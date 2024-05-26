@@ -156,6 +156,12 @@
             <groupId>org.apache.maven.shared</groupId>
             <artifactId>maven-invoker</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
+            <artifactId>kappa-core</artifactId>
+            <version>0.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

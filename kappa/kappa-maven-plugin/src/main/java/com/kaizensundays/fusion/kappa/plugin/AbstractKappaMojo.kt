@@ -1,9 +1,9 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Kappa
-import com.kaizensundays.fusion.kappa.Kappa.MOJO_CONFIGURATION
+import com.kaizensundays.fusion.kappa.core.api.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa.MOJO_CONFIGURATION
 import com.kaizensundays.fusion.kappa.core.api.Event
-import com.kaizensundays.fusion.kappa.getPropertyAsLong
+import com.kaizensundays.fusion.kappa.core.api.getPropertyAsLong
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.service.Configuration
 import com.kaizensundays.fusion.kappa.core.api.Service

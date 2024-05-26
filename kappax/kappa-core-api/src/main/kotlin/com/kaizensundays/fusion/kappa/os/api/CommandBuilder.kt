@@ -1,8 +1,8 @@
-package com.kaizensundays.fusion.kappa.os
+package com.kaizensundays.fusion.kappa.os.api
 
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.isWindows
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.isWindows
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 
 /**
  * Created: Sunday 6/4/2023, 1:08 PM Eastern Time

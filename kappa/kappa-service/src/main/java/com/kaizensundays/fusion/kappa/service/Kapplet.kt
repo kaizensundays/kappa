@@ -3,7 +3,7 @@ package com.kaizensundays.fusion.kappa.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Event
 import com.kaizensundays.fusion.kappa.core.api.Handler
@@ -11,14 +11,13 @@ import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.extractTarBz2
-import com.kaizensundays.fusion.kappa.getResourceAsInputStream
+import com.kaizensundays.fusion.kappa.core.api.extractTarBz2
+import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
-import com.kaizensundays.fusion.kappa.os.CommandBuilder
+import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
-import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -54,6 +53,10 @@ class Kapplet(
     val deployments = Deployments()
 
     var enabled = false
+
+    fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+        return this.associate { e -> e.key to e.value }
+    }
 
     fun getServices(): Map<String, Service> {
 

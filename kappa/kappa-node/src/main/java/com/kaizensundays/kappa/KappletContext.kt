@@ -1,11 +1,11 @@
 package com.kaizensundays.kappa
 
 import com.kaizensundays.fusion.kappa.KappletKtorServer
-import com.kaizensundays.fusion.kappa.cast
+import com.kaizensundays.fusion.kappa.core.api.cast
 import com.kaizensundays.fusion.kappa.core.api.Handler
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.isWindows
+import com.kaizensundays.fusion.kappa.core.api.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
 import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
 import com.kaizensundays.fusion.kappa.os.Os

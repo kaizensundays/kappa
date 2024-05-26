@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.service
 
-import com.kaizensundays.fusion.kappa.getResourceAsInputStream
+import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

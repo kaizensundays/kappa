@@ -1,19 +1,20 @@
-package com.kaizensundays.fusion.kappa.service
+package com.kaizensundays.fusion.kappa.core
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.ApplyResponse
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.extractTarBz2
+import com.kaizensundays.fusion.kappa.core.api.extractTarBz2
 import com.kaizensundays.fusion.kappa.maven.api.GetArtifactInvoker
-import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
-import com.kaizensundays.fusion.kappa.os.CommandBuilder
+import com.kaizensundays.fusion.kappa.core.api.ArtifactResolution
+import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.service.PendingResults
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit

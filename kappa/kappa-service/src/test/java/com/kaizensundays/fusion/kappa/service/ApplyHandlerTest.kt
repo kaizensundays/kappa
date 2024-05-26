@@ -1,6 +1,7 @@
 package com.kaizensundays.fusion.kappa.service
 
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
+import com.kaizensundays.fusion.kappa.core.ApplyHandler
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import kotlin.test.assertEquals

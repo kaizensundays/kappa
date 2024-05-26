@@ -2,8 +2,7 @@ package com.kaizensundays.fusion.kappa.os
 
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
-import com.kaizensundays.fusion.kappa.unsupportedOperation
-import com.zaxxer.nuprocess.NuProcessHandler
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import java.nio.file.Path
 import java.util.*
 import java.util.concurrent.TimeUnit

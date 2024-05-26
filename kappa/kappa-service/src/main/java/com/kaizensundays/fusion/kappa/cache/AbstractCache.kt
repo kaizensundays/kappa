@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.cache
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import javax.cache.Cache
 import javax.cache.CacheManager
 import javax.cache.configuration.CacheEntryListenerConfiguration

@@ -1,7 +1,7 @@
 package com.kaizensundays.fusion.kappa.plugin
 
 import com.kaizensundays.fusion.kappa.core.api.Service
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResult
 
 /**
