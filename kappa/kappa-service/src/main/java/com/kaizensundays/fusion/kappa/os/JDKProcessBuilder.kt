@@ -3,7 +3,6 @@ package com.kaizensundays.fusion.kappa.os
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
-import com.zaxxer.nuprocess.NuProcessHandler
 import java.io.File
 import java.nio.file.Path
 import java.util.*
@@ -18,7 +17,7 @@ class JDKProcessBuilder : OSProcessBuilder {
     var command: List<String> = emptyList()
     var workingDir = File(".").toPath()
     var environment: Map<String, String> = emptyMap()
-    private var processHandler: NuProcessHandler = NoConsoleProcessHandler()
+    private var processHandler: ProcessHandler = NoConsoleProcessHandler()
     private val console = JDKProcessConsole()
     private var consoleFileName = ""
     private var consoleLoggingPattern = ""
@@ -35,7 +34,7 @@ class JDKProcessBuilder : OSProcessBuilder {
     override fun setEnvironment(environment: Map<String, String>) = apply { this.environment = environment }
 
     override fun setProcessListener(listener: Any) = apply {
-        require(listener is NuProcessHandler)
+        require(listener is ProcessHandler)
         this.processHandler = listener
     }
 
