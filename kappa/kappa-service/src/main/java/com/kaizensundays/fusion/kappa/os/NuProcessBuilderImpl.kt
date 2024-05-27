@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
+import com.zaxxer.nuprocess.NuProcess
 import com.zaxxer.nuprocess.NuProcessBuilder
 import java.io.File
 import java.nio.file.Path
@@ -56,7 +57,7 @@ class NuProcessBuilderImpl : OSProcessBuilder {
         }
         builder.setProcessListener(processHandler)
         builder.environment().putAll(this.environment)
-        return KappaNuProcess(NuProcessWrapper(builder.start()))
+        return NuProcessWrapper(builder.start())
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Sergey Chuykov
  */
+@Deprecated("Use 'NuProcessWrapper'")
 class KappaNuProcess(private val process: KappaProcess) : KappaProcess {
 
     override fun pid() = process.pid()

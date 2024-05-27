@@ -52,6 +52,6 @@ class JDKProcessBuilder : OSProcessBuilder {
         builder.environment().putAll(this.environment)
         val process = builder.start()
         console.onStart(process)
-        return KappaNuProcess(JDKProcessWrapper(process))
+        return JDKProcessWrapper(process)
     }
 }
