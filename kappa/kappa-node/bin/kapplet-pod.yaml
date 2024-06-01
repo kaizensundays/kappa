@@ -5,9 +5,17 @@ metadata:
   labels:
     instance: kapplet
 spec:
+  hostAliases:
+    - ip: 192.168.0.19
+      hostnames:
+        - "nevada"
+        - "artifactory"
   containers:
     - name: kapplet
       image: localhost:32000/kappa:latest
+      env:
+        - name: M2_HOME
+          value: "/opt/3.5.4"
       ports:
         - containerPort: 7701
           name: ktor
@@ -15,10 +23,16 @@ spec:
         - name: kapplet
           mountPath: /opt/.kappa
           readOnly: false
+        - name: m2
+          mountPath: /opt/m2
+          readOnly: false
   volumes:
     - name: kapplet
       hostPath:
-        path: "/home/super/var/kapplet"
+        path: "/home/super/var/kapplet/.kappa"
+    - name: m2
+      hostPath:
+        path: "/home/super/var/kapplet/m2"
   restartPolicy: Never
   terminationGracePeriodSeconds: 300
 
