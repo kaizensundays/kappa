@@ -32,7 +32,7 @@ spec:
         path: "/home/super/var/kapplet/.kappa"
     - name: m2
       hostPath:
-        path: "/home/super/var/kapplet/m2"
+        path: "/home/super/var/shared/m2"
   restartPolicy: Never
   terminationGracePeriodSeconds: 300
 
