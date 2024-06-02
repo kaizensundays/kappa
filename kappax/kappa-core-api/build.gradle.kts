@@ -35,12 +35,6 @@ java {
     withSourcesJar()
 }
 
-/*
-tasks.build {
-    finalizedBy("publishToMavenLocal")
-}
-*/
-
 tasks.publish {
     dependsOn("assemble")
 }
