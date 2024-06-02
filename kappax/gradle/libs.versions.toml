@@ -7,6 +7,8 @@ kotlinx-coroutines-version = "1.6.4"
 mockito-kotlin-version = "3.2.0"
 mockk-version = "1.12.8"
 
+testcontainers-version = "1.19.8"
+
 logback-version = "1.2.13"
 jackson-version = "2.15.4"
 jcache-version = "1.1.1"
@@ -19,6 +21,8 @@ kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutin
 
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin-version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk-version"}
+
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers-version" }
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
 commons-compress = { module = "org.apache.commons:commons-compress", version="1.21" }

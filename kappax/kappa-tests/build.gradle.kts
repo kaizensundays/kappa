@@ -10,11 +10,13 @@ version = "0.0.0-SNAPSHOT"
 
 dependencies {
     implementation(libs.kotlinx.serialization)
+    implementation(libs.logback.classic)
     implementation(libs.jackson.databind)
     implementation(libs.commons.compress)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
+    testImplementation(libs.testcontainers)
 }
 
 tasks.withType<KotlinCompile> {
