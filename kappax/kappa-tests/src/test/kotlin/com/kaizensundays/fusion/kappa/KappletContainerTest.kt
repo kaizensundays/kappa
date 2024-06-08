@@ -1,5 +1,7 @@
 package com.kaizensundays.fusion.kappa
 
+import com.github.dockerjava.api.model.Bind
+import com.github.dockerjava.api.model.Volume
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Tag
@@ -27,6 +29,9 @@ class KappletContainerTest {
         @BeforeAll
         fun beforeAll() {
             container.withExposedPorts(SERVER_PORT)
+                .withCreateContainerCmdModifier { cmd ->
+                    cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
+                }
             container.start()
         }
 
@@ -42,7 +47,7 @@ class KappletContainerTest {
 
     @Test
     fun test() {
-        sleep(60_000)
+        sleep(10_000)
     }
 
 }
