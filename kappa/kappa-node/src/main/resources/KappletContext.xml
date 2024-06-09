@@ -9,6 +9,8 @@
           p:cacheLocation="${kapplet.cacheLocation}"
     />
 
+    <bean id="os" class="com.kaizensundays.fusion.kappa.os.OsBean"/>
+
     <bean id="serviceStore" class="com.kaizensundays.kappa.ServiceStoreBean">
         <constructor-arg index="0" value="services"/>
         <constructor-arg index="1" ref="props"/>
