@@ -33,14 +33,6 @@ open class KappletContext {
     var serverPort = 0
 
     @Bean
-    open fun kapplet(os: Os, serviceStore: Cache<String, String>, @Qualifier("handlers") handlers: Map<Class<out Request<*>>, Handler<*, *>>, serviceCache: Cache<String, Service>): Kapplet {
-        @Suppress("UNCHECKED_CAST")
-        val kapplet = Kapplet(os, NuProcessBuilderImpl(), serviceStore, serviceCache, handlers.cast())
-        kapplet.enabled = false
-        return kapplet
-    }
-
-    @Bean
     open fun ktorServer(os: Os, kapplet: Kapplet) = KappletKtorServer(serverPort, os, kapplet)
 
 }

@@ -70,4 +70,14 @@
         <entry key="com.kaizensundays.fusion.kappa.core.api.ArtifactResolution" value-ref="artifactResolutionHandler"/>
     </util:map>
 
+    <bean id="kapplet" class="com.kaizensundays.fusion.kappa.service.Kapplet" p:enabled="false">
+        <constructor-arg index="0" ref="os"/>
+        <constructor-arg index="1">
+            <bean class="com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl"/>
+        </constructor-arg>
+        <constructor-arg index="2" ref="serviceStore"/>
+        <constructor-arg index="3" ref="serviceCache"/>
+        <constructor-arg index="4" ref="handlers"/>
+    </bean>
+
 </beans>
