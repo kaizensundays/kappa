@@ -80,4 +80,10 @@
         <constructor-arg index="4" ref="handlers"/>
     </bean>
 
+    <bean class="com.kaizensundays.fusion.kappa.KappletKtorServer">
+        <constructor-arg index="0" value="${kapplet.server.port}"/>
+        <constructor-arg index="1" ref="os"/>
+        <constructor-arg index="2" ref="kapplet"/>
+    </bean>
+
 </beans>
