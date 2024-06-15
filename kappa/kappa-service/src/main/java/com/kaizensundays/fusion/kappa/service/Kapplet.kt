@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kaizensundays.fusion.kappa.core.Deployments
-import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.core.api.Event
 import com.kaizensundays.fusion.kappa.core.api.Handler
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.core.api.Request
 import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
@@ -15,10 +15,10 @@ import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.core.api.extractTarBz2
 import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
+import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
-import com.kaizensundays.fusion.kappa.os.Os
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -42,10 +42,11 @@ class Kapplet(
     private val processBuilder: OSProcessBuilder,
     private val serviceStore: Cache<String, String>,
     val serviceCache: Cache<String, Service>,
-    private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
+    private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
+    val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 
     var yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
@@ -428,6 +429,10 @@ class Kapplet(
         loop()
 
         logger.info("Started")
+    }
+
+    fun stop() {
+        logger.info("Stopped")
     }
 
 }
