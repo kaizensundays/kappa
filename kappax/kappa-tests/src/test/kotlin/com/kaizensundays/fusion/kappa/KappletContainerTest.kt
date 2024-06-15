@@ -30,6 +30,7 @@ class KappletContainerTest {
         fun beforeAll() {
             container.withExposedPorts(SERVER_PORT)
                 .withCreateContainerCmdModifier { cmd ->
+                    cmd.withName("kapplet-test")
                     cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
                 }
             container.start()
@@ -38,7 +39,7 @@ class KappletContainerTest {
         @JvmStatic
         @AfterAll
         fun afterClass() {
-            sleep(3_000)
+            sleep(60_000)
             container.stop()
         }
 

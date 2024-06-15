@@ -13,6 +13,8 @@ logback-version = "1.2.13"
 jackson-version = "2.15.4"
 jcache-version = "1.1.1"
 
+fusion-ktor-version = "0.0.0-SNAPSHOT"
+
 [libraries]
 
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
@@ -30,3 +32,5 @@ jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", ver
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 jcache = { module = "javax.cache:cache-api", version.ref = "jcache-version" }
+
+fusion-ktor = { module = "com.kaizensundays.fusion:fusion-ktor", version.ref ="fusion-ktor-version" }

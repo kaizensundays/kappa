@@ -17,6 +17,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(libs.testcontainers)
+    testImplementation(libs.fusion.ktor)
 }
 
 tasks.withType<KotlinCompile> {
