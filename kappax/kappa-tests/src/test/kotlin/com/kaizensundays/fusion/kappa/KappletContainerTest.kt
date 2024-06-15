@@ -81,6 +81,7 @@ class KappletContainerTest {
 
         val response = jsonConverter.readValue(json, GetResponse::class.java)
         assertEquals(0, response.code)
+        assertEquals(0, response.services.size)
 
         sleep(3_000)
     }
