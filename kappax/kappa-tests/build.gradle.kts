@@ -9,9 +9,12 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
+    implementation(project(":kappa-core-api"))
+
     implementation(libs.kotlinx.serialization)
     implementation(libs.logback.classic)
     implementation(libs.jackson.databind)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.commons.compress)
 
     testImplementation(kotlin("test"))

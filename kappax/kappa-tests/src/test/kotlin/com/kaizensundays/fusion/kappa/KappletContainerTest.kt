@@ -1,14 +1,25 @@
 package com.kaizensundays.fusion.kappa
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
+import com.kaizensundays.fusion.kappa.core.api.GetRequest
+import com.kaizensundays.fusion.kappa.core.api.GetResponse
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
+import com.kaizensundays.fusion.messaging.Instance
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
 import java.lang.Thread.sleep
+import java.net.URI
+import java.time.Duration
 
 /**
  * Created: Sunday 6/2/2024, 12:57 PM Eastern Time
@@ -39,16 +50,39 @@ class KappletContainerTest {
         @JvmStatic
         @AfterAll
         fun afterClass() {
-            sleep(60_000)
+            sleep(1_000)
             container.stop()
         }
 
     }
 
+    private val jsonConverter = ObjectMapper()
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .registerKotlinModule()
 
     @Test
-    fun test() {
-        sleep(10_000)
+    fun getReturnsOk() {
+        sleep(3_000)
+
+        val port = container.getMappedPort(7701)
+        println("port=$port")
+
+        val instance = Instance("192.168.0.19", port)
+
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
+
+        val body = jsonConverter.writeValueAsString(GetRequest())
+
+        val bytes = producer.request(URI("post:/handle"), body.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (bytes != null) String(bytes) else "?"
+        println(json)
+
+        val response = jsonConverter.readValue(json, GetResponse::class.java)
+        assertEquals(0, response.code)
+
+        sleep(3_000)
     }
 
 }
