@@ -10,6 +10,7 @@ version = "0.0.0-SNAPSHOT"
 
 dependencies {
     implementation(project(":kappa-core-api"))
+    implementation(project(":kappa-core"))
 
     implementation(libs.kotlinx.serialization)
     implementation(libs.logback.classic)
