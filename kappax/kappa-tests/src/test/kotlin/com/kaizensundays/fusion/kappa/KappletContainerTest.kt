@@ -64,15 +64,48 @@ class KappletContainerTest {
         .enable(SerializationFeature.INDENT_OUTPUT)
         .registerKotlinModule()
 
-    fun renderVersion(version: String, serviceMap: Map<String, Service>) {
+    private fun renderVersion(version: String, serviceMap: Map<String, Service>) {
         serviceMap.forEach { (_, service) ->
             service.artifact = service.artifact?.replace("""%%version%%""", version)
         }
     }
 
+    private fun KtorProducer.executeGet(): GetResponse {
+
+        val body = jsonConverter.writeValueAsString(GetRequest())
+
+        val bytes = this.request(URI("post:/handle"), body.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (bytes != null) String(bytes) else "?"
+        println(json)
+
+        return jsonConverter.readValue(json, GetResponse::class.java)
+    }
+
+    private fun KtorProducer.executeApply(fileName: String, version: String): ApplyResponse {
+
+        val deployments = Deployments()
+
+        val serviceMap = runBlocking { deployments.readAndValidateDeployment(fileName) }
+
+        renderVersion(version, serviceMap)
+
+        val request = Apply(fileName, emptyMap(), serviceMap)
+
+        val body = jsonConverter.writeValueAsString(request)
+
+        val bytes = this.request(URI("post:/handle"), body.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (bytes != null) String(bytes) else "?"
+        println(json)
+
+        return jsonConverter.readValue(json, ApplyResponse::class.java)
+    }
+
     @Test
     fun getReturnsOk() {
-        sleep(3_000)
 
         val port = container.getMappedPort(SERVER_PORT)
         println("port=$port")
@@ -81,54 +114,22 @@ class KappletContainerTest {
 
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        var body = jsonConverter.writeValueAsString(GetRequest())
-
-        var bytes = producer.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(30))
-
-        var json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        var response = jsonConverter.readValue(json, GetResponse::class.java)
+        var response = producer.executeGet()
         assertEquals(0, response.code)
         assertEquals(0, response.services.size)
 
-        sleep(3_000)
+        sleep(1_000)
 
-        val deployments = Deployments()
-
-        val serviceMap = runBlocking { deployments.readAndValidateDeployment("easybox.yaml") }
-
-        renderVersion("0.0.0-SNAPSHOT", serviceMap)
-
-        val request = Apply("easybox.yaml", emptyMap(), serviceMap)
-
-        body = jsonConverter.writeValueAsString(request)
-
-        bytes = producer.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(30))
-
-        json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        val applyResponse = jsonConverter.readValue(json, ApplyResponse::class.java)
+        val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
         assertEquals(0, applyResponse.code)
 
-        sleep(3_000)
+        sleep(1_000)
 
-        body = jsonConverter.writeValueAsString(GetRequest())
-
-        bytes = producer.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(30))
-
-        json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        response = jsonConverter.readValue(json, GetResponse::class.java)
+        response = producer.executeGet()
         assertEquals(0, response.code)
         assertEquals(1, response.services.size)
 
-        sleep(3_000)
+        sleep(1_000)
     }
 
 }
