@@ -66,7 +66,7 @@ class ObjectSerializationTest {
 
         val serviceMap = runBlocking { deployments.readAndValidateDeployment("/easybox.yaml") }
 
-        val apply = Apply("", emptyMap(), serviceMap)
+        val apply = Apply(emptyMap(), serviceMap)
 
         val json = converter.fromObject(apply)
 
