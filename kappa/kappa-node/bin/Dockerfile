@@ -8,6 +8,8 @@ RUN apk update; \
 
 WORKDIR /opt
 
+ENV M2_HOME="/opt/3.5.4"
+
 COPY maven-3.5.4.zip .
 RUN unzip maven-3.5.4.zip
 COPY kappa.jar .

@@ -47,7 +47,6 @@ class KappletContainerTest {
                     cmd.withName("kapplet-test")
                     cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
                 }
-                .withEnv(mapOf("M2_HOME" to "/opt/3.5.4"))
             container.start()
         }
 
