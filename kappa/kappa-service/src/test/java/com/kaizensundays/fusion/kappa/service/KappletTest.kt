@@ -194,9 +194,13 @@ class KappletTest {
         whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
         whenever(pb.start()).thenReturn(process)
 
-        val apply = Apply("/deployment.yaml", emptyMap())
+        var serviceMap = runBlocking {
+            kapplet.deployments.readAndValidateDeployment("/deployment.yaml")
+        }
 
-        val serviceMap = runBlocking { kapplet.doApply(apply) }
+        val apply = Apply("?", emptyMap(), serviceMap)
+
+         serviceMap = runBlocking { kapplet.doApply(apply) }
 
         assertEquals(4, serviceMap.size)
 
