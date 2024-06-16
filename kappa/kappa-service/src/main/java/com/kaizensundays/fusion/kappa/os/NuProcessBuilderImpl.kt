@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
-import com.zaxxer.nuprocess.NuProcess
 import com.zaxxer.nuprocess.NuProcessBuilder
 import java.io.File
 import java.nio.file.Path
@@ -15,6 +14,7 @@ import java.util.*
  *
  * @author Sergey Chuykov
  */
+@Deprecated("Use 'JDKProcessBuilder'")
 @JsonIgnoreProperties(ignoreUnknown = true)
 class NuProcessBuilderImpl : OSProcessBuilder {
 

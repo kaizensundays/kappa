@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Sergey Chuykov
  */
+@Deprecated("Use 'JDKProcessConsole'")
 @SuppressWarnings("kotlin:S6518")
 class ServiceConsole(private val fileName: String, private val pattern: String) : ProcessHandler() {
 
