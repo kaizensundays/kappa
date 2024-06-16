@@ -198,9 +198,9 @@ class KappletTest {
             kapplet.deployments.readAndValidateDeployment("/deployment.yaml")
         }
 
-        val apply = Apply(emptyMap(), serviceMap)
+        val apply = Apply(serviceMap)
 
-         serviceMap = runBlocking { kapplet.doApply(apply) }
+         serviceMap = runBlocking { kapplet.doApply(apply, emptyMap()) }
 
         assertEquals(4, serviceMap.size)
 

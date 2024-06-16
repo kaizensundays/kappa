@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Apply(
-    val artifacts: Map<String, String>,
     val serviceMap: Map<String, Service> = emptyMap()
 ) : Request<ApplyResponse>() {
 

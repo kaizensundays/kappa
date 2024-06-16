@@ -46,7 +46,7 @@ class KappletIntegrationTest {
         }
 
         serviceMap = runBlocking {
-            kapplet.doApply(Apply(emptyMap(), serviceMap))
+            kapplet.doApply(Apply(serviceMap), emptyMap())
         }
 
         assertEquals(1, serviceMap.size)

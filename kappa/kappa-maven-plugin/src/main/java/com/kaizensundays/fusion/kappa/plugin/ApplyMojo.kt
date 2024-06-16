@@ -45,7 +45,7 @@ class ApplyMojo : AbstractKappaMojo() {
         renderVersion(version, serviceMap)
         println("serviceMap=$serviceMap")
 
-        val request = Apply(emptyMap(), serviceMap)
+        val request = Apply(serviceMap)
 
         println(request)
 

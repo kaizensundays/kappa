@@ -90,7 +90,7 @@ class KappletContainerTest {
 
         renderVersion(version, serviceMap)
 
-        val request = Apply(emptyMap(), serviceMap)
+        val request = Apply(serviceMap)
 
         val body = jsonConverter.writeValueAsString(request)
 

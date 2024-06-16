@@ -270,13 +270,13 @@ class Kapplet(
         return serviceId
     }
 
-    fun deploy(service: Service, artifacts: Map<String, String>): String {
+    fun deploy(service: Service, artifactMap: Map<String, String>): String {
 
         return try {
             val serviceId = generateServiceId(service)
 
             if (service.artifact != null) {
-                deployArtifact(serviceId, service, artifacts)
+                deployArtifact(serviceId, service, artifactMap)
             } else {
                 defaultDeploy(serviceId, service)
             }
@@ -286,12 +286,12 @@ class Kapplet(
         }
     }
 
-    suspend fun doApply(apply: Apply, detached: Boolean = false): Map<String, Service> {
+    suspend fun doApply(apply: Apply, artifactMap: Map<String, String>, detached: Boolean = false): Map<String, Service> {
         println("'${coroutineContext[CoroutineName.Key]}' apply()")
 
         println(apply)
 
-        apply.serviceMap.values.forEach { service -> deploy(service, apply.artifacts) }
+        apply.serviceMap.values.forEach { service -> deploy(service, artifactMap) }
 
         return apply.serviceMap
     }
@@ -300,7 +300,7 @@ class Kapplet(
 
         CoroutineScope(dispatcherIO + CoroutineName("apply")).launch {
             try {
-                doApply(apply)
+                doApply(apply, emptyMap())
             } catch (e: Exception) {
                 logger.error(e.message, e)
             }

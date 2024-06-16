@@ -44,7 +44,7 @@ class WindowsNodeInstaller(artifactManager: ArtifactManager, mojo: AbstractKappa
 
         val kapplet = context.getBean(Kapplet::class.java)
 
-        serviceMap = runBlocking { kapplet.doApply(Apply(/*fileName,*/ artifactMap), true) }
+        serviceMap = runBlocking { kapplet.doApply(Apply(/*fileName,*/ emptyMap()), artifactMap, true) }
 
         println("*serviceMap=$serviceMap")
 
