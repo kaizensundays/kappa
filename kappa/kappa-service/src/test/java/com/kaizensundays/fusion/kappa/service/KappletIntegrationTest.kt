@@ -41,8 +41,12 @@ class KappletIntegrationTest {
     @Test
     fun startKapplet() {
 
-        val serviceMap = runBlocking {
-            kapplet.doApply(Apply("/kapplet-lib.yaml", emptyMap()))
+        var serviceMap = runBlocking {
+            kapplet.deployments.readAndValidateDeployment("/kapplet-lib.yaml")
+        }
+
+        serviceMap = runBlocking {
+            kapplet.doApply(Apply("?", emptyMap(), serviceMap))
         }
 
         assertEquals(1, serviceMap.size)

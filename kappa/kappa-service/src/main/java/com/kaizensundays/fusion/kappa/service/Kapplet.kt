@@ -13,7 +13,6 @@ import com.kaizensundays.fusion.kappa.core.api.Response
 import com.kaizensundays.fusion.kappa.core.api.ResponseCode
 import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.kappa.core.api.extractTarBz2
-import com.kaizensundays.fusion.kappa.core.api.getResourceAsInputStream
 import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.os.Os
 import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
@@ -292,15 +291,9 @@ class Kapplet(
 
         println(apply)
 
-        val inputStream = getResourceAsInputStream(apply.fileName)
+        apply.serviceMap.values.forEach { service -> deploy(service, apply.artifacts) }
 
-        val serviceMap = deployments.readDeployment(inputStream)
-
-        println(serviceMap)
-
-        serviceMap.values.forEach { service -> deploy(service, apply.artifacts) }
-
-        return serviceMap
+        return apply.serviceMap
     }
 
     suspend fun apply(apply: Apply): String {
