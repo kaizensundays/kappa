@@ -1,9 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
 import org.junit.jupiter.api.Test
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -17,6 +14,9 @@ class JDKProcessBuilderTest : OsTestSupport() {
 
     private val builder = JDKProcessBuilder()
 
+    private val consoleFile = "target/" + System.currentTimeMillis() + ".console.log"
+    private val consolePattern = "%m\n"
+
     @Test
     fun startProcessWithJDK() {
 
@@ -26,14 +26,14 @@ class JDKProcessBuilderTest : OsTestSupport() {
             .command(command)
             .start()
 
-        JDKProcessConsole().onStart(process)
+        JDKProcessConsole(consoleFile, consolePattern).onStart(process)
 
         //val exitCode: Int = process.waitFor()
         val started = process.waitFor(30, TimeUnit.SECONDS)
         assertTrue(started)
         assertEquals(0, process.exitValue())
 
-        Thread.sleep(3_000)
+        Thread.sleep(1_000)
     }
 
     @Test
@@ -42,13 +42,14 @@ class JDKProcessBuilderTest : OsTestSupport() {
         val command = command()
 
         val process = builder.setCommand(command)
+            .setConsole(consoleFile, consolePattern)
             .start()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)
 
         assertEquals(0, exitCode)
 
-        Thread.sleep(3_000)
+        Thread.sleep(1_000)
     }
 
 }

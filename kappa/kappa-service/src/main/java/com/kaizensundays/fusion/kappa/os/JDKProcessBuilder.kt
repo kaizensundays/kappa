@@ -18,9 +18,8 @@ class JDKProcessBuilder : OSProcessBuilder {
     var workingDir = File(".").toPath()
     var environment: Map<String, String> = emptyMap()
     private var processHandler: ProcessHandler = NoConsoleProcessHandler()
-    private val console = JDKProcessConsole()
-    private var consoleFileName = ""
-    private var consoleLoggingPattern = ""
+    private var consoleFileName = UUID.randomUUID().toString() + ".console.log"
+    private var consoleLoggingPattern = "%m"
 
     override fun isWindows(props: Properties) = props.getProperty("os.name").startsWith("Windows")
 
@@ -51,7 +50,8 @@ class JDKProcessBuilder : OSProcessBuilder {
         builder.directory(workingDir.toFile())
         builder.environment().putAll(this.environment)
         val process = builder.start()
-        console.onStart(process)
+        processHandler = JDKProcessConsole(consoleFileName, consoleLoggingPattern)
+        processHandler.onStart(process)
         return JDKProcessWrapper(process)
     }
 }
