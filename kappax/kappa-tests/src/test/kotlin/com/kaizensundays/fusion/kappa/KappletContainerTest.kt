@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
 import java.lang.Thread.sleep
 import java.net.URI
@@ -40,6 +41,7 @@ class KappletContainerTest {
         @BeforeAll
         fun beforeAll() {
             container.withExposedPorts(SERVER_PORT)
+                .waitingFor(Wait.forHttp("/ping"))
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.withName("kapplet-test")
                     cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
@@ -64,10 +66,10 @@ class KappletContainerTest {
     fun getReturnsOk() {
         sleep(3_000)
 
-        val port = container.getMappedPort(7701)
+        val port = container.getMappedPort(SERVER_PORT)
         println("port=$port")
 
-        val instance = Instance("192.168.0.19", port)
+        val instance = Instance("Nevada", port)
 
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
