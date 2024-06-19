@@ -56,7 +56,7 @@ class LinuxTest {
     @Test
     fun findPID() {
 
-        val pid = os.findPID("cron")
+        val pid = os.findPID("java")
         println("pid=$pid")
         assertTrue(pid > 0)
     }

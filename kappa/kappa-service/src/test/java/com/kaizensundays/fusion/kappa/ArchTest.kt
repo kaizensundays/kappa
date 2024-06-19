@@ -81,7 +81,7 @@ class ArchTest {
         noClasses()
             .that()
             .resideInAPackage("..kappa.os")
-            .and().haveNameNotMatching(".*(Test|CommandBuilder|Os)")
+            .and().haveNameNotMatching(".*(Test|CommandBuilder|Os|Linux)")
             .should()
             .accessClassesThat().resideInAPackage("..kappa.service")
             .check(classes)

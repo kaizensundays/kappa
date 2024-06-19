@@ -31,7 +31,7 @@ open class Linux : Os() {
     }
 
     override fun findPID(serviceId: String): Int {
-        val result = execute(listOf("pgrep", serviceId), 10)
+        val result = execute(listOf("pidof", "-s", serviceId), 10)
         println("result=$result")
         return parsePID(result)
     }
