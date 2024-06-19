@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.os
 
+import com.kaizensundays.fusion.kappa.service.Result
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.EnabledOnOs
 import org.junit.jupiter.api.condition.OS.LINUX
@@ -39,6 +40,25 @@ class LinuxTest {
         result = os.execute(listOf("/bin/bash", "-c", "$javaHome/bin/java -version"), timeoutSec)
 
         assertEquals(0, result.code)
+    }
+
+    @Test
+    fun parsePID() {
+
+        assertEquals(137, os.parsePID(Result(0, "137\n")))
+        assertEquals(-1, os.parsePID(Result(1, "")))
+        assertEquals(-3, os.parsePID(Result(3, "")))
+        assertEquals(-999, os.parsePID(Result(0, "")))
+        assertEquals(-999, os.parsePID(Result(0, "abc")))
+    }
+
+
+    @Test
+    fun findPID() {
+
+        val pid = os.findPID("cron")
+        println("pid=$pid")
+        assertTrue(pid > 0)
     }
 
 }
