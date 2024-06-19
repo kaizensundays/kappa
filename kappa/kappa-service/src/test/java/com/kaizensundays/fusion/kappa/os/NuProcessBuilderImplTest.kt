@@ -37,7 +37,7 @@ class NuProcessBuilderImplTest : OsTestSupport() {
         val command = command()
 
         val process = builder.setCommand(command)
-            .start()
+            .startProcess()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)
 

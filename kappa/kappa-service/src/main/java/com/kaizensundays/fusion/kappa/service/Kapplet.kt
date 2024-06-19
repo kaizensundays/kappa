@@ -109,7 +109,7 @@ class Kapplet(
 
         logger.info("Starting process: {}", writeYaml(processBuilder))
 
-        return processBuilder.start()
+        return processBuilder.startProcess()
     }
 
     fun stopService(id: String, force: Boolean = false) {

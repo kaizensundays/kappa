@@ -69,7 +69,7 @@ class ApplyHandler(
 
         logger.info("Starting process: {}", writeYaml(processBuilder))
 
-        return processBuilder.start()
+        return processBuilder.startProcess()
     }
 
     fun startService(serviceId: String, service: Service) {

@@ -43,7 +43,7 @@ class JDKProcessBuilder : OSProcessBuilder {
         return this
     }
 
-    override fun start(): KappaProcess {
+    override fun startProcess(): KappaProcess {
         require(command.isNotEmpty())
 
         val builder = ProcessBuilder(command)

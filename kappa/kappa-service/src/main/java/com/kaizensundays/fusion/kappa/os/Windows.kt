@@ -66,7 +66,7 @@ class Windows : Os() {
         val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
-            .start()
+            .startProcess()
 
         process.waitFor(20, TimeUnit.SECONDS)
 
@@ -92,7 +92,7 @@ class Windows : Os() {
         val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
-            .start()
+            .startProcess()
 
         process.waitFor(20, TimeUnit.SECONDS)
 

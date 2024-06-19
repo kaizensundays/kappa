@@ -180,7 +180,7 @@ class KappletTest {
         val serviceId = "fusion-mu-uuid"
 
         whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
-        whenever(pb.start()).thenReturn(process)
+        whenever(pb.startProcess()).thenReturn(process)
 
         kapplet.deployArtifact(serviceId, service, emptyMap())
     }
@@ -192,7 +192,7 @@ class KappletTest {
         val process: KappaProcess = mock()
 
         whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
-        whenever(pb.start()).thenReturn(process)
+        whenever(pb.startProcess()).thenReturn(process)
 
         var serviceMap = runBlocking {
             kapplet.deployments.readAndValidateDeployment("/deployment.yaml")
@@ -204,7 +204,7 @@ class KappletTest {
 
         assertEquals(4, serviceMap.size)
 
-        verify(pb, Mockito.times(4)).start()
+        verify(pb, Mockito.times(4)).startProcess()
     }
 
     @Test

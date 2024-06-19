@@ -43,7 +43,7 @@ class JDKProcessBuilderTest : OsTestSupport() {
 
         val process = builder.setCommand(command)
             .setConsole(consoleFile, consolePattern)
-            .start()
+            .startProcess()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)
 

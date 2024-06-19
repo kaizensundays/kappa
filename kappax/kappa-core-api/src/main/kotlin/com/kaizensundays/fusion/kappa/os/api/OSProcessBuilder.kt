@@ -24,5 +24,5 @@ interface OSProcessBuilder {
 
     fun setProcessListener(listener: Any): OSProcessBuilder
 
-    fun start(): KappaProcess
+    fun startProcess(): KappaProcess
 }

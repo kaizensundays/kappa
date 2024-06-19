@@ -31,7 +31,7 @@ class RunMojo : AbstractKappaMojo() {
 
         val builder = JDKProcessBuilder()
 
-        val process = builder.setCommand(service.command).start()
+        val process = builder.setCommand(service.command).startProcess()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)
         println("exitCode=$exitCode")

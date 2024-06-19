@@ -40,7 +40,7 @@ abstract class Os {
         val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
-            .start()
+            .startProcess()
 
         val code = process.waitFor(timeoutSec, TimeUnit.SECONDS)
 

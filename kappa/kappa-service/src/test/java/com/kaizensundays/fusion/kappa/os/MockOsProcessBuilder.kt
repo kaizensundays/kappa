@@ -36,7 +36,7 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
         return this
     }
 
-    override fun start(): KappaProcess {
+    override fun startProcess(): KappaProcess {
 
         val pid = os.nextPID()
 
