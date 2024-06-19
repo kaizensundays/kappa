@@ -103,6 +103,17 @@ class KappletContainerTest {
         return jsonConverter.readValue(json, ApplyResponse::class.java)
     }
 
+    private fun KtorProducer.executeStop(serviceId: String): String {
+
+        val bytes = this.request(URI("get:/stop/$serviceId"))
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (bytes != null) String(bytes) else "?"
+        println(json)
+
+        return json
+    }
+
     @Test
     fun getReturnsOk() {
 
@@ -129,6 +140,12 @@ class KappletContainerTest {
         assertEquals(1, response.services.size)
 
         sleep(1_000)
+
+/*
+        producer.executeStop("easybox")
+
+        sleep(1_000)
+*/
     }
 
 }
