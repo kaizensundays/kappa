@@ -138,8 +138,10 @@ class Kapplet(
 
         } else {
             val pid = os.findPID(serviceId)
+            logger.info("pid=$pid")
 
             if (pid > 0) {
+                logger.info("shutdown() pid=$pid")
                 val result = os.shutdown(pid)
                 logger.info("result=$result")
             }
