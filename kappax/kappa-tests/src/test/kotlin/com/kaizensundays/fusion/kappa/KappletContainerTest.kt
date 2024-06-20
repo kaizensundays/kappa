@@ -115,7 +115,7 @@ class KappletContainerTest {
     }
 
     @Test
-    fun getReturnsOk() {
+    fun startAndStopEasyBox() {
 
         val port = container.getMappedPort(SERVER_PORT)
         println("port=$port")
@@ -141,11 +141,15 @@ class KappletContainerTest {
 
         sleep(1_000)
 
-/*
         producer.executeStop("easybox")
 
+        sleep(3_000)
+
+        response = producer.executeGet()
+        assertEquals(0, response.code)
+        assertEquals(0, response.services.size)
+
         sleep(1_000)
-*/
     }
 
 }
