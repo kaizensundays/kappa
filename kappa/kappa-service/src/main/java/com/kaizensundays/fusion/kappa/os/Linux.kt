@@ -31,7 +31,12 @@ open class Linux : Os() {
     }
 
     override fun findPID(serviceId: String): Int {
-        val result = execute(listOf("pidof", "-s", serviceId), 10)
+        val result = execute(
+            listOf(
+                "/bin/bash", "-c",
+                "ps -eo pid,args | grep $serviceId | awk '{print \$1}' | head -n 1"
+            ), 10
+        )
         println("result=$result")
         return parsePID(result)
     }
