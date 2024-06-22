@@ -27,7 +27,6 @@
         <module>kappa-maven-plugin</module>
         <module>kappa-node</module>
         <module>kappa-parent</module>
-        <module>kappa-service</module>
     </modules>
 
     <build>

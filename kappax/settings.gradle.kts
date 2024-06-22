@@ -19,4 +19,5 @@ rootProject.name = "kappax"
 
 include(":kappa-core")
 include(":kappa-core-api")
+include(":kappa-service")
 include(":kappa-tests")

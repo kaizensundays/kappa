@@ -35,9 +35,9 @@ class ServiceConsoleTest {
         val lines = File(fileName).readLines()
 
         val expectedLines = listOf(
-            "(main) TRACE [$className] 1 $timestamp",
-            "(main) DEBUG [$className] 3 $timestamp",
-            "(main) INFO  [$className] 7 $timestamp"
+            "(Test worker) TRACE [$className] 1 $timestamp",
+            "(Test worker) DEBUG [$className] 3 $timestamp",
+            "(Test worker) INFO  [$className] 7 $timestamp"
         )
 
         assertEquals(expectedLines, lines)
