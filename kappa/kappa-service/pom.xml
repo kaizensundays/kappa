@@ -165,25 +165,5 @@
 
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>bin</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <finalName>kappa</finalName>
-                            <outputDirectory>bin</outputDirectory>
-                            <mainClass>com.kaizensundays.fusion.kappa.KappletMain</mainClass>
-                            <attach>true</attach>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
 </project>
 
