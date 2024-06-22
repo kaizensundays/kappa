@@ -27,7 +27,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk-version"}
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers-version" }
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
-commons-compress = { module = "org.apache.commons:commons-compress", version="1.26.2" }
+commons-compress = { module = "org.apache.commons:commons-compress", version="1.21" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
