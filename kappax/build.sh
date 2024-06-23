@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_HOME=$JAVA_11_HOME
+export JAVA_HOME=$JAVA_17_HOME
 
 gradle clean build -i | tee build.log
 
