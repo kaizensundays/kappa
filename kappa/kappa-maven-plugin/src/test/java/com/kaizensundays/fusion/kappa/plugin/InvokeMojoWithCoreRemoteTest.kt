@@ -43,7 +43,7 @@ class InvokeMojoWithCoreRemoteTest : AbstractCoreMavenComponentTestSupport() {
         repositorySystemSession.localRepositoryManager = SimpleLocalRepositoryManagerFactory().newInstance(repositorySystemSession, localRepo)
 
         val plugin = Plugin()
-        plugin.groupId = "com.kaizensundays.fusion"
+        plugin.groupId = "com.kaizensundays.fusion.kappa"
         plugin.artifactId = "kappa-maven-plugin"
         plugin.version = "0.0.0-SNAPSHOT"
 

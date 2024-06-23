@@ -23,7 +23,7 @@ class GetArtifactInvokerImpl : GetArtifactInvoker {
         System.setProperty("maven.home", mavenHome ?: "")
 
         val request = DefaultInvocationRequest()
-        request.goals = listOf("com.kaizensundays.fusion:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
+        request.goals = listOf("com.kaizensundays.fusion.kappa:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
         request.properties = mapOf("requestId" to requestId, "artifact" to artifact).toProperties()
         request.baseDirectory = File(".");
         request.timeoutInSeconds = 10
