@@ -48,7 +48,9 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
 
     testImplementation(libs.spring.test)
-    testImplementation(libs.archunit)
+    testImplementation(libs.archunit) {
+        exclude("org.slf4j")
+    }
 }
 
 tasks.withType<KotlinCompile> {
