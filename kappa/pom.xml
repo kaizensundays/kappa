@@ -23,7 +23,6 @@
     </properties>
 
     <modules>
-        <module>kappa-attic</module>
         <module>kappa-maven-plugin</module>
         <module>kappa-node</module>
         <module>kappa-parent</module>
