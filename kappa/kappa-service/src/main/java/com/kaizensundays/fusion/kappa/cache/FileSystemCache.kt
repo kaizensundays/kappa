@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.cache
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import org.springframework.core.io.FileSystemResource
 import java.io.File
 import javax.cache.Cache

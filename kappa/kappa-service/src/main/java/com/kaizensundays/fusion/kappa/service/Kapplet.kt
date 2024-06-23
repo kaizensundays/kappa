@@ -3,21 +3,21 @@ package com.kaizensundays.fusion.kappa.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.kaizensundays.fusion.kappa.Kappa
-import com.kaizensundays.fusion.kappa.event.Event
-import com.kaizensundays.fusion.kappa.event.Handler
-import com.kaizensundays.fusion.kappa.event.JacksonObjectConverter
-import com.kaizensundays.fusion.kappa.event.Request
-import com.kaizensundays.fusion.kappa.event.Response
-import com.kaizensundays.fusion.kappa.event.ResponseCode
-import com.kaizensundays.fusion.kappa.extractTarBz2
-import com.kaizensundays.fusion.kappa.getResourceAsInputStream
-import com.kaizensundays.fusion.kappa.os.CommandBuilder
-import com.kaizensundays.fusion.kappa.os.KappaProcess
-import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.core.Deployments
+import com.kaizensundays.fusion.kappa.core.api.Apply
+import com.kaizensundays.fusion.kappa.core.api.Event
+import com.kaizensundays.fusion.kappa.core.api.Handler
+import com.kaizensundays.fusion.kappa.core.api.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Response
+import com.kaizensundays.fusion.kappa.core.api.ResponseCode
+import com.kaizensundays.fusion.kappa.core.api.Service
+import com.kaizensundays.fusion.kappa.core.api.extractTarBz2
+import com.kaizensundays.fusion.kappa.messages.JacksonObjectConverter
 import com.kaizensundays.fusion.kappa.os.Os
-import com.kaizensundays.fusion.kappa.os.ServiceConsole
-import com.kaizensundays.fusion.kappa.toMap
+import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -41,18 +41,23 @@ class Kapplet(
     private val processBuilder: OSProcessBuilder,
     private val serviceStore: Cache<String, String>,
     val serviceCache: Cache<String, Service>,
-    private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>,
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
+    private val handlers: Map<Class<Request<Response>>, Handler<Request<Response>, Response>>
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    val yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 
-    val jsonConverter = JacksonObjectConverter<Event>()
+    var yamlConverter = ObjectMapper(YAMLFactory()).registerKotlinModule()
+
+    val jsonConverter = JacksonObjectConverter<Event>(true)
 
     val deployments = Deployments()
 
     var enabled = false
+
+    fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+        return this.associate { e -> e.key to e.value }
+    }
 
     fun getServices(): Map<String, Service> {
 
@@ -100,11 +105,11 @@ class Kapplet(
         processBuilder.setEnvironment(service.env)
 
         val consoleFile = workingDir + File.separator + "console.log"
-        processBuilder.setProcessListener(ServiceConsole(consoleFile, "%m"))
+        processBuilder.setConsole(consoleFile, "%m")
 
         logger.info("Starting process: {}", writeYaml(processBuilder))
 
-        return processBuilder.start()
+        return processBuilder.startProcess()
     }
 
     fun stopService(id: String, force: Boolean = false) {
@@ -133,8 +138,10 @@ class Kapplet(
 
         } else {
             val pid = os.findPID(serviceId)
+            logger.info("pid=$pid")
 
             if (pid > 0) {
+                logger.info("shutdown() pid=$pid")
                 val result = os.shutdown(pid)
                 logger.info("result=$result")
             }
@@ -203,7 +210,7 @@ class Kapplet(
         service.process = process
         service.pid = process.pid()
 
-        println("PID=${service.process?.pid()}:${service.process?.isRunning()}")
+        println("PID=${process.pid()}:${process.isRunning()}")
         println("PID=${process.pid()}:${process.isRunning()}")
 
         serviceStore.put(serviceId, yamlConverter.writeValueAsString(service))
@@ -265,13 +272,13 @@ class Kapplet(
         return serviceId
     }
 
-    fun deploy(service: Service, artifacts: Map<String, String>): String {
+    fun deploy(service: Service, artifactMap: Map<String, String>): String {
 
         return try {
             val serviceId = generateServiceId(service)
 
             if (service.artifact != null) {
-                deployArtifact(serviceId, service, artifacts)
+                deployArtifact(serviceId, service, artifactMap)
             } else {
                 defaultDeploy(serviceId, service)
             }
@@ -281,27 +288,21 @@ class Kapplet(
         }
     }
 
-    suspend fun doApply(apply: Apply, detached: Boolean = false): Map<String, Service> {
+    suspend fun doApply(apply: Apply, artifactMap: Map<String, String>, detached: Boolean = false): Map<String, Service> {
         println("'${coroutineContext[CoroutineName.Key]}' apply()")
 
         println(apply)
 
-        val inputStream = getResourceAsInputStream(apply.fileName)
+        apply.serviceMap.values.forEach { service -> deploy(service, artifactMap) }
 
-        val serviceMap = deployments.readDeployment(inputStream)
-
-        println(serviceMap)
-
-        serviceMap.values.forEach { service -> deploy(service, apply.artifacts) }
-
-        return serviceMap
+        return apply.serviceMap
     }
 
     suspend fun apply(apply: Apply): String {
 
         CoroutineScope(dispatcherIO + CoroutineName("apply")).launch {
             try {
-                doApply(apply)
+                doApply(apply, emptyMap())
             } catch (e: Exception) {
                 logger.error(e.message, e)
             }
@@ -423,6 +424,10 @@ class Kapplet(
         loop()
 
         logger.info("Started")
+    }
+
+    fun stop() {
+        logger.info("Stopped")
     }
 
 }

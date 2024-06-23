@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.service.Kapplet
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugin.descriptor.PluginDescriptor
@@ -55,7 +55,7 @@ class StartKappletMojo : AbstractKappaMojo() {
 
         val kapplet = context.getBean(Kapplet::class.java)
 
-        val serviceMap = runBlocking { kapplet.doApply(Apply("/kapplet-lib.yaml", emptyMap())) }
+        val serviceMap = runBlocking { kapplet.doApply(Apply(/*"/kapplet-lib.yaml",*/ emptyMap()), emptyMap()) }
 
         logger.info("Ok\n$serviceMap")
 

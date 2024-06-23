@@ -1,8 +1,7 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.sun.jna.platform.win32.Kernel32
-import com.zaxxer.nuprocess.NuAbstractProcessHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
@@ -22,7 +21,7 @@ class Windows : Os() {
         return Kernel32.INSTANCE.GetCurrentProcessId()
     }
 
-    class ProcessHandler : NuAbstractProcessHandler() {
+    class LocalProcessHandler : ProcessHandler() {
         var result = ""
         var error = ""
 
@@ -62,12 +61,12 @@ class Windows : Os() {
 
         logger.info("command={}", command)
 
-        val ph = ProcessHandler()
+        val ph = LocalProcessHandler()
 
         val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
-            .start()
+            .startProcess()
 
         process.waitFor(20, TimeUnit.SECONDS)
 
@@ -88,12 +87,12 @@ class Windows : Os() {
 
         val command = """cmd /C taskkill /T /F /PID $pid""".split(" ")
 
-        val ph = ProcessHandler()
+        val ph = LocalProcessHandler()
 
         val process = NuProcessBuilderImpl()
             .setCommand(command)
             .setProcessListener(ph)
-            .start()
+            .startProcess()
 
         process.waitFor(20, TimeUnit.SECONDS)
 

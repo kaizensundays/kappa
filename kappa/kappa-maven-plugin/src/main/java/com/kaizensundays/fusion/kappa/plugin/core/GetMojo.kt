@@ -1,5 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin.core
 
+import com.kaizensundays.fusion.kappa.core.api.GetRequest
 import com.kaizensundays.fusion.kappa.plugin.AbstractKappaMojo
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
@@ -25,7 +26,9 @@ class GetMojo : AbstractKappaMojo() {
 
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        val response = producer.request(URI("get:/get"))
+        val body = jsonConverter.fromObject(GetRequest())
+
+        val response = producer.request(URI("post:/handle"), body.toByteArray())
             .blockLast(Duration.ofSeconds(30))
 
         val json = if (response != null) String(response) else "?"

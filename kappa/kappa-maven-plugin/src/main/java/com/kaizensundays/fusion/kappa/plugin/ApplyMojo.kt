@@ -1,8 +1,8 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Apply
-import com.kaizensundays.fusion.kappa.service.Deployments
-import com.kaizensundays.fusion.kappa.service.Service
+import com.kaizensundays.fusion.kappa.core.api.Apply
+import com.kaizensundays.fusion.kappa.core.api.Service
+import com.kaizensundays.fusion.kappa.core.Deployments
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import kotlinx.coroutines.runBlocking
@@ -45,7 +45,7 @@ class ApplyMojo : AbstractKappaMojo() {
         renderVersion(version, serviceMap)
         println("serviceMap=$serviceMap")
 
-        val request = Apply(fileName, emptyMap(), serviceMap)
+        val request = Apply(serviceMap)
 
         println(request)
 

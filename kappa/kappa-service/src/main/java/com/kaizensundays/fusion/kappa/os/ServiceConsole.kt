@@ -1,6 +1,5 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.zaxxer.nuprocess.NuAbstractProcessHandler
 import com.zaxxer.nuprocess.NuProcess
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.Logger
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * @author Sergey Chuykov
  */
 @SuppressWarnings("kotlin:S6518")
-class ServiceConsole(private val fileName: String, private val pattern: String) : NuAbstractProcessHandler() {
+class ServiceConsole(private val fileName: String, private val pattern: String) : ProcessHandler() {
 
     private var nuProcess: NuProcess? = null
 

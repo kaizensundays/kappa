@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.cache
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import java.util.concurrent.ConcurrentHashMap
 import javax.cache.Cache
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd"
+       default-lazy-init="false" default-init-method="start" default-destroy-method="stop">
+
+    <bean id="props" class="com.kaizensundays.fusion.kappa.service.KappletProperties"
+          p:deployerEnabled="${kapplet.deployerEnabled}"
+          p:cacheLocation="${kapplet.cacheLocation}"
+    />
+
+    <bean id="os" class="com.kaizensundays.fusion.kappa.os.OsBean"/>
+
+    <bean id="serviceStore" class="com.kaizensundays.kappa.ServiceStoreBean">
+        <constructor-arg index="0" value="services"/>
+        <constructor-arg index="1" ref="props"/>
+    </bean>
+
+    <bean id="atomixCacheConfiguration" class="io.atomix.jcache.AtomicCacheConfiguration">
+        <property name="expiryPolicy">
+            <bean class="javax.cache.expiry.Duration">
+                <constructor-arg value="DAYS"/>
+                <constructor-arg value="365"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="atomixCacheManager" class="io.atomix.jcache.AtomicCacheManager"
+          p:bootstrap="${atomix.bootstrap}"
+          p:nodeId="${atomix.node.id}"
+          p:host="${atomix.node.host}"
+          p:port="${atomix.node.port}"
+          p:logDir="${atomix.node.data-dir}"
+    />
+
+    <bean id="serviceCache" class="com.kaizensundays.kappa.ServiceCacheBean">
+        <constructor-arg index="0" value="serviceCache"/>
+        <constructor-arg index="1" ref="atomixCacheConfiguration"/>
+        <constructor-arg index="2" ref="atomixCacheManager"/>
+    </bean>
+
+    <bean id="artifactResolutionPendingResults" class="com.kaizensundays.fusion.kappa.core.api.DefaultPendingResults"/>
+
+    <bean id="getArtifactInvoker" class="com.kaizensundays.fusion.kappa.service.GetArtifactInvokerImpl"/>
+
+    <bean id="applyHandler" class="com.kaizensundays.fusion.kappa.core.ApplyHandler">
+        <constructor-arg index="0" ref="getArtifactInvoker"/>
+        <constructor-arg index="1" ref="artifactResolutionPendingResults"/>
+        <constructor-arg index="2">
+            <bean class="com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl"/>
+        </constructor-arg>
+        <constructor-arg index="3" ref="serviceStore"/>
+        <constructor-arg index="4" ref="serviceCache"/>
+    </bean>
+
+    <bean id="artifactResolutionHandler" class="com.kaizensundays.fusion.kappa.core.ArtifactResolutionHandler">
+        <constructor-arg index="0" ref="artifactResolutionPendingResults"/>
+    </bean>
+
+    <bean id="getHandler" class="com.kaizensundays.fusion.kappa.core.GetHandler">
+        <constructor-arg index="0" ref="serviceCache"/>
+    </bean>
+
+    <util:map id="handlers" key-type="java.lang.Class">
+        <entry key="com.kaizensundays.fusion.kappa.core.api.Ping">
+            <bean class="com.kaizensundays.fusion.kappa.core.PingHandler"/>
+        </entry>
+        <entry key="com.kaizensundays.fusion.kappa.core.api.GetRequest" value-ref="getHandler"/>
+        <entry key="com.kaizensundays.fusion.kappa.core.api.Apply" value-ref="applyHandler"/>
+        <entry key="com.kaizensundays.fusion.kappa.core.api.ArtifactResolution" value-ref="artifactResolutionHandler"/>
+    </util:map>
+
+    <bean id="kapplet" class="com.kaizensundays.fusion.kappa.service.Kapplet" p:enabled="false">
+        <constructor-arg index="0" ref="os"/>
+        <constructor-arg index="1">
+            <bean class="com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl"/>
+        </constructor-arg>
+        <constructor-arg index="2" ref="serviceStore"/>
+        <constructor-arg index="3" ref="serviceCache"/>
+        <constructor-arg index="4" ref="handlers"/>
+    </bean>
+
+    <bean class="com.kaizensundays.fusion.kappa.KappletKtorServer">
+        <constructor-arg index="0" value="${kapplet.server.port}"/>
+        <constructor-arg index="1" ref="os"/>
+        <constructor-arg index="2" ref="kapplet"/>
+    </bean>
+
+</beans>

@@ -1,8 +1,8 @@
 package com.kaizensundays.fusion.kappa.os
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.kaizensundays.fusion.kappa.unsupportedOperation
-import com.zaxxer.nuprocess.NuProcessHandler
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import java.io.File
 import java.nio.file.Path
 import java.util.*
@@ -17,7 +17,9 @@ class JDKProcessBuilder : OSProcessBuilder {
     var command: List<String> = emptyList()
     var workingDir = File(".").toPath()
     var environment: Map<String, String> = emptyMap()
-    private var processHandler: NuProcessHandler = NoConsoleProcessHandler()
+    private var processHandler: ProcessHandler = NoConsoleProcessHandler()
+    private var consoleFileName = UUID.randomUUID().toString() + ".console.log"
+    private var consoleLoggingPattern = "%m"
 
     override fun isWindows(props: Properties) = props.getProperty("os.name").startsWith("Windows")
 
@@ -30,14 +32,26 @@ class JDKProcessBuilder : OSProcessBuilder {
 
     override fun setEnvironment(environment: Map<String, String>) = apply { this.environment = environment }
 
-    override fun setProcessListener(listener: NuProcessHandler) = apply { this.processHandler = listener }
+    override fun setProcessListener(listener: Any) = apply {
+        require(listener is ProcessHandler)
+        this.processHandler = listener
+    }
 
-    override fun start(): KappaProcess {
+    override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
+        this.consoleFileName = fileName
+        this.consoleLoggingPattern = pattern
+        return this
+    }
+
+    override fun startProcess(): KappaProcess {
         require(command.isNotEmpty())
 
         val builder = ProcessBuilder(command)
         builder.directory(workingDir.toFile())
         builder.environment().putAll(this.environment)
-        return KappaNuProcess(JDKProcessWrapper(builder.start()))
+        val process = builder.start()
+        processHandler = JDKProcessConsole(consoleFileName, consoleLoggingPattern)
+        processHandler.onStart(process)
+        return JDKProcessWrapper(process)
     }
 }

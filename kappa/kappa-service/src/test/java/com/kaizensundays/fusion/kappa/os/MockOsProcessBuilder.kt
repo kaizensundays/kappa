@@ -1,7 +1,8 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
-import com.zaxxer.nuprocess.NuProcessHandler
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import java.nio.file.Path
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -29,9 +30,13 @@ class MockOsProcessBuilder(private val os: MockOs) : OSProcessBuilder {
 
     override fun setEnvironment(environment: Map<String, String>) = this
 
-    override fun setProcessListener(listener: NuProcessHandler) = this
+    override fun setProcessListener(listener: Any) = this
 
-    override fun start(): KappaProcess {
+    override fun setConsole(fileName: String, pattern: String): OSProcessBuilder {
+        return this
+    }
+
+    override fun startProcess(): KappaProcess {
 
         val pid = os.nextPID()
 

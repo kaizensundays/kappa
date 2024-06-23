@@ -2,7 +2,7 @@ package com.kaizensundays.fusion.kappa.plugin.core
 
 import com.kaizensundays.fusion.kappa.os.JDKProcessBuilder
 import com.kaizensundays.fusion.kappa.plugin.AbstractKappaMojo
-import com.kaizensundays.fusion.kappa.service.Deployments
+import com.kaizensundays.fusion.kappa.core.Deployments
 import kotlinx.coroutines.runBlocking
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
@@ -31,7 +31,7 @@ class RunMojo : AbstractKappaMojo() {
 
         val builder = JDKProcessBuilder()
 
-        val process = builder.setCommand(service.command).start()
+        val process = builder.setCommand(service.command).startProcess()
 
         val exitCode = process.waitFor(10, TimeUnit.SECONDS)
         println("exitCode=$exitCode")
