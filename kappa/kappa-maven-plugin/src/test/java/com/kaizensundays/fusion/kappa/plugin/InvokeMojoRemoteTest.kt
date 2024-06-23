@@ -20,7 +20,7 @@ class InvokeMojoRemoteTest {
         System.setProperty("maven.home", mavenHome ?: "")
 
         val request = DefaultInvocationRequest()
-        request.goals = listOf("com.kaizensundays.fusion:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
+        request.goals = listOf("com.kaizensundays.fusion.kappa:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
         request.baseDirectory = File(".")
         request.properties = mapOf("requestId" to "123").toProperties()
 

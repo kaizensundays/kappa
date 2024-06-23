@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.kaizensundays.fusion</groupId>
+        <groupId>com.kaizensundays.fusion.kappa</groupId>
         <artifactId>kappa-parent</artifactId>
         <version>0.0.0-SNAPSHOT</version>
         <relativePath>../kappa-parent/pom.xml</relativePath>
@@ -25,9 +25,16 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.kaizensundays.fusion</groupId>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
             <artifactId>kappa-service</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- Atomix -->
+        <dependency>
+            <groupId>io.atomix</groupId>
+            <artifactId>atomix-jcache</artifactId>
+            <version>3.3.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.kaizensundays.fusion</groupId>
+        <groupId>com.kaizensundays.fusion.kappa</groupId>
         <artifactId>kappa-parent</artifactId>
         <version>0.0.0-SNAPSHOT</version>
         <relativePath>../kappa-parent/pom.xml</relativePath>
@@ -14,7 +14,7 @@
 
         <!-- Kappa -->
         <dependency>
-            <groupId>com.kaizensundays.fusion</groupId>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
             <artifactId>kappa-service</artifactId>
             <version>${project.version}</version>
         </dependency>

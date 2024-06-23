@@ -75,7 +75,7 @@ class ObjectSerializationTest {
         assertTrue(obj is Apply)
 
         assertEquals("easybox", obj.serviceMap["easybox"]?.name)
-        assertEquals("com.kaizensundays.fusion:kappa-node:%%version%%:jar", obj.serviceMap["easybox"]?.artifact)
+        assertEquals("com.kaizensundays.fusion.kappa:kappa-node:%%version%%:jar", obj.serviceMap["easybox"]?.artifact)
     }
 
 }

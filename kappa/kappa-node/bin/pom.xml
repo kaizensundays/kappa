@@ -2,14 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.kaizensundays.fusion</groupId>
+    <groupId>com.kaizensundays.fusion.kappa</groupId>
     <artifactId>kappa-service-bin</artifactId>
     <version>0.0.0-SNAPSHOT</version>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.kaizensundays.fusion</groupId>
+                <groupId>com.kaizensundays.fusion.kappa</groupId>
                 <artifactId>kappa-maven-plugin</artifactId>
                 <version>${project.version}</version>
             </plugin>
