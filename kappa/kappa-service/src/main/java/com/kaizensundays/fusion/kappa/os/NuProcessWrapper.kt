@@ -1,7 +1,9 @@
 package com.kaizensundays.fusion.kappa.os
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.isWindows
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
 import com.zaxxer.nuprocess.NuProcess
+import org.jvnet.winp.WinProcess
 import java.util.concurrent.TimeUnit
 
 /**
@@ -19,12 +21,31 @@ class NuProcessWrapper(private val process: NuProcess) : KappaProcess {
         return process.isRunning
     }
 
+    override fun toString(): String {
+        return "NuProcess(${pid()}:${isRunning()})"
+    }
+
     override fun shutdown(timeout: Long, timeUnit: TimeUnit) {
-        unsupportedOperation()
+        if (isWindows()) {
+            println("Stopping WinProcess...")
+            val stopped = WinProcess(pid()).sendCtrlC()
+            println("stopped=$stopped")
+            if (!stopped) {
+                process.destroy(false)
+            }
+        } else {
+            process.destroy(false)
+        }
+        println("isRunning=${isRunning()}")
+        process.waitFor(timeout, timeUnit)
     }
 
     override fun waitFor(timeout: Long, timeUnit: TimeUnit): Int {
-        return process.waitFor(timeout, timeUnit)
+        val code = process.waitFor(timeout, timeUnit)
+        if (code != 0) {
+            destroy(true)
+        }
+        return code
     }
 
     override fun destroy(force: Boolean) {

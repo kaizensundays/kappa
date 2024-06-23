@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Apply
+import com.kaizensundays.fusion.kappa.core.api.Apply
 import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.messaging.Instance
 import kotlinx.coroutines.runBlocking
@@ -44,7 +44,7 @@ class WindowsNodeInstaller(artifactManager: ArtifactManager, mojo: AbstractKappa
 
         val kapplet = context.getBean(Kapplet::class.java)
 
-        serviceMap = runBlocking { kapplet.doApply(Apply(fileName, artifactMap), true) }
+        serviceMap = runBlocking { kapplet.doApply(Apply(/*fileName,*/ emptyMap()), artifactMap, true) }
 
         println("*serviceMap=$serviceMap")
 

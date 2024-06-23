@@ -1,17 +1,20 @@
 package com.kaizensundays.fusion.kappa.service
 
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
-import com.kaizensundays.fusion.kappa.event.Handler
-import com.kaizensundays.fusion.kappa.event.Request
-import com.kaizensundays.fusion.kappa.event.Response
-import com.kaizensundays.fusion.kappa.isWindows
-import com.kaizensundays.fusion.kappa.messages.Ping
-import com.kaizensundays.fusion.kappa.messages.PingResponse
-import com.kaizensundays.fusion.kappa.os.KappaProcess
-import com.kaizensundays.fusion.kappa.os.OSProcessBuilder
+import com.kaizensundays.fusion.kappa.core.Deployments
+import com.kaizensundays.fusion.kappa.core.PingHandler
+import com.kaizensundays.fusion.kappa.core.api.Apply
+import com.kaizensundays.fusion.kappa.core.api.Handler
+import com.kaizensundays.fusion.kappa.core.api.Request
+import com.kaizensundays.fusion.kappa.core.api.Response
+import com.kaizensundays.fusion.kappa.core.api.Service
+import com.kaizensundays.fusion.kappa.core.api.isWindows
+import com.kaizensundays.fusion.kappa.core.api.Ping
+import com.kaizensundays.fusion.kappa.core.api.PingResponse
+import com.kaizensundays.fusion.kappa.os.api.KappaProcess
+import com.kaizensundays.fusion.kappa.os.api.OSProcessBuilder
 import com.kaizensundays.fusion.kappa.os.Os
-import com.kaizensundays.fusion.kappa.toMap
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.BeforeEach
@@ -24,6 +27,7 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import org.springframework.core.io.ClassPathResource
 import java.util.*
+import javax.cache.Cache
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -54,6 +58,10 @@ class KappletTest {
         "com.kaizensundays.particles:fusion-mu:0.0.0-SNAPSHOT:jar"
                 to """C:\super\m2n\com\kaizensundays\particles\fusion-mu\0.0.0-SNAPSHOT\fusion-mu-0.0.0-SNAPSHOT.jar"""
     )
+
+    fun <K, V> Cache<K, V>.toMap(): Map<K, V> {
+        return this.associate { e -> e.key to e.value }
+    }
 
     @BeforeEach
     fun before() {
@@ -160,6 +168,9 @@ class KappletTest {
     @Test
     fun deployArtifact() {
 
+        kapplet.yamlConverter = mock()
+        val process: KappaProcess = mock()
+
         val serviceMap = deployments.readBlocking("deployment.yaml")
 
         val service = serviceMap["fusion-mu"]
@@ -168,9 +179,8 @@ class KappletTest {
 
         val serviceId = "fusion-mu-uuid"
 
-        val process: KappaProcess = mock()
-
-        whenever(pb.start()).thenReturn(process)
+        whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
+        whenever(pb.startProcess()).thenReturn(process)
 
         kapplet.deployArtifact(serviceId, service, emptyMap())
     }
@@ -178,17 +188,23 @@ class KappletTest {
     @Test
     fun apply() {
 
+        kapplet.yamlConverter = mock()
         val process: KappaProcess = mock()
 
-        whenever(pb.start()).thenReturn(process)
+        whenever(kapplet.yamlConverter.writeValueAsString(any())).thenReturn("?")
+        whenever(pb.startProcess()).thenReturn(process)
 
-        val apply = Apply("/deployment.yaml", emptyMap())
+        var serviceMap = runBlocking {
+            kapplet.deployments.readAndValidateDeployment("/deployment.yaml")
+        }
 
-        val serviceMap = runBlocking { kapplet.doApply(apply) }
+        val apply = Apply(serviceMap)
+
+         serviceMap = runBlocking { kapplet.doApply(apply, emptyMap()) }
 
         assertEquals(4, serviceMap.size)
 
-        verify(pb, Mockito.times(4)).start()
+        verify(pb, Mockito.times(4)).startProcess()
     }
 
     @Test

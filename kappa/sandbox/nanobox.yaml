@@ -1,0 +1,10 @@
+---
+services:
+  - name: nanobox
+    artifact: "com.kaizensundays.fusion.nanobox:nanobox:0.0.1-SNAPSHOT:jar"
+    env:
+      SERVER_PORT: "7711"
+    jvmOptions:
+      - "-Dx=X"
+    mainClass: "com.kaizensundays.fusion.nanobox.Main"
+    hasConsole: "true"

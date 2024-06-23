@@ -1,0 +1,29 @@
+#
+# single node, local
+#
+atomix:
+  bootstrap: K:localhost:5501
+  node:
+    id: K # unassigned
+    host: localhost
+    port: 5501
+    data-dir: target
+
+server:
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 3m
+
+kappa:
+  default:
+    host: localhost:7701
+  server:
+    port: 7700
+
+kapplet:
+  server:
+    port: 7701
+  deployerEnabled: true
+  cacheLocation: .kappa/cache

@@ -1,12 +1,12 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.Kappa
+import com.kaizensundays.fusion.kappa.core.api.Kappa
 import com.kaizensundays.fusion.kappa.service.Result
-import com.kaizensundays.fusion.kappa.os.CommandBuilder
-import com.kaizensundays.fusion.kappa.os.CommandTarget
+import com.kaizensundays.fusion.kappa.os.api.CommandBuilder
+import com.kaizensundays.fusion.kappa.os.api.CommandTarget
 import com.kaizensundays.fusion.kappa.os.Linux
-import com.kaizensundays.fusion.kappa.os.LinuxCommandBuilder
-import com.kaizensundays.fusion.kappa.uppercaseFirstChar
+import com.kaizensundays.fusion.kappa.os.api.LinuxCommandBuilder
+import com.kaizensundays.fusion.kappa.core.api.uppercaseFirstChar
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.*

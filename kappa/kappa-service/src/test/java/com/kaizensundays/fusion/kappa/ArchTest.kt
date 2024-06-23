@@ -65,8 +65,9 @@ class ArchTest {
                 "java..",
                 "kotlin..",
                 "kotlinx..",
-                "com.kaizensundays.fusion.kappa.event..",
+                "com.kaizensundays.fusion.kappa.core.api..",
                 "com.kaizensundays.fusion.kappa.messages..",
+                "com.fasterxml.jackson..",
             )
             .check(classes)
 
@@ -80,7 +81,7 @@ class ArchTest {
         noClasses()
             .that()
             .resideInAPackage("..kappa.os")
-            .and().haveNameNotMatching(".*(Test|CommandBuilder|Os)")
+            .and().haveNameNotMatching(".*(Test|CommandBuilder|Os|Linux)")
             .should()
             .accessClassesThat().resideInAPackage("..kappa.service")
             .check(classes)

@@ -3,7 +3,7 @@ package com.kaizensundays.fusion.kappa.plugin
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheConfiguration
 import com.kaizensundays.fusion.kappa.cache.FileSystemCacheManager
 import com.kaizensundays.fusion.kappa.cache.InMemoryCache
-import com.kaizensundays.fusion.kappa.isWindows
+import com.kaizensundays.fusion.kappa.core.api.isWindows
 import com.kaizensundays.fusion.kappa.os.Linux
 import com.kaizensundays.fusion.kappa.os.NuProcessBuilderImpl
 import com.kaizensundays.fusion.kappa.os.Os

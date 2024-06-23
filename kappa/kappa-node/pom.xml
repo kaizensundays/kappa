@@ -14,6 +14,17 @@
 
         <!-- Kappa -->
         <dependency>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
+            <artifactId>kappa-core</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.kaizensundays.fusion</groupId>
             <artifactId>kappa-service</artifactId>
             <version>${project.version}</version>

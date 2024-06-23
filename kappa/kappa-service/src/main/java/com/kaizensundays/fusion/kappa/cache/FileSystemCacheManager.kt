@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.cache
 
-import com.kaizensundays.fusion.kappa.unsupportedOperation
+import com.kaizensundays.fusion.kappa.core.api.unsupportedOperation
 import java.io.File
 import java.net.URI
 import java.util.*

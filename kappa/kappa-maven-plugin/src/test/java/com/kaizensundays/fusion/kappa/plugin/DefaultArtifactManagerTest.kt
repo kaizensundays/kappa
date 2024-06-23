@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.service.Service
+import com.kaizensundays.fusion.kappa.core.api.Service
 import org.eclipse.aether.DefaultRepositorySystemSession
 import org.eclipse.aether.repository.RepositoryPolicy
 import org.junit.jupiter.api.Test

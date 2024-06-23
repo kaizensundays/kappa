@@ -1,8 +1,6 @@
-@file:Suppress("unused")
-
 package com.kaizensundays.kappa
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import org.springframework.context.support.ClassPathXmlApplicationContext
 
 /**
  * Created: Monday 9/5/2022, 1:40 PM Eastern Time
@@ -14,7 +12,7 @@ object KappletMain {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val context = AnnotationConfigApplicationContext(KappletContext::class.java)
+        val context = ClassPathXmlApplicationContext("KappletContextConfig.xml", "KappletContext.xml")
         context.registerShutdownHook()
 
     }

@@ -41,6 +41,11 @@
             <artifactId>fusion-ktor</artifactId>
             <version>0.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
+            <artifactId>kappa-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
@@ -132,6 +137,13 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!-- Atomix -->
+        <dependency>
+            <groupId>io.atomix</groupId>
+            <artifactId>atomix-jcache</artifactId>
+            <version>3.3.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- Commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -143,6 +155,12 @@
         <dependency>
             <groupId>org.apache.maven.shared</groupId>
             <artifactId>maven-invoker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kaizensundays.fusion.kappa</groupId>
+            <artifactId>kappa-core</artifactId>
+            <version>0.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

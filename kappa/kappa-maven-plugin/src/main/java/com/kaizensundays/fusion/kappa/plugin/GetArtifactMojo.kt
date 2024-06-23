@@ -1,6 +1,6 @@
 package com.kaizensundays.fusion.kappa.plugin
 
-import com.kaizensundays.fusion.kappa.messages.ArtifactResolution
+import com.kaizensundays.fusion.kappa.core.api.ArtifactResolution
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
