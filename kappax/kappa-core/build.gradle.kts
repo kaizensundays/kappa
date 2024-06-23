@@ -31,6 +31,7 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withSourcesJar()
 }
 
 tasks.withType<Test> {
@@ -38,10 +39,6 @@ tasks.withType<Test> {
     filter {
         excludeTestsMatching("*RemoteTest")
     }
-}
-
-java {
-    withSourcesJar()
 }
 
 tasks.publish {

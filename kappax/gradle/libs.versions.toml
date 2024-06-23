@@ -44,7 +44,6 @@ commons-compress = { module = "org.apache.commons:commons-compress", version="1.
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
-jcache = { module = "javax.cache:cache-api", version.ref = "jcache-version" }
 
 spring-context-support = { module= "org.springframework:spring-context-support", version.ref="spring-version" }
 spring-test = { module= "org.springframework:spring-test", version.ref="spring-version" }
@@ -56,3 +55,6 @@ winp = { module = "org.jvnet.winp:winp", version = "1.28" }
 maven-invoker = { module = "org.apache.maven.shared:maven-invoker", version = "3.2.0" }
 
 fusion-ktor = { module = "com.kaizensundays.fusion:fusion-ktor", version.ref ="fusion-ktor-version" }
+
+jcache = { module = "javax.cache:cache-api", version.ref = "jcache-version" }
+atomix = { module = "io.atomix:atomix-jcache", version = "3.3.0-SNAPSHOT" }
