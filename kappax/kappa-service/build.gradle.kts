@@ -12,8 +12,8 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":kappa-core-api"))
-    implementation(project(":kappa-core"))
+    api(project(":kappa-core-api"))
+    api(project(":kappa-core"))
 
     implementation(libs.fusion.ktor)
 
@@ -26,7 +26,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation.jvm)
     implementation(libs.ktor.serialization.kotlinx.json.jvm)
 
-    implementation(libs.spring.context.support)
+    api(libs.spring.context.support)
 
     implementation(libs.javax.annotation)
 
@@ -34,7 +34,7 @@ dependencies {
     implementation(libs.jackson.dataformat.yaml)
     implementation(libs.jackson.module.kotlin)
 
-    implementation(libs.jcache)
+    api(libs.jcache)
 
     implementation(libs.nuprocess)
     implementation(libs.jna)
