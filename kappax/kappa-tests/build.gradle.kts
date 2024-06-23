@@ -26,8 +26,10 @@ dependencies {
     testImplementation(libs.testcontainers)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 val profile: String? by project

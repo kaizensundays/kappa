@@ -28,8 +28,10 @@ dependencies {
     testImplementation(libs.mockk)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 tasks.withType<Test> {
