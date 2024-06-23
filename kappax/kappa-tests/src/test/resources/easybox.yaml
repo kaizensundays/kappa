@@ -1,7 +1,7 @@
 ---
 services:
   - name: easybox
-    artifact: "com.kaizensundays.fusion:kappa-node:%%version%%:jar"
+    artifact: "com.kaizensundays.fusion.kappa:kappa-node:%%version%%:jar"
     env:
       EASYBOX_PORT: "7701"
     jvmOptions:
