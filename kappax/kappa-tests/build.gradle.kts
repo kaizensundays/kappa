@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
@@ -11,6 +10,9 @@ version = "0.0.0-SNAPSHOT"
 dependencies {
     implementation(project(":kappa-core-api"))
     implementation(project(":kappa-core"))
+    implementation(libs.fusion.ktor) {
+        exclude("org.apache.logging.log4j")
+    }
 
     implementation(libs.kotlinx.serialization)
     implementation(libs.logback.classic)
@@ -21,11 +23,12 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(libs.testcontainers)
-    testImplementation(libs.fusion.ktor)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 val profile: String? by project

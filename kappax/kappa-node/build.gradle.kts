@@ -2,6 +2,7 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("org.springframework.boot")
     id("com.jfrog.artifactory")
     id("dependency-management")
     `maven-publish`
@@ -11,20 +12,14 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":kappa-core-api"))
+    implementation(project(":kappa-service")) {
+        exclude("ch.qos.logback")
+    }
 
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.coroutines.core.jvm)
-    implementation(libs.logback.classic)
-    implementation(libs.jackson.databind)
-    implementation(libs.jackson.dataformat.yaml)
-    implementation(libs.jackson.module.kotlin)
-    implementation(libs.jcache)
+    implementation(libs.atomix)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockk)
 }
 
 java {
@@ -41,6 +36,11 @@ tasks.withType<Test> {
     }
 }
 
+tasks.bootJar {
+    archiveFileName.set("kappa.jar")
+    destinationDirectory.set(file("bin"))
+}
+
 tasks.publish {
     dependsOn("assemble")
 }
@@ -53,8 +53,11 @@ publishing {
 
 configure<PublishingExtension> {
     publications {
-        create<MavenPublication>("java") {
+        create<MavenPublication>("bootJava") {
             from(components["java"])
+            artifact(tasks.bootJar) {
+                artifactId = "kappa-node"
+            }
         }
     }
 }
@@ -69,7 +72,7 @@ artifactory {
             setMavenCompatible(true)
         }
         defaults {
-            publications("java")
+            publications("bootJava")
             setPublishArtifacts(true)
             setPublishPom(true)
         }
