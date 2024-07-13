@@ -6,7 +6,11 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
 import com.kaizensundays.fusion.kappa.core.Deployments
-import com.kaizensundays.fusion.kappa.core.api.*
+import com.kaizensundays.fusion.kappa.core.api.Apply
+import com.kaizensundays.fusion.kappa.core.api.ApplyResponse
+import com.kaizensundays.fusion.kappa.core.api.GetRequest
+import com.kaizensundays.fusion.kappa.core.api.GetResponse
+import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
@@ -20,7 +24,9 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
 import java.lang.Thread.sleep
+import java.net.InetAddress
 import java.net.URI
+import java.net.UnknownHostException
 import java.time.Duration
 
 /**
@@ -36,12 +42,25 @@ class KappletContainerTest {
 
         private const val IMAGE = "localhost:32000/kappa:latest"
 
+        private const val KUBE_HOST = "Nevada"
+
         private val container: GenericContainer<*> = GenericContainer<Nothing>(DockerImageName.parse(IMAGE))
+
+        @JvmStatic
+        fun resolve(hostname: String): String {
+            return try {
+                InetAddress.getByName(hostname).hostAddress
+            } catch (e: UnknownHostException) {
+                throw RuntimeException(e)
+            }
+        }
 
         @JvmStatic
         @BeforeAll
         fun beforeAll() {
+            val kubeIp = resolve(KUBE_HOST)
             container.withExposedPorts(SERVER_PORT)
+                .withExtraHost(KUBE_HOST, kubeIp)
                 .waitingFor(Wait.forHttp("/ping"))
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.withName("kapplet-test")
@@ -120,7 +139,7 @@ class KappletContainerTest {
         val port = container.getMappedPort(SERVER_PORT)
         println("port=$port")
 
-        val instance = Instance("Nevada", port)
+        val instance = Instance(KUBE_HOST, port)
 
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
@@ -128,22 +147,22 @@ class KappletContainerTest {
         assertEquals(0, response.code)
         assertEquals(0, response.services.size)
 
-        sleep(100_000)
+        sleep(1_000)
 
         val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
         assertEquals(0, applyResponse.code)
 
-        sleep(100_000)
+        sleep(10_000)
 
         response = producer.executeGet()
         assertEquals(0, response.code)
         assertEquals(1, response.services.size)
 
-        sleep(100_000)
+        sleep(10_000)
 
         producer.executeStop("easybox")
 
-        sleep(3_000)
+        sleep(1_000)
 
         response = producer.executeGet()
         assertEquals(0, response.code)
