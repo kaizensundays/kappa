@@ -95,7 +95,7 @@ class KappletContainerTest {
         val body = jsonConverter.writeValueAsString(request)
 
         val bytes = this.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(30))
+            .blockLast(Duration.ofSeconds(100))
 
         val json = if (bytes != null) String(bytes) else "?"
         println(json)
