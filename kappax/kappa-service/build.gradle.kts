@@ -11,20 +11,45 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":kappa-core-api"))
+    api(project(":kappa-core-api"))
+    api(project(":kappa-core"))
+
+    implementation(libs.fusion.ktor)
 
     implementation(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.coroutines.core.jvm)
-    implementation(libs.logback.classic)
+
+    implementation(libs.ktor.server.core.jvm)
+    implementation(libs.ktor.server.cio.jvm)
+    implementation(libs.ktor.server.cors.jvm)
+    implementation(libs.ktor.server.status.pages.jvm)
+    implementation(libs.ktor.server.content.negotiation.jvm)
+    implementation(libs.ktor.serialization.kotlinx.json.jvm)
+
+    api(libs.spring.context.support)
+
+    implementation(libs.javax.annotation)
+
     implementation(libs.jackson.databind)
     implementation(libs.jackson.dataformat.yaml)
     implementation(libs.jackson.module.kotlin)
-    implementation(libs.jcache)
+
+    api(libs.jcache)
+
+    implementation(libs.nuprocess)
+    implementation(libs.jna)
+    implementation(libs.winp)
+
+    implementation(libs.commons.compress)
+
+    implementation(libs.maven.invoker)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockk)
+
+    testImplementation(libs.spring.test)
+    testImplementation(libs.archunit) {
+        exclude("org.slf4j")
+    }
 }
 
 java {

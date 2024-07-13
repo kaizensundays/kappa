@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
@@ -20,8 +19,11 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+    withSourcesJar()
 }
 
 tasks.withType<Test> {
@@ -29,10 +31,6 @@ tasks.withType<Test> {
     filter {
         excludeTestsMatching("*RemoteTest")
     }
-}
-
-java {
-    withSourcesJar()
 }
 
 tasks.publish {

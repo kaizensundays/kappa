@@ -11,20 +11,12 @@ group = "com.kaizensundays.fusion.kappa"
 version = "0.0.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":kappa-core-api"))
+    implementation(project(":kappa-service"))
 
     implementation(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.coroutines.core.jvm)
-    implementation(libs.logback.classic)
-    implementation(libs.jackson.databind)
-    implementation(libs.jackson.dataformat.yaml)
-    implementation(libs.jackson.module.kotlin)
-    implementation(libs.jcache)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockk)
 }
 
 java {
