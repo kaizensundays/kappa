@@ -128,18 +128,18 @@ class KappletContainerTest {
         assertEquals(0, response.code)
         assertEquals(0, response.services.size)
 
-        sleep(1_000)
+        sleep(100_000)
 
         val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
         assertEquals(0, applyResponse.code)
 
-        sleep(1_000)
+        sleep(100_000)
 
         response = producer.executeGet()
         assertEquals(0, response.code)
         assertEquals(1, response.services.size)
 
-        sleep(1_000)
+        sleep(100_000)
 
         producer.executeStop("easybox")
 
