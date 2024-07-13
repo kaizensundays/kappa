@@ -43,6 +43,8 @@ dependencies {
 
     implementation(libs.maven.invoker)
 
+    implementation(libs.ktor.server.webjars)
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
 

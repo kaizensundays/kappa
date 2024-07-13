@@ -18,6 +18,8 @@ dependencies {
 
     implementation(libs.atomix)
 
+    implementation(libs.webjars.htmx)
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
 }
