@@ -1,4 +1,3 @@
-
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -41,6 +40,11 @@ tasks.withType<Test> {
 tasks.bootJar {
     archiveFileName.set("kappa.jar")
     destinationDirectory.set(file("bin"))
+    // copy static content to Boot JAR root for Ktor
+    from("src/main/resources/static") {
+        include("**/*.html")
+        into("/static")
+    }
 }
 
 tasks.publish {
