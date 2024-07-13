@@ -86,4 +86,7 @@
         <constructor-arg index="2" ref="kapplet"/>
     </bean>
 
+    <bean class="com.kaizensundays.fusion.kappa.KappletWebServer">
+        <constructor-arg index="0" value="${kapplet.web.port}"/>
+    </bean>
 </beans>
