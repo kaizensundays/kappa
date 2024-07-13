@@ -6,7 +6,6 @@ import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.http.content.defaultResource
 import io.ktor.server.http.content.resource
-import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
 import io.ktor.server.http.content.staticBasePackage
 import io.ktor.server.response.respondText
@@ -37,11 +36,15 @@ class KappletWebServer(
                     resource("index.html")
                     defaultResource("index.html")
                 }
-/*
                 get("/ping") {
                     call.respondText("Web: Ok")
                 }
-*/
+                get("/get") {
+                    call.respondText { "<h3>Hello HTMX !</h3>" }
+                }
+                get("/empty") {
+                    call.respondText { "" }
+                }
             }
         }.start(wait = true)
     }

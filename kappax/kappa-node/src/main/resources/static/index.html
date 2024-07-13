@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Oops</title>
+    <script src="https://unpkg.com/htmx.org@2.0.1/dist/htmx.js" integrity="sha384-gpIh5aLQ0qmX8kZdyhsd6jA24uKLkqIr1WAGtantR4KsS97l/NRBvh8/8OYGThAf" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<h1>Ok</h1>
+<h1>Try:</h1>
+
+<button hx-get="/get" hx-trigger="click" hx-target="#div-get" >Get</button>
+<button hx-get="/empty" hx-trigger="click" hx-target="#div-get" >Clear</button>
+
+<div id="div-get"></div>
 
 </body>
 </html>
