@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Oops</title>
+    <!--
+        <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet"/>
+    -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/webjars/htmx.org/2.0.1/dist/htmx.js"></script>
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        .kappa-button {
+            @apply focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
+        }
+
+    </style>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-<h1>Try:</h1>
-
-<button hx-get="/get" hx-trigger="click" hx-target="#div-get" >Get</button>
-<button hx-get="/empty" hx-trigger="click" hx-target="#div-get" >Clear</button>
-
-<div id="div-get"></div>
+<div class="bg-white p-8 rounded-lg shadow-md w-96">
+    <form>
+        <div class="mb-6">
+            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message:</label>
+            <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" required></textarea>
+        </div>
+        <div class="flex items-center justify-center">
+            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#message">Get</button>
+            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#message">Clear</button>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
