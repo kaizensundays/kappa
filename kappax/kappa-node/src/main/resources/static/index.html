@@ -17,19 +17,59 @@
             @apply focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
         }
 
+        .kappa-th {
+            border-width: 2px;
+            padding: 10px;
+        }
+
+        .kappa-td {
+            border-width: 2px;
+            padding: 10px;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-<div class="bg-white p-8 rounded-lg shadow-md w-96">
+<div class="bg-white rounded-lg shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
     <form>
+        <div class="justify-center shadow-md" style="height: 400px;">
+            <table class="border-2" style="width: 100%; margin: 5px">
+                <thead class="border-2 m-3">
+                <tr>
+                    <th class="kappa-th">Name</th>
+                    <th class="kappa-th">PID</th>
+                    <th class="kappa-th">Main Class</th>
+                </tr>
+                </thead>
+                <tbody id="services-tbody">
+<!--
+                <tr>
+                    <td class="kappa-td">Process 1</td>
+                    <td class="kappa-td">1234</td>
+                    <td class="kappa-td">com.example.MainClass1</td>
+                </tr>
+                <tr>
+                    <td class="kappa-td">Process 2</td>
+                    <td class="kappa-td">5678</td>
+                    <td class="kappa-td">com.example.MainClass2</td>
+                </tr>
+                <tr>
+                    <td class="kappa-td">Process 3</td>
+                    <td class="kappa-td">9012</td>
+                    <td class="kappa-td">com.example.MainClass3</td>
+                </tr>
+-->
+                </tbody>
+            </table>
+        </div>
+        <div class="flex items-center justify-center" style="margin: 10px; padding: 10px">
+            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#services-tbody">Get</button>
+            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#services-tbody">Clear</button>
+        </div>
         <div class="mb-8">
             <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message:</label>
             <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" required></textarea>
-        </div>
-        <div class="flex items-center justify-center">
-            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#message">Get</button>
-            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#message">Clear</button>
         </div>
     </form>
 </div>
