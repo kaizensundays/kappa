@@ -30,7 +30,7 @@ class KappletWebServer(
     private var engine: ApplicationEngine? = null
 
     private fun startServer() {
-        embeddedServer(CIO, port = this.port, watchPaths = listOf("resources")) {
+        embeddedServer(CIO, port = this.port, watchPaths = listOf("classes", "resources")) {
             install(Webjars)
             routing {
                 static("/") {
@@ -42,7 +42,9 @@ class KappletWebServer(
                     call.respondText("Web: Ok")
                 }
                 get("/get") {
-                    call.respondText { "Hello HTMX !" }
+                    call.respondText { """{
+                        | "id": "1"
+                        |  }""".trimMargin() }
                 }
                 get("/empty") {
                     call.respondText { "" }
