@@ -1,15 +1,19 @@
 package com.kaizensundays.fusion.kappa.web
 
-import com.kaizensundays.fusion.kappa.core.api.Service
+import com.kaizensundays.fusion.kappa.service.Kapplet
 
 /**
  * Created: Sunday 7/14/2024, 3:36 PM Eastern Time
  *
  * @author Sergey Chuykov
  */
-class WebController {
+class WebController(
+    private val kapplet: Kapplet
+) {
 
-    fun render(services: Map<String, Service>): String {
+    fun render(): String {
+
+        val services = kapplet.getServices()
 
         return """
         <tr>

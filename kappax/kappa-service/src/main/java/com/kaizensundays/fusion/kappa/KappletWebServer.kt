@@ -1,6 +1,5 @@
 package com.kaizensundays.fusion.kappa
 
-import com.kaizensundays.fusion.kappa.service.Kapplet
 import com.kaizensundays.fusion.kappa.web.WebController
 import io.ktor.server.application.call
 import io.ktor.server.application.install
@@ -25,12 +24,10 @@ import org.slf4j.LoggerFactory
  */
 class KappletWebServer(
     private val port: Int,
-    private val kapplet: Kapplet
+    private val controller: WebController
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-
-    private val controller = WebController()
 
     private var engine: ApplicationEngine? = null
 
@@ -48,8 +45,7 @@ class KappletWebServer(
                     call.respondText("Web: Ok")
                 }
                 get("/get") {
-                    val services = kapplet.getServices()
-                    val html = controller.render(services)
+                    val html = controller.render()
                     call.respondText { html }
                 }
                 get("/empty") {
