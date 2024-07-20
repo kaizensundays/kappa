@@ -42,7 +42,7 @@ tasks.bootJar {
     destinationDirectory.set(file("bin"))
     // copy static content to Boot JAR root for Ktor
     from("src/main/resources/static") {
-        include("**/*.html")
+        include("**/*.*")
         into("/static")
     }
 }

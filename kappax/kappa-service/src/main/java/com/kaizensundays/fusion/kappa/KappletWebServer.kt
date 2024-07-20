@@ -41,6 +41,7 @@ class KappletWebServer(
                 static("/") {
                     staticBasePackage = "static"
                     resource("index.html")
+                    resource("kappa.css")
                     defaultResource("index.html")
                 }
                 get("/ping") {
