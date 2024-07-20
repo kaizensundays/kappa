@@ -1,6 +1,7 @@
 package com.kaizensundays.fusion.kappa.web
 
 import com.kaizensundays.fusion.kappa.service.Kapplet
+import kotlinx.html.TABLE
 import kotlinx.html.stream.createHTML
 import kotlinx.html.style
 import kotlinx.html.table
@@ -21,17 +22,22 @@ class WebController(
 
     private val kappaTh = "kappa-th"
     private val kappaTd = "kappa-td"
+    private val tableStyle = "width: 100%; margin: 5px"
+
+    private fun TABLE.thead() {
+        style = tableStyle
+        thead("border-2 m-3") {
+            tr {
+                th(classes = kappaTh) { +"Name" }
+                th(classes = kappaTh) { +"PID" }
+                th(classes = kappaTh) { +"Main Class" }
+            }
+        }
+    }
 
     fun renderServices(): String {
         return createHTML().table("border-2") {
-            style = "width: 100%; margin: 5px"
-            thead("border-2 m-3") {
-                tr {
-                    th(classes = kappaTh) { +"Name" }
-                    th(classes = kappaTh) { +"PID" }
-                    th(classes = kappaTh) { +"Main Class" }
-                }
-            }
+            thead()
             tbody {
                 tr {
                     td(classes = kappaTd) { +"Process 1" }
@@ -55,14 +61,7 @@ class WebController(
 
     fun clearServices(): String {
         return createHTML().table("border-2") {
-            style = "width: 100%; margin: 5px"
-            thead("border-2 m-3") {
-                tr {
-                    th(classes = kappaTh) { +"Name" }
-                    th(classes = kappaTh) { +"PID" }
-                    th(classes = kappaTh) { +"Main Class" }
-                }
-            }
+            thead()
         }
     }
 
