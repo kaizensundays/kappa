@@ -45,11 +45,12 @@ class KappletWebServer(
                     call.respondText("Web: Ok")
                 }
                 get("/get") {
-                    val html = controller.render()
+                    val html = controller.renderServices()
                     call.respondText { html }
                 }
                 get("/empty") {
-                    call.respondText { "" }
+                    val html = controller.clearServices()
+                    call.respondText { html }
                 }
             }
         }.start(wait = true)

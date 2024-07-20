@@ -35,7 +35,7 @@
 
 <div class="bg-white rounded-lg shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
     <form>
-        <div class="justify-center shadow-md" style="height: 400px;">
+        <div id="services-div" class="justify-center shadow-md" style="height: 400px;">
             <table class="border-2" style="width: 100%; margin: 5px">
                 <thead class="border-2 m-3">
                 <tr>
@@ -44,7 +44,7 @@
                     <th class="kappa-th">Main Class</th>
                 </tr>
                 </thead>
-                <tbody id="services-tbody">
+                <tbody>
 <!--
                 <tr>
                     <td class="kappa-td">Process 1</td>
@@ -66,8 +66,8 @@
             </table>
         </div>
         <div class="flex items-center justify-center" style="margin: 10px; padding: 10px">
-            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#services-tbody">Get</button>
-            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#services-tbody">Clear</button>
+            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#services-div">Get</button>
+            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#services-div">Clear</button>
         </div>
         <div class="mb-8">
             <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message:</label>
