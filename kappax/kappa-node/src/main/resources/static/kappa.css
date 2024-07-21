@@ -1,4 +1,26 @@
 
+.tw-block {
+    display: block;
+}
+
+.tw-font-bold {
+    font-weight: 700;
+}
+
+.tw-mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.tw-text-gray-700 {
+    --tw-text-opacity: 1;
+    color: rgba(55, 65, 81, var(--tw-text-opacity));
+}
+
+.tw-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
 .tw-bg-white {
     --bg-opacity: 1;
     background-color: #fff;
