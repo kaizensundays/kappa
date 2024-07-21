@@ -22,19 +22,21 @@ class WebController(
     private val kappaTh = "kappa-th"
     private val kappaTd = "kappa-td"
 
-    private fun TABLE.thead() {
-        thead("border-2 m-3") {
-            tr {
-                th(classes = kappaTh) { +"Name" }
-                th(classes = kappaTh) { +"PID" }
-                th(classes = kappaTh) { +"Main Class" }
+    private inline fun renderServices(crossinline tbody: TABLE.() -> Unit): String {
+        return createHTML().table("kappa-service-table") {
+            thead("border-2 m-3") {
+                tr {
+                    th(classes = kappaTh) { +"Name" }
+                    th(classes = kappaTh) { +"PID" }
+                    th(classes = kappaTh) { +"Main Class" }
+                }
             }
+            tbody.invoke(this)
         }
     }
 
     fun renderServices(): String {
-        return createHTML().table("kappa-service-table") {
-            thead()
+        return renderServices {
             tbody {
                 tr {
                     td(classes = kappaTd) { +"Process 1" }
@@ -55,11 +57,8 @@ class WebController(
         }
     }
 
-
     fun clearServices(): String {
-        return createHTML().table("kappa-service-table") {
-            thead()
-        }
+        return renderServices {}
     }
 
 }
