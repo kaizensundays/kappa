@@ -26,14 +26,13 @@
         }
     </script>
 </head>
-<!--<body class="bg-gray-100 flex items-center justify-center min-h-screen">-->
-<body class="kappa-bg-blue" style="display: flex; align-items: center; justify-content: center; min-height: 100vh">
+<body class="tw-bg-blue-900 tw-flex tw-items-center tw-justify-center tw-min-h-screen">
 
 <div hx-trigger="load" hx-get="/initServices" hx-target="#services-div" class="tw-bg-white tw-rounded-lg tw-shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
     <form>
         <div id="services-div" class="tw-shadow-md" style="justify-content: center; height: 400px;">
         </div>
-        <div class="flex items-center justify-center" style="margin: 10px; padding: 10px">
+        <div class="tw-flex tw-items-center tw-justify-center" style="margin: 10px; padding: 10px">
             <button type="button" class="kappa-button" hx-get="/getServices" hx-trigger="click" hx-target="#services-div">Get</button>
             <button type="button" class="kappa-button" hx-get="/initServices" hx-trigger="click" hx-target="#services-div">Clear</button>
             <button type="button" class="kappa-button" hx-post="/stopService" hx-vars='msg:stopService()' hx-ext="json-enc" hx-target="#message">Stop</button>
