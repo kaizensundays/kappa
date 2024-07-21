@@ -17,3 +17,9 @@
     --bg-opacity: 1;
     background-color: #d3ebf8;
 }
+
+.kappa-service-table {
+    width: 100%;
+    margin: 5px;
+    border-width: 2px;
+}

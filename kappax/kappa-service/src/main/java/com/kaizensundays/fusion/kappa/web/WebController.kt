@@ -3,7 +3,6 @@ package com.kaizensundays.fusion.kappa.web
 import com.kaizensundays.fusion.kappa.service.Kapplet
 import kotlinx.html.TABLE
 import kotlinx.html.stream.createHTML
-import kotlinx.html.style
 import kotlinx.html.table
 import kotlinx.html.tbody
 import kotlinx.html.td
@@ -22,10 +21,8 @@ class WebController(
 
     private val kappaTh = "kappa-th"
     private val kappaTd = "kappa-td"
-    private val tableStyle = "width: 100%; margin: 5px"
 
     private fun TABLE.thead() {
-        style = tableStyle
         thead("border-2 m-3") {
             tr {
                 th(classes = kappaTh) { +"Name" }
@@ -36,7 +33,7 @@ class WebController(
     }
 
     fun renderServices(): String {
-        return createHTML().table("border-2") {
+        return createHTML().table("kappa-service-table") {
             thead()
             tbody {
                 tr {
@@ -60,7 +57,7 @@ class WebController(
 
 
     fun clearServices(): String {
-        return createHTML().table("border-2") {
+        return createHTML().table("kappa-service-table") {
             thead()
         }
     }
