@@ -44,11 +44,11 @@ class KappletWebServer(
                 get("/ping") {
                     call.respondText("Web: Ok")
                 }
-                get("/get") {
+                get("/getServices") {
                     val html = controller.renderServices()
                     call.respondText { html }
                 }
-                get("/empty") {
+                get("/initServices") {
                     val html = controller.clearServices()
                     call.respondText { html }
                 }

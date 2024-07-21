@@ -23,24 +23,13 @@
 <!--<body class="bg-gray-100 flex items-center justify-center min-h-screen">-->
 <body class="kappa-bg-blue" style="display: flex; align-items: center; justify-content: center; min-height: 100vh">
 
-<div class="tw-bg-white tw-rounded-lg tw-shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
+<div hx-trigger="load" hx-get="/initServices" hx-target="#services-div" class="tw-bg-white tw-rounded-lg tw-shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
     <form>
         <div id="services-div" class="tw-shadow-md" style="justify-content: center; height: 400px;">
-            <table class="kappa-service-table">
-                <thead class="border-2 m-3">
-                <tr>
-                    <th class="kappa-th">Name</th>
-                    <th class="kappa-th">PID</th>
-                    <th class="kappa-th">Main Class</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
         <div class="flex items-center justify-center" style="margin: 10px; padding: 10px">
-            <button type="button" class="kappa-button" hx-get="/get" hx-trigger="click" hx-target="#services-div">Get</button>
-            <button type="button" class="kappa-button" hx-get="/empty" hx-trigger="click" hx-target="#services-div">Clear</button>
+            <button type="button" class="kappa-button" hx-get="/getServices" hx-trigger="click" hx-target="#services-div">Get</button>
+            <button type="button" class="kappa-button" hx-get="/initServices" hx-trigger="click" hx-target="#services-div">Clear</button>
         </div>
         <div class="mb-8">
             <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message:</label>
