@@ -1,6 +1,10 @@
 package com.kaizensundays.fusion.kappa
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.kaizensundays.fusion.kappa.messages.MsgFrame
 import com.kaizensundays.fusion.kappa.web.WebController
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
@@ -10,10 +14,14 @@ import io.ktor.server.http.content.defaultResource
 import io.ktor.server.http.content.resource
 import io.ktor.server.http.content.static
 import io.ktor.server.http.content.staticBasePackage
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.request.receive
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.webjars.Webjars
+import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,11 +37,19 @@ class KappletWebServer(
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    private val jackson = ObjectMapper().registerKotlinModule()
+
     private var engine: ApplicationEngine? = null
 
     private fun startServer() {
         embeddedServer(CIO, port = this.port, watchPaths = listOf("classes", "resources")) {
             install(Webjars)
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
+            }
             routing {
                 static("/") {
                     staticBasePackage = "static"
@@ -51,6 +67,13 @@ class KappletWebServer(
                 get("/initServices") {
                     val html = controller.clearServices()
                     call.respondText { html }
+                }
+                post("/stopService") {
+                    val wire = call.receive<String>()
+                    println(wire)
+                    val frame = jackson.readValue(wire, MsgFrame::class.java)
+                    println(frame)
+                    call.respondText("Ok")
                 }
             }
         }.start(wait = true)
