@@ -24,6 +24,11 @@
     border-width: 2px;
 }
 
+.kappa-thead {
+    border-width: 2px;
+    margin: 0.75rem;
+}
+
 .kappa-th {
     border-width: 2px;
     padding: 10px;

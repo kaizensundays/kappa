@@ -19,12 +19,13 @@ class WebController(
     private val kapplet: Kapplet
 ) {
 
+    private val kappaTHead = "kappa-thead"
     private val kappaTh = "kappa-th"
     private val kappaTd = "kappa-td"
 
     private inline fun renderServices(crossinline tbody: TABLE.() -> Unit): String {
         return createHTML().table("kappa-service-table") {
-            thead("border-2 m-3") {
+            thead(kappaTHead) {
                 tr {
                     th(classes = kappaTh) { +"Name" }
                     th(classes = kappaTh) { +"PID" }
