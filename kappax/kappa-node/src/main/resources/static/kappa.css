@@ -23,3 +23,13 @@
     margin: 5px;
     border-width: 2px;
 }
+
+.kappa-th {
+    border-width: 2px;
+    padding: 10px;
+}
+
+.kappa-td {
+    border-width: 2px;
+    padding: 10px;
+}
