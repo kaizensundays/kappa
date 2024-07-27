@@ -18,6 +18,11 @@
         .kappa-button {
             @apply focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
         }
+        .kappa-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            color: rgba(243, 244, 246, 1);
+        }
 
     </style>
     <script>
@@ -35,7 +40,7 @@
         <div class="tw-flex tw-items-center tw-justify-center" style="margin: 10px; padding: 10px">
             <button type="button" class="kappa-button" hx-get="/getServices" hx-trigger="click" hx-target="#services-div">Get</button>
             <button type="button" class="kappa-button" hx-get="/initServices" hx-trigger="click" hx-target="#services-div">Clear</button>
-            <button type="button" class="kappa-button" hx-post="/stopService" hx-vars='msg:stopService()' hx-ext="json-enc" hx-target="#message">Stop</button>
+            <button type="button" class="kappa-button" hx-post="/stopService" hx-vars='msg:stopService()' hx-ext="json-enc" hx-target="#message" hx-disabled-elt="this">Stop</button>
         </div>
     </form>
     <div style="margin-bottom: 2rem">

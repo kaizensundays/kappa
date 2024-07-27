@@ -21,9 +21,11 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.webjars.Webjars
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Created: Saturday 7/13/2024, 12:13 PM Eastern Time
@@ -73,6 +75,7 @@ class KappletWebServer(
                     println(wire)
                     val frame = jackson.readValue(wire, MsgFrame::class.java)
                     println(frame)
+                    delay(3.seconds)
                     call.respondText("Ok")
                 }
             }
