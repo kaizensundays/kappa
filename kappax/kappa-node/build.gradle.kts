@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.atomix)
 
     implementation(libs.webjars.htmx)
+    implementation(libs.webjars.picocss)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

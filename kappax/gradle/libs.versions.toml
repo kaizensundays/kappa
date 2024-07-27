@@ -33,7 +33,7 @@ ktor-server-webjars = { module = "io.ktor:ktor-server-webjars", version.ref = "k
 ktor-serialization-kotlinx-json-jvm = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor-version"}
 
 webjars-htmx = { module = "org.webjars.npm:htmx.org", version = "2.0.1"}
-webjars-tailwindcss = { module = "org.webjars.npm:tailwindcss", version = "3.4.1"}
+webjars-picocss = { module = "org.webjars.npm:picocss__pico", version = "2.0.6"}
 
 javax-annotation = { module = "javax.annotation:javax.annotation-api", version = "1.3.2" }
 
