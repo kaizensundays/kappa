@@ -3,7 +3,7 @@ services:
   - name: easybox
     artifact: "com.kaizensundays.fusion.kappa:kappa-node:%%version%%:jar"
     env:
-      EASYBOX_PORT: "7701"
+      EASYBOX_DEPLOYMENT_SOURCE: "kappa-tests"
     jvmOptions:
       - "-Dlog4j.configurationFile=easybox-log4j2.xml"
       - "-Dlog4j2.debug=true"
