@@ -61,7 +61,7 @@ class KappletContainerTest {
             val kubeIp = resolve(KUBE_HOST)
             container.withExposedPorts(SERVER_PORT)
                 .withExtraHost(KUBE_HOST, kubeIp)
-                .withEnv(mutableMapOf("KAPPLET_PROPERTIES" to "kapplet-test-container.yml"))
+                .withEnv(mutableMapOf("KAPPLET_PROPERTIES" to "kapplet-0.yml"))
                 .waitingFor(Wait.forHttp("/ping"))
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.withName("kapplet-test")
