@@ -61,6 +61,7 @@ class KappletContainerTest {
             val kubeIp = resolve(KUBE_HOST)
             container.withExposedPorts(SERVER_PORT)
                 .withExtraHost(KUBE_HOST, kubeIp)
+                .withEnv(mutableMapOf("KAPPLET_PROPERTIES" to "kapplet-test-container.yml"))
                 .waitingFor(Wait.forHttp("/ping"))
                 .withCreateContainerCmdModifier { cmd ->
                     cmd.withName("kapplet-test")
@@ -147,7 +148,7 @@ class KappletContainerTest {
         assertEquals(0, response.code)
         assertEquals(0, response.services.size)
 
-        sleep(1_000)
+        sleep(10_000)
 
         val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
         assertEquals(0, applyResponse.code)
