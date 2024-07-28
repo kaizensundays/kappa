@@ -1,14 +1,14 @@
 #
-# single node, local
+# Single node cluster
 #
 atomix:
-  profile: DataGrid
-  bootstrap: K:localhost:5501
+  profile: Consensus
+  bootstrap: SINGLE:localhost:5501
   node:
-    id: K # unassigned
+    id: SINGLE # unassigned
     host: localhost
     port: 5501
-    data-dir: target
+    data-dir: .
 
 server:
   shutdown: graceful

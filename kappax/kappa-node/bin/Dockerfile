@@ -6,13 +6,17 @@ RUN apk update; \
     apk add htop; \
     apk add unzip;
 
+
 WORKDIR /opt
 
 ENV M2_HOME="/opt/3.5.4"
 
+COPY .bashrc /root/.bashrc
+
 COPY maven-3.5.4.zip .
 RUN unzip maven-3.5.4.zip
 COPY kapplet-test-container.yml .
+COPY kapplet-0.yml .
 COPY entrypoint.sh .
 COPY pom.xml .
 COPY kappa.jar .
