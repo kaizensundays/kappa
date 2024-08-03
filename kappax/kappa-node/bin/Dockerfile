@@ -13,8 +13,7 @@ COPY .bashrc /root/.bashrc
 
 COPY maven-3.5.4.zip .
 RUN unzip maven-3.5.4.zip
-COPY kapplet-test-container.yml .
-COPY kapplet-0.yml .
+COPY kapplet.yml .
 COPY kapplet-log4j2.xml .
 COPY entrypoint.sh .
 COPY pom.xml .
