@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oops</title>
+    <!--
+        <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.css" rel="stylesheet"/>
+    -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/webjars/htmx.org/2.0.1/dist/htmx.js"></script>
+    <script src="/webjars/htmx.org/2.0.1/dist/ext/json-enc.js"></script>
+    <link href="/webjars/picocss__pico/2.0.6/css/pico.css" type="text/css" rel="stylesheet"/>
+    <link href="kappa.css" type="text/css" rel="stylesheet"/>
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        .kappa-button {
+            @apply focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
+        }
+        .kappa-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            color: rgba(243, 244, 246, 1);
+        }
+
+    </style>
+    <script>
+        function stopService() {
+            return '{ "id": "easybox" }'
+        }
+    </script>
+</head>
+<body class="tw-bg-blue-900 tw-flex tw-items-center tw-justify-center tw-min-h-screen">
+
+<div hx-trigger="load" hx-get="/initServices" hx-target="#services-div" class="tw-bg-white tw-rounded-lg tw-shadow-md" style="width: 700px; padding: 10px; justify-content: center;">
+    <form>
+        <div id="services-div" class="tw-shadow-md" style="justify-content: center; height: 400px;">
+        </div>
+        <div class="tw-flex tw-items-center tw-justify-center" style="margin: 10px; padding: 10px">
+            <button type="button" class="kappa-button" hx-get="/getServices" hx-trigger="click" hx-target="#services-div">Get</button>
+            <button type="button" class="kappa-button" hx-get="/initServices" hx-trigger="click" hx-target="#services-div">Clear</button>
+            <button type="button" class="kappa-button" hx-post="/stopService" hx-vars='msg:stopService()' hx-ext="json-enc" hx-confirm="Are you sure ?"  hx-target="#message" hx-disabled-elt="this">Stop</button>
+        </div>
+    </form>
+    <div style="margin-bottom: 2rem">
+        <label for="message" class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2">Message:</label>
+        <textarea id="message" name="message" rows="4" class="tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-md tw-focus:outline-none tw-focus:ring tw-focus:border-blue-300" required></textarea>
+    </div>
+    <button type="button" class="kappa-button" onclick="window.location.href='picocss-example.html';">Pico CSS example</button>
+</div>
+
+</body>
+</html>

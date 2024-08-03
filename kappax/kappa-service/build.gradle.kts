@@ -43,6 +43,10 @@ dependencies {
 
     implementation(libs.maven.invoker)
 
+    implementation(libs.ktor.server.webjars)
+    implementation("io.ktor:ktor-server-html-builder:2.2.4")
+    //implementation("org.jetbrains.kotlinx:kotlinx-html:0.11.0")
+
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
 

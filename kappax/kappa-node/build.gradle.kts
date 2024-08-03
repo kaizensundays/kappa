@@ -1,4 +1,3 @@
-
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -17,6 +16,9 @@ dependencies {
     }
 
     implementation(libs.atomix)
+
+    implementation(libs.webjars.htmx)
+    implementation(libs.webjars.picocss)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
@@ -39,6 +41,11 @@ tasks.withType<Test> {
 tasks.bootJar {
     archiveFileName.set("kappa.jar")
     destinationDirectory.set(file("bin"))
+    // copy static content to Boot JAR root for Ktor
+    from("src/main/resources/static") {
+        include("**/*.*")
+        into("/static")
+    }
 }
 
 tasks.publish {
