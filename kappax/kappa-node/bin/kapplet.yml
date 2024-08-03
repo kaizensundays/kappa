@@ -25,5 +25,7 @@ kappa:
 kapplet:
   server:
     port: 7701
+  web:
+    port: 7703
   deployerEnabled: true
   cacheLocation: .kappa/cache
