@@ -26,6 +26,7 @@
     </bean>
 
     <bean id="atomixCacheManager" class="io.atomix.jcache.AtomicCacheManager"
+          p:profile="${atomix.profile}"
           p:bootstrap="${atomix.bootstrap}"
           p:nodeId="${atomix.node.id}"
           p:host="${atomix.node.host}"

@@ -6,17 +6,21 @@ RUN apk update; \
     apk add htop; \
     apk add unzip;
 
+
 WORKDIR /opt
 
-ENV M2_HOME="/opt/3.5.4"
+COPY .bashrc /root/.bashrc
 
 COPY maven-3.5.4.zip .
 RUN unzip maven-3.5.4.zip
-COPY kapplet-test-container.yml .
+COPY kapplet.yml .
+COPY kapplet-log4j2.xml .
+COPY entrypoint.sh .
 COPY pom.xml .
 COPY kappa.jar .
 
 EXPOSE 7701
+EXPOSE 7703
 
-ENTRYPOINT ["java", "-Dproperties=kapplet-test-container.yml", "-Dlog4j2.configurationFile=classpath:kapplet-log4j2.xml", "-Dlog4j.shutdownHookEnabled=false", "-Dlog4j2.debug=false", "-jar", "kappa.jar"]
+ENTRYPOINT ["./entrypoint.sh"]
 
