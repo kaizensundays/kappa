@@ -64,7 +64,7 @@ class KappletContainerTest {
                 .withEnv(mutableMapOf("KAPPLET_PROPERTIES" to "kapplet-0.yml"))
                 .waitingFor(Wait.forHttp("/ping"))
                 .withCreateContainerCmdModifier { cmd ->
-                    cmd.withName("kapplet-test")
+                    cmd.withName("kapplet")
                     cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
                 }
             container.start()
@@ -153,7 +153,7 @@ class KappletContainerTest {
         val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
         assertEquals(0, applyResponse.code)
 
-        sleep(10_000)
+        sleep(100_000)
 
         response = producer.executeGet()
         assertEquals(0, response.code)
