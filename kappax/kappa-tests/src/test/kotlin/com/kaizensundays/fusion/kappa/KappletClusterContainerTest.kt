@@ -4,6 +4,7 @@ import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,6 +21,7 @@ import java.util.concurrent.Executors
  *
  * @author Sergey Chuykov
  */
+@Tag("container-test")
 class KappletClusterContainerTest {
 
     companion object {
