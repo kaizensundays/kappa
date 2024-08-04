@@ -4,7 +4,7 @@ atomix:
   bootstrap: ${ATOMIX_BOOTSTRAP}
   node:
     id: ${ATOMIX_NODE_ID}
-    host: localhost
+    host: ${ATOMIX_NODE_HOST}
     port: ${ATOMIX_NODE_PORT}
     data-dir: .
 

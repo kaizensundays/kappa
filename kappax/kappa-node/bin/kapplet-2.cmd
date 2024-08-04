@@ -1,6 +1,7 @@
 
 set ATOMIX_PROFILE=Consensus
 set ATOMIX_BOOTSTRAP=A:localhost:5001;B:localhost:5002;C:localhost:5003
+set ATOMIX_NODE_HOST=localhost
 set ATOMIX_NODE_PORT=5002
 set ATOMIX_NODE_ID=B
 
