@@ -65,6 +65,7 @@ class KappletContainerTest {
                 .withEnv(mutableMapOf(
                     "ATOMIX_PROFILE" to "Consensus",
                     "ATOMIX_BOOTSTRAP" to "SINGLE:localhost:5501",
+                    "ATOMIX_NODE_HOST" to "localhost",
                     "ATOMIX_NODE_PORT" to "5501",
                     "ATOMIX_NODE_ID" to "SINGLE",
                     "KAPPLET_SERVER_PORT" to "7701",
