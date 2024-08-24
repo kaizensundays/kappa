@@ -149,7 +149,28 @@ class KappletClusterContainerTest : ContainerTestSupport() {
 
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
-        val response = producer.executeGet()
+        var response = producer.executeGet()
+        assertEquals(0, response.code)
+        assertEquals(0, response.services.size)
+
+        Thread.sleep(10_000)
+
+        val applyResponse = producer.executeApply("easybox.yaml", "0.0.0-SNAPSHOT")
+        assertEquals(0, applyResponse.code)
+
+        Thread.sleep(10_000)
+
+        response = producer.executeGet()
+        assertEquals(0, response.code)
+        assertEquals(1, response.services.size)
+
+        Thread.sleep(10_000)
+
+        producer.executeStop("easybox")
+
+        Thread.sleep(10_000)
+
+        response = producer.executeGet()
         assertEquals(0, response.code)
         assertEquals(0, response.services.size)
 

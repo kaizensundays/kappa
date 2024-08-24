@@ -2,14 +2,9 @@ package com.kaizensundays.fusion.kappa
 
 import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
-import com.kaizensundays.fusion.kappa.core.Deployments
-import com.kaizensundays.fusion.kappa.core.api.Apply
-import com.kaizensundays.fusion.kappa.core.api.ApplyResponse
-import com.kaizensundays.fusion.kappa.core.api.Service
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -20,9 +15,7 @@ import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
 import java.lang.Thread.sleep
 import java.net.InetAddress
-import java.net.URI
 import java.net.UnknownHostException
-import java.time.Duration
 
 /**
  * Created: Sunday 6/2/2024, 12:57 PM Eastern Time
@@ -83,44 +76,6 @@ class KappletContainerTest : ContainerTestSupport() {
             container.stop()
         }
 
-    }
-
-    private fun renderVersion(version: String, serviceMap: Map<String, Service>) {
-        serviceMap.forEach { (_, service) ->
-            service.artifact = service.artifact?.replace("""%%version%%""", version)
-        }
-    }
-
-    private fun KtorProducer.executeApply(fileName: String, version: String): ApplyResponse {
-
-        val deployments = Deployments()
-
-        val serviceMap = runBlocking { deployments.readAndValidateDeployment(fileName) }
-
-        renderVersion(version, serviceMap)
-
-        val request = Apply(serviceMap)
-
-        val body = jsonConverter.writeValueAsString(request)
-
-        val bytes = this.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(100))
-
-        val json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        return jsonConverter.readValue(json, ApplyResponse::class.java)
-    }
-
-    private fun KtorProducer.executeStop(serviceId: String): String {
-
-        val bytes = this.request(URI("get:/stop/$serviceId"))
-            .blockLast(Duration.ofSeconds(30))
-
-        val json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        return json
     }
 
     @Test
