@@ -1,8 +1,17 @@
 package com.kaizensundays.fusion.kappa
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
+import com.kaizensundays.fusion.kappa.core.api.GetRequest
+import com.kaizensundays.fusion.kappa.core.api.GetResponse
+import com.kaizensundays.fusion.ktor.KtorProducer
+import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
+import com.kaizensundays.fusion.messaging.Instance
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -13,8 +22,12 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
 import java.net.InetAddress
+import java.net.URI
 import java.net.UnknownHostException
+import java.time.Duration
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * Created: Sunday 8/4/2024, 12:06 PM Eastern Time
@@ -32,8 +45,8 @@ class KappletClusterContainerTest {
         private const val ATOMIX_BOOTSTRAP = "A:kapplet1:5001;B:kapplet2:5002;C:kapplet3:5003"
         private const val KAPPLET_PROPERTIES = "kapplet.yml"
 
-        private const val COMMAND_PORT = 7701
         private const val KUBE_HOST = "Nevada"
+        //private val COMMAND_PORT = arrayOf(7711, 7721, 7731)
 
         private val env = mapOf(
             0 to mutableMapOf(
@@ -62,8 +75,8 @@ class KappletClusterContainerTest {
                 "ATOMIX_NODE_ID" to "C",
                 "ATOMIX_NODE_HOST" to "kapplet3",
                 "ATOMIX_NODE_PORT" to "5003",
-                "KAPPLET_SERVER_PORT" to "7711",
-                "KAPPLET_WEB_PORT" to "7713",
+                "KAPPLET_SERVER_PORT" to "7731",
+                "KAPPLET_WEB_PORT" to "7733",
                 "KAPPLET_PROPERTIES" to KAPPLET_PROPERTIES
             ),
         )
@@ -72,6 +85,10 @@ class KappletClusterContainerTest {
 
         private val containers: List<GenericContainer<*>> = List(3) {
             GenericContainer<Nothing>(DockerImageName.parse(IMAGE))
+        }
+
+        fun commandPort(node: Int): Int {
+            return env[node]?.get("KAPPLET_SERVER_PORT")?.toInt() ?: throw IllegalStateException()
         }
 
         @JvmStatic
@@ -93,22 +110,28 @@ class KappletClusterContainerTest {
             //val network = Network.builder().id("kappa").build()
             val network = Network.newNetwork()
 
+            val latch = CountDownLatch(3)
+
             containers.forEachIndexed { n, container ->
                 executor.execute {
                     val name = env[n]?.get("ATOMIX_NODE_HOST")
                     container.withNetwork(network)
-                        .withExposedPorts(COMMAND_PORT)
+                        .withExposedPorts(commandPort(n))
                         .withExtraHost(KUBE_HOST, kubeIp)
                         .withEnv(env[n])
-                        .waitingFor(Wait.forHttp("/ping"))
+                        .waitingFor(Wait.forHttp("/ping").withStartupTimeout(Duration.ofSeconds(100)))
                         .withCreateContainerCmdModifier { cmd ->
                             cmd.withName(name)
                             cmd.hostConfig?.withBinds(Bind("/home/super/var/shared/m2", Volume("/opt/m2")))
                         }
                     container.start()
                     logger.info("Stared - $name")
+                    latch.countDown()
                 }
             }
+
+            latch.await(1000, TimeUnit.SECONDS)
+            logger.info("Stared")
         }
 
         @JvmStatic
@@ -120,9 +143,40 @@ class KappletClusterContainerTest {
 
     }
 
+    private val jsonConverter = ObjectMapper()
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .registerKotlinModule()
+
+    private fun KtorProducer.executeGet(): GetResponse {
+
+        val body = jsonConverter.writeValueAsString(GetRequest())
+
+        val bytes = this.request(URI("post:/handle"), body.toByteArray())
+            .blockLast(Duration.ofSeconds(30))
+
+        val json = if (bytes != null) String(bytes) else "?"
+        println(json)
+
+        return jsonConverter.readValue(json, GetResponse::class.java)
+    }
+
     @Test
-    fun test() {
-        Thread.sleep(30_000)
+    fun startAndStopEasyBox() {
+
+        val node = 0
+
+        val port = containers[node].getMappedPort(commandPort(node))
+        println("port=$port")
+
+        val instance = Instance(KUBE_HOST, port)
+
+        val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
+
+        val response = producer.executeGet()
+        assertEquals(0, response.code)
+        assertEquals(0, response.services.size)
+
+        Thread.sleep(10_000)
     }
 
 }
