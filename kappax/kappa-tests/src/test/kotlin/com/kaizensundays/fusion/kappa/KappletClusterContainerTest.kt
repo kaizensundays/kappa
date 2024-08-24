@@ -1,12 +1,7 @@
 package com.kaizensundays.fusion.kappa
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.Volume
-import com.kaizensundays.fusion.kappa.core.api.GetRequest
-import com.kaizensundays.fusion.kappa.core.api.GetResponse
 import com.kaizensundays.fusion.ktor.KtorProducer
 import com.kaizensundays.fusion.messaging.DefaultLoadBalancer
 import com.kaizensundays.fusion.messaging.Instance
@@ -22,7 +17,6 @@ import org.testcontainers.containers.Network
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.DockerImageName
 import java.net.InetAddress
-import java.net.URI
 import java.net.UnknownHostException
 import java.time.Duration
 import java.util.concurrent.CountDownLatch
@@ -35,7 +29,7 @@ import java.util.concurrent.TimeUnit
  * @author Sergey Chuykov
  */
 @Tag("container-test")
-class KappletClusterContainerTest {
+class KappletClusterContainerTest : ContainerTestSupport() {
 
     companion object {
 
@@ -141,23 +135,6 @@ class KappletClusterContainerTest {
             containers.forEach { container -> container.stop() }
         }
 
-    }
-
-    private val jsonConverter = ObjectMapper()
-        .enable(SerializationFeature.INDENT_OUTPUT)
-        .registerKotlinModule()
-
-    private fun KtorProducer.executeGet(): GetResponse {
-
-        val body = jsonConverter.writeValueAsString(GetRequest())
-
-        val bytes = this.request(URI("post:/handle"), body.toByteArray())
-            .blockLast(Duration.ofSeconds(30))
-
-        val json = if (bytes != null) String(bytes) else "?"
-        println(json)
-
-        return jsonConverter.readValue(json, GetResponse::class.java)
     }
 
     @Test
