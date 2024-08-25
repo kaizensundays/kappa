@@ -21,9 +21,9 @@ class GetArtifactMojo : AbstractKappaMojo() {
     @Parameter(property = "artifact")
     private var artifact = ""
 
-    private fun respond(resolution: ArtifactResolution) {
+    private fun respond(resolution: ArtifactResolution, commandPort: Int) {
 
-        val instance = Instance("localhost", 7701)
+        val instance = Instance("localhost", commandPort)
         val producer = KtorProducer(DefaultLoadBalancer(listOf(instance)))
 
         val request = jsonConverter.fromObject(resolution)
@@ -38,14 +38,14 @@ class GetArtifactMojo : AbstractKappaMojo() {
 
     override fun doExecute() {
 
-        val requestId = System.getProperty("requestId")
-        println("*requestId=$requestId")
-        println("*artifact=$artifact")
+        val requestId = System.getProperty("requestId", "?")
+        val commandPort = System.getProperty("commandPort", "0").toInt()
+        println("commandPort=$commandPort requestId=$requestId artifact=$artifact")
 
         if (artifact.isBlank()) {
             val resolution = ArtifactResolution(requestId, emptyMap())
 
-            respond(resolution)
+            respond(resolution, commandPort)
         } else {
 
             val result = artifactManager.resolveArtifact(artifact)
@@ -58,7 +58,7 @@ class GetArtifactMojo : AbstractKappaMojo() {
 
             println("*** resolution=$resolution")
 
-            respond(resolution)
+            respond(resolution, commandPort)
         }
 
     }

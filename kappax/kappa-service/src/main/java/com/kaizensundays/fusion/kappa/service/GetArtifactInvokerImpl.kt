@@ -16,7 +16,7 @@ class GetArtifactInvokerImpl : GetArtifactInvoker {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun execute(requestId: String, artifact: String) {
+    override fun execute(requestId: String, artifact: String, commandPort: Int) {
         logger.info("execute >")
 
         val mavenHome = System.getenv()["M2_HOME"]
@@ -24,7 +24,11 @@ class GetArtifactInvokerImpl : GetArtifactInvoker {
 
         val request = DefaultInvocationRequest()
         request.goals = listOf("com.kaizensundays.fusion.kappa:kappa-maven-plugin:0.0.0-SNAPSHOT:get-artifact");
-        request.properties = mapOf("requestId" to requestId, "artifact" to artifact).toProperties()
+        request.properties = mapOf(
+            "requestId" to requestId,
+            "artifact" to artifact,
+            "commandPort" to commandPort.toString()
+        ).toProperties()
         request.baseDirectory = File(".");
         request.timeoutInSeconds = 10
 

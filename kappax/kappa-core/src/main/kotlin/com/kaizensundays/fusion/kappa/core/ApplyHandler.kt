@@ -21,6 +21,7 @@ import javax.cache.Cache
 class ApplyHandler(
     private val getArtifactInvoker: GetArtifactInvoker,
     private val artifactResolutionPendingResults: PendingResults<ArtifactResolution>,
+    private val commandPort: Int,
     private val processBuilder: OSProcessBuilder,
     private val serviceStore: Cache<String, String>,
     private val serviceCache: Cache<String, Service>
@@ -209,7 +210,7 @@ class ApplyHandler(
 
         val artifact = artifacts.first()
 
-        getArtifactInvoker.execute(requestId, artifact)
+        getArtifactInvoker.execute(requestId, artifact, commandPort)
 
         val resolution = pendingResult.get(60, TimeUnit.SECONDS)
         logger.info("resolution=$resolution")

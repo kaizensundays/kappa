@@ -1,13 +1,12 @@
-#
-# single node, local
-#
+
 atomix:
-  bootstrap: K:localhost:5501
+  profile: ${ATOMIX_PROFILE}
+  bootstrap: ${ATOMIX_BOOTSTRAP}
   node:
-    id: K # unassigned
-    host: localhost
-    port: 5501
-    data-dir: target
+    id: ${ATOMIX_NODE_ID}
+    host: ${ATOMIX_NODE_HOST}
+    port: ${ATOMIX_NODE_PORT}
+    data-dir: .
 
 server:
   shutdown: graceful
@@ -24,8 +23,8 @@ kappa:
 
 kapplet:
   server:
-    port: 7701
+    port: ${KAPPLET_SERVER_PORT}
   web:
-    port: 7703
+    port: ${KAPPLET_WEB_PORT}
   deployerEnabled: true
   cacheLocation: .kappa/cache
