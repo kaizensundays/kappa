@@ -3,22 +3,21 @@
 export KUBE_HOST=192.168.0.19
 
 #
-# Single node cluster
+# 3 node cluster
 #
 
 export ATOMIX_PROFILE=Consensus
-export ATOMIX_BOOTSTRAP=SINGLE:localhost:5001
-export ATOMIX_NODE_HOST=localhost
-export ATOMIX_NODE_PORT=5001
-export ATOMIX_NODE_ID=SINGLE
+export ATOMIX_BOOTSTRAP="A:kapplet1:5001;B:kapplet2:5002;C:kapplet3:5003"
+export ATOMIX_NODE_ID=B
+export ATOMIX_NODE_HOST=kapplet2
+export ATOMIX_NODE_PORT=5003
 
 export KAPPLET_SERVER_PORT=7701
 export KAPPLET_WEB_PORT=7703
 
 
-docker run -d --name kapplet \
+docker run -d --name kapplet2 \
 --network=kappa \
---add-host=kube:$KUBE_HOST \
 --add-host=nevada:$KUBE_HOST \
 --add-host=artifactory:$KUBE_HOST \
 -e ATOMIX_PROFILE=${ATOMIX_PROFILE} \
@@ -29,8 +28,8 @@ docker run -d --name kapplet \
 -e KAPPLET_SERVER_PORT=${KAPPLET_SERVER_PORT} \
 -e KAPPLET_WEB_PORT=${KAPPLET_WEB_PORT} \
 -e KAPPLET_PROPERTIES=kapplet.yml \
--p 30701:${KAPPLET_SERVER_PORT} \
--p 30703:${KAPPLET_WEB_PORT} \
+-p 30721:${KAPPLET_SERVER_PORT} \
+-p 30723:${KAPPLET_WEB_PORT} \
 -v /home/super/var/shared/m2:/opt/m2 \
 -v /home/super/var/kapplet/.kappa:/opt/.kappa \
 localhost:32000/kappa:latest

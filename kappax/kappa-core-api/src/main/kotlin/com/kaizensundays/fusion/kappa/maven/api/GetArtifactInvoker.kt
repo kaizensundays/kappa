@@ -7,6 +7,6 @@ package com.kaizensundays.fusion.kappa.maven.api
  */
 interface GetArtifactInvoker {
 
-    fun execute(requestId: String, artifact: String)
+    fun execute(requestId: String, artifact: String, commandPort: Int)
 
 }
