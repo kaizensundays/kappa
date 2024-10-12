@@ -1,11 +1,11 @@
 [versions]
 
-kotlin-version = "1.8.22"
+kotlin-version = "1.9.25"
 kotlinx-serialization-version = "1.4.1"
 kotlinx-coroutines-version = "1.6.4"
 ktor-version = "2.2.4"
 
-mockito-kotlin-version = "3.2.0"
+mockito-kotlin-version = "5.4.0"
 mockk-version = "1.12.8"
 
 testcontainers-version = "1.19.8"
